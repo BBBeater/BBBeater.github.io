@@ -6,36 +6,45 @@
   <title>Happy Anniversary - หน้าแยก + เกม</title>
   <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
   <style>
+    /* Reset และตั้งค่าเบื้องต้น */
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Itim', cursive;
       background: #ffe6f0;
       color: #a84c7e;
-      margin: 0; padding: 0;
+      margin: 0; 
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      overflow: hidden;
+      overflow-x: hidden;
+      line-height: 1.5;
     }
     .container {
-      width: 520px;
-      max-width: 95vw;
+      width: 100%;
+      max-width: 540px;
       background: #fff0f6;
       border-radius: 25px;
       box-shadow: 0 8px 20px rgba(208, 129, 163, 0.4);
-      padding: 40px 30px 40px;
+      padding: 40px 35px 40px;
       text-align: center;
       position: relative;
       min-height: 700px;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
     }
     h1, h2 {
       color: #d35c8e;
-      margin-bottom: 15px;
+      margin: 0 0 15px 0;
       position: relative;
       display: inline-block;
-      padding-right: 20px;
+      padding-right: 18px;
       font-weight: 600;
+      user-select: none;
     }
     h1::after, h2::after {
       content: " ✨";
@@ -46,49 +55,21 @@
       top: 2px;
       user-select: none;
     }
-    button.lovely {
-      background-color: #d35c8e;
-      box-shadow: 0 0 8px #f7c6d9;
-      font-weight: bold;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      position: relative;
-      padding-right: 36px;
-      color: white;
-      border-radius: 16px;
-      cursor: pointer;
-      border: none;
-      margin: 0 15px;
-      font-size: 18px;
-      user-select: none;
-    }
-    button.lovely::after {
-      content: "💙";
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.3rem;
-      user-select: none;
-    }
-    button.lovely:hover {
-      background-color: #bb4a79;
-      box-shadow: 0 0 12px #f9c7db;
-    }
     p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-      line-height: 1.5;
+      font-size: 1.18rem;
+      margin: 0 0 30px 0;
       color: #b56a8b;
+      padding: 0 10px;
+      user-select: none;
     }
     .photo-placeholder {
-      width: 90vw;
+      width: 100%;
       max-width: 380px;
-      height: 90vw;
-      max-height: 380px;
+      height: 380px;
       background: #ffe6f4;
       border: 3px dashed #d688a9;
       border-radius: 25px;
-      margin: 0 auto 40px;
+      margin: 0 auto 40px auto;
       box-shadow: 0 0 15px #f5bbd3;
       line-height: 380px;
       color: #d688a9;
@@ -99,6 +80,54 @@
     .photo-placeholder:hover {
       background-color: #ffebf5;
     }
+
+    input[type="number"], input[type="password"] {
+      font-family: 'Itim', cursive;
+      font-size: 20px;
+      padding: 12px 16px;
+      width: 140px;
+      border: 2px solid #d688a9;
+      border-radius: 16px;
+      text-align: center;
+      margin-right: 12px;
+      transition: border-color 0.3s ease;
+      user-select: text;
+      outline-offset: 2px;
+    }
+    input[type="number"]:focus, input[type="password"]:focus {
+      border-color: #d35c8e;
+      outline: none;
+      box-shadow: 0 0 8px #f7c6d9;
+    }
+
+    button.lovely {
+      background-color: #d35c8e;
+      box-shadow: 0 0 8px #f7c6d9;
+      font-weight: bold;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      padding: 12px 36px 12px 24px;
+      color: white;
+      border-radius: 20px;
+      cursor: pointer;
+      border: none;
+      margin: 0 12px 12px 0;
+      font-size: 18px;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    button.lovely::after {
+      content: "💙";
+      font-size: 1.3rem;
+      user-select: none;
+    }
+    button.lovely:hover {
+      background-color: #bb4a79;
+      box-shadow: 0 0 12px #f9c7db;
+    }
     button {
       border: none;
       color: white;
@@ -106,7 +135,7 @@
       padding: 12px 30px;
       border-radius: 16px;
       cursor: pointer;
-      margin: 0 15px;
+      margin: 0 12px 12px 0;
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
       user-select: none;
     }
@@ -114,35 +143,21 @@
       filter: brightness(110%);
       box-shadow: 0 0 12px rgba(211, 92, 142, 0.8);
     }
+
     .buttons {
       display: flex;
       justify-content: center;
-      margin-top: 20px;
+      margin-top: auto;
       flex-wrap: wrap;
       gap: 15px;
     }
     .hidden {
       display: none;
     }
-    input[type="number"], input[type="password"] {
-      font-family: 'Itim', cursive;
-      font-size: 20px;
-      padding: 10px 14px;
-      width: 120px;
-      border: 2px solid #d688a9;
-      border-radius: 14px;
-      text-align: center;
-      margin-right: 10px;
-      transition: border-color 0.3s ease;
-      user-select: text;
-    }
-    input[type="number"]:focus, input[type="password"]:focus {
-      border-color: #d35c8e;
-      outline: none;
-      box-shadow: 0 0 8px #f7c6d9;
-    }
+
     #guessBtn {
       font-weight: 700;
+      margin-right: 0;
     }
     #gameMessage {
       margin-top: 20px;
@@ -151,13 +166,13 @@
       color: #d35c8e;
       font-weight: 600;
       user-select: none;
+      padding: 0 10px;
     }
     #puzzle {
-      width: 90vw;
+      width: 100%;
       max-width: 380px;
-      height: 90vw;
-      max-height: 380px;
-      margin: 0 auto 20px;
+      height: 380px;
+      margin: 0 auto 20px auto;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
@@ -179,6 +194,7 @@
       position: relative;
       overflow: hidden;
       transition: box-shadow 0.3s ease;
+      user-select: none;
     }
     .piece:hover {
       box-shadow: 0 0 18px #d688a9;
@@ -201,24 +217,32 @@
       min-height: 24px;
       margin-bottom: 10px;
       user-select: none;
+      padding: 0 10px;
     }
+
+    /* Responsive */
     @media (max-width: 600px) {
       .container {
-        padding: 30px 20px 30px;
+        padding: 30px 25px 30px;
         min-height: auto;
       }
       .buttons {
         gap: 10px;
       }
-      button {
+      button, button.lovely {
         padding: 10px 24px;
         font-size: 16px;
-        margin: 0 8px;
+        margin: 0 8px 8px 0;
       }
       input[type="number"], input[type="password"] {
-        width: 100px;
+        width: 110px;
         font-size: 18px;
-        padding: 8px 10px;
+        padding: 10px 12px;
+        margin-right: 8px;
+      }
+      .photo-placeholder, #puzzle {
+        max-width: 320px;
+        height: 320px;
       }
     }
   </style>
@@ -232,14 +256,14 @@
     <h1>🌸 ยินดีต้อนรับ</h1>
     <p>กรอกรหัสผ่านเพื่อเข้าเว็บลับของเรา 💖</p>
     <input type="password" id="password" placeholder="ใส่รหัสรัก..." />
-    <div style="margin-top:15px;">
+    <div style="margin-top:15px; text-align: center;">
       <button class="lovely" onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
     </div>
     <p id="error" style="color: #d35c8e; margin-top: 10px; font-weight: 600;"></p>
   </div>
 
   <!-- เนื้อหาหลังล็อกอิน -->
-  <div id="contentPages" class="hidden">
+  <div id="contentPages" class="hidden" style="flex-grow:1; display:flex; flex-direction: column;">
 
     <!-- หน้า 1 -->
     <div class="page" id="page0">
@@ -273,13 +297,15 @@
     <div class="page hidden" id="page4">
       <h2>🎲 เกมทายเลข</h2>
       <p>ลองทายเลข 1 ถึง 100 ดูสิ! 😊</p>
-      <input type="number" id="guessInput" min="1" max="100" placeholder="ใส่เลขที่นี่" />
-      <button class="lovely" id="guessBtn" onclick="checkGuess()">ทาย!</button>
+      <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
+        <input type="number" id="guessInput" min="1" max="100" placeholder="ใส่เลขที่นี่" />
+        <button class="lovely" id="guessBtn" onclick="checkGuess()">ทาย!</button>
+      </div>
       <div id="gameMessage"></div>
     </div>
 
     <!-- หน้า 6 - เกมจิ๊กซอว์ -->
-    <div class="page hidden" id="page5">
+    <div class="page hidden" id="page5" style="flex-grow:1; display:flex; flex-direction: column; align-items: center; justify-content: flex-start;">
       <h2>🧩 เกมจิ๊กซอว์</h2>
       <p>ลองต่อจิ๊กซอว์ให้ถูกต้องดูนะ! (เปลี่ยนรูปใน &lt;img&gt; เองได้)</p>
       <div id="puzzle">
@@ -298,7 +324,7 @@
 </div>
 
 <script>
-  const correctPassword = "iloveyou";
+  const correctPassword = "0000";
   let currentPage = 0;
   const totalPages = 6;
 
@@ -401,7 +427,7 @@
   }
 
   function checkPassword() {
-    const entered = document.getElementById("password").value;
+    const entered = document.getElementById("password").value.trim();
     const error = document.getElementById("error");
     if (entered === correctPassword) {
       document.getElementById("loginPage").style.display = "none";
