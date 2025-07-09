@@ -8,8 +8,8 @@
   <style>
     body {
       font-family: 'Itim', cursive;
-      background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
-      color: #6b406d;
+      background: #ffe6f0;
+      color: #a84c7e;
       margin: 0; padding: 0;
       display: flex;
       justify-content: center;
@@ -20,46 +20,46 @@
     .container {
       width: 520px;
       max-width: 95vw;
-      background: #fff;
+      background: #fff0f6;
       border-radius: 25px;
-      box-shadow: 0 8px 25px rgba(220, 182, 218, 0.5);
+      box-shadow: 0 8px 20px rgba(208, 129, 163, 0.4);
       padding: 40px 30px 40px;
       text-align: center;
       position: relative;
       min-height: 700px;
       box-sizing: border-box;
-      transition: box-shadow 0.3s ease;
-    }
-    .container:hover {
-      box-shadow: 0 12px 35px rgba(220, 182, 218, 0.7);
     }
     h1, h2 {
-      color: #ba3d87;
+      color: #d35c8e;
       margin-bottom: 15px;
       position: relative;
       display: inline-block;
-      padding-right: 24px;
+      padding-right: 20px;
       font-weight: 600;
     }
-    /* ไอคอน ✨💙 บางจุดเฉพาะ */
     h1::after, h2::after {
       content: " ✨";
-      color: #ba3d87;
-      font-size: 1.3rem;
+      color: #d35c8e;
+      font-size: 1.2rem;
       position: absolute;
       right: 0;
       top: 2px;
-      animation: sparkle 2s infinite ease-in-out alternate;
       user-select: none;
     }
-    /* เพิ่มไอคอน 💙 บางปุ่ม */
     button.lovely {
-      background-color: #ba3d87;
-      box-shadow: 0 0 8px #eec9e8;
+      background-color: #d35c8e;
+      box-shadow: 0 0 8px #f7c6d9;
       font-weight: bold;
-      transition: background-color 0.4s ease, box-shadow 0.4s ease;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
       position: relative;
-      padding-right: 40px;
+      padding-right: 36px;
+      color: white;
+      border-radius: 16px;
+      cursor: pointer;
+      border: none;
+      margin: 0 15px;
+      font-size: 18px;
+      user-select: none;
     }
     button.lovely::after {
       content: "💙";
@@ -68,48 +68,36 @@
       top: 50%;
       transform: translateY(-50%);
       font-size: 1.3rem;
-      animation: pulse 2.5s infinite ease-in-out;
       user-select: none;
     }
     button.lovely:hover {
-      background-color: #d856a6;
-      box-shadow: 0 0 15px #f1c7f6;
+      background-color: #bb4a79;
+      box-shadow: 0 0 12px #f9c7db;
     }
-
-    /* แอนิเมชันไอคอน */
-    @keyframes sparkle {
-      0%, 100% { opacity: 0.3; transform: scale(1) translateY(0); }
-      50% { opacity: 1; transform: scale(1.2) translateY(-3px); }
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 0.6; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.3); }
-    }
-
     p {
       font-size: 1.2rem;
       margin-bottom: 30px;
       line-height: 1.5;
-      color: #7a4d7c;
+      color: #b56a8b;
     }
     .photo-placeholder {
       width: 90vw;
       max-width: 380px;
       height: 90vw;
       max-height: 380px;
-      background: #fde9f1;
-      border: 3px dashed #d891be;
+      background: #ffe6f4;
+      border: 3px dashed #d688a9;
       border-radius: 25px;
       margin: 0 auto 40px;
-      box-shadow: 0 0 15px #eebde0;
+      box-shadow: 0 0 15px #f5bbd3;
       line-height: 380px;
-      color: #d891be;
+      color: #d688a9;
       font-size: 1.3rem;
       user-select: none;
       transition: background-color 0.3s ease;
     }
     .photo-placeholder:hover {
-      background-color: #f9d7f2;
+      background-color: #ffebf5;
     }
     button {
       border: none;
@@ -124,7 +112,7 @@
     }
     button:hover {
       filter: brightness(110%);
-      box-shadow: 0 0 12px rgba(186, 61, 135, 0.8);
+      box-shadow: 0 0 12px rgba(211, 92, 142, 0.8);
     }
     .buttons {
       display: flex;
@@ -141,7 +129,7 @@
       font-size: 20px;
       padding: 10px 14px;
       width: 120px;
-      border: 2px solid #d891be;
+      border: 2px solid #d688a9;
       border-radius: 14px;
       text-align: center;
       margin-right: 10px;
@@ -149,9 +137,9 @@
       user-select: text;
     }
     input[type="number"]:focus, input[type="password"]:focus {
-      border-color: #ba3d87;
+      border-color: #d35c8e;
       outline: none;
-      box-shadow: 0 0 8px #d891be;
+      box-shadow: 0 0 8px #f7c6d9;
     }
     #guessBtn {
       font-weight: 700;
@@ -160,12 +148,10 @@
       margin-top: 20px;
       font-size: 1.15rem;
       min-height: 28px;
-      color: #ba3d87;
+      color: #d35c8e;
       font-weight: 600;
       user-select: none;
     }
-
-    /* จิ๊กซอว์ */
     #puzzle {
       width: 90vw;
       max-width: 380px;
@@ -179,23 +165,23 @@
       user-select: none;
     }
     .piece {
-      background-color: #fde9f1;
-      border: 2px solid #d891be;
+      background-color: #ffe6f4;
+      border: 2px solid #d688a9;
       border-radius: 18px;
-      box-shadow: 0 0 10px #eebde0;
+      box-shadow: 0 0 10px #f5bbd3;
       cursor: grab;
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 1.5rem;
-      color: #ba3d87;
+      color: #d35c8e;
       font-weight: 600;
       position: relative;
       overflow: hidden;
       transition: box-shadow 0.3s ease;
     }
     .piece:hover {
-      box-shadow: 0 0 18px #d891be;
+      box-shadow: 0 0 18px #d688a9;
     }
     .piece.dragging {
       opacity: 0.7;
@@ -211,13 +197,11 @@
     }
     #puzzleMessage {
       font-weight: 600;
-      color: #ba3d87;
+      color: #d35c8e;
       min-height: 24px;
       margin-bottom: 10px;
       user-select: none;
     }
-
-    /* Responsive */
     @media (max-width: 600px) {
       .container {
         padding: 30px 20px 30px;
@@ -251,7 +235,7 @@
     <div style="margin-top:15px;">
       <button class="lovely" onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
     </div>
-    <p id="error" style="color: #ba3d87; margin-top: 10px; font-weight: 600;"></p>
+    <p id="error" style="color: #d35c8e; margin-top: 10px; font-weight: 600;"></p>
   </div>
 
   <!-- เนื้อหาหลังล็อกอิน -->
