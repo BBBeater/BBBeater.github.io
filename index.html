@@ -3,102 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Happy Anniversary - หน้าแยก + เกม</title>
+  <title>Happy Anniversary ✨💙</title>
   <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
   <style>
-    /* Reset และตั้งค่าเบื้องต้น */
-    * {
-      box-sizing: border-box;
+    /* Palette: เหลืองทองอบอุ่น + ฟ้าพาสเทล */
+    :root {
+      --color-bg-gradient-start: #fff9e6;  /* เหลืองอ่อน */
+      --color-bg-gradient-end: #fff3b0;    /* เหลืองทองนวล */
+      --color-text-main: #a67c00;           /* น้ำตาลทองเข้ม */
+      --color-accent: #ffcc33;              /* เหลืองทองสดใส */
+      --color-accent-dark: #e6b800;         /* เหลืองทองเข้ม */
+      --color-button-bg: #ffdb4d;            /* เหลืองโทนอ่อน */
+      --color-button-hover: #e6c44f;         /* เหลืองทอง */
+      --color-heart-blue: #5ab4ff;          /* ฟ้าสดใส */
+      --color-placeholder-bg: #fffbe6;       /* เหลืองพาสเทลอ่อน */
+      --color-placeholder-border: #ffdb4d;   /* เหลืองทอง */
+      --color-shadow: rgba(255, 204, 51, 0.6); /* เงาสีเหลืองทอง */
     }
+
     body {
       font-family: 'Itim', cursive;
-      background: linear-gradient(to bottom, #fff0f5, #ffe4e1);
-      color: #5e2b45;
+      background: linear-gradient(to bottom, var(--color-bg-gradient-start), var(--color-bg-gradient-end));
+      color: var(--color-text-main);
       margin: 0; padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      overflow-y: auto;
-      padding: 20px;
+      height: 100vh;
+      overflow: hidden;
     }
     .container {
-      width: 100%;
-      max-width: 600px;
+      width: 520px;
+      max-width: 95vw;
       background: white;
       border-radius: 20px;
-      box-shadow: 0 0 15px #ffb6c1;
-      padding: 30px 20px 30px;
+      box-shadow: 0 0 20px var(--color-shadow);
+      padding: 40px 30px 30px;
       text-align: center;
       position: relative;
-      min-height: auto;
-      max-height: 90vh;
-      overflow-y: auto;
+      min-height: 700px;
+      box-sizing: border-box;
     }
     h1, h2 {
-      color: #e91e63;
+      color: var(--color-accent-dark);
       margin-bottom: 15px;
     }
     p {
       font-size: 1.2rem;
       margin-bottom: 30px;
-      word-wrap: break-word;
     }
+    /* ใส่ไอคอน ✨ และหัวใจสีฟ้า 💙 ในหัวข้อ */
+    h1::after, h2::after {
+      content: " ✨💙";
+      font-size: 1.2rem;
+      margin-left: 6px;
+    }
+
     .photo-placeholder {
-      width: 90%;
-      max-width: 380px;
-      aspect-ratio: 1 / 1;
-      background: #fff0f8;
-      border: 3px dashed #ff8ab8;
+      width: 380px;
+      height: 380px;
+      background: var(--color-placeholder-bg);
+      border: 3px dashed var(--color-placeholder-border);
       border-radius: 25px;
       margin: 0 auto 40px;
-      box-shadow: 0 0 15px #ffb6c1;
-      line-height: normal;
-      color: #ff8ab8;
+      box-shadow: 0 0 15px var(--color-shadow);
+      line-height: 380px;
+      color: var(--color-accent);
       font-size: 1.3rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 10px;
     }
     button {
-      background-color: #ff8ab8;
+      background-color: var(--color-button-bg);
       border: none;
-      color: white;
+      color: var(--color-text-main);
       font-size: 18px;
       padding: 12px 30px;
       border-radius: 12px;
       cursor: pointer;
-      margin: 0 10px;
+      margin: 0 15px;
       transition: background-color 0.3s ease;
-      user-select: none;
-      white-space: nowrap;
+      font-weight: bold;
+      box-shadow: 0 4px 8px var(--color-shadow);
     }
     button:hover {
-      background-color: #e91e63;
+      background-color: var(--color-button-hover);
+      color: var(--color-text-main);
+      box-shadow: 0 6px 12px var(--color-shadow);
     }
     .buttons {
       display: flex;
       justify-content: center;
       margin-top: 20px;
-      flex-wrap: wrap;
-      gap: 10px;
     }
     .hidden {
-      display: none !important;
+      display: none;
     }
     input[type="number"], input[type="password"] {
       font-family: 'Itim', cursive;
-      font-size: 1.2rem;
+      font-size: 20px;
       padding: 8px 12px;
       width: 120px;
-      max-width: 100%;
-      border: 2px solid #ffb6c1;
+      border: 2px solid var(--color-placeholder-border);
       border-radius: 10px;
       text-align: center;
       margin-right: 10px;
-      box-sizing: border-box;
+      color: var(--color-text-main);
+      background-color: #fffbe6;
+      box-shadow: inset 0 0 5px rgba(255,204,51,0.2);
+      transition: border-color 0.3s ease;
+    }
+    input[type="number"]:focus, input[type="password"]:focus {
+      border-color: var(--color-accent-dark);
+      outline: none;
+      box-shadow: 0 0 8px var(--color-accent-dark);
     }
     #guessBtn {
       padding: 10px 20px;
@@ -108,16 +124,14 @@
       margin-top: 20px;
       font-size: 1.1rem;
       min-height: 28px;
-      color: #e91e63;
+      color: var(--color-accent-dark);
       font-weight: bold;
-      word-wrap: break-word;
     }
 
     /* จิ๊กซอว์ */
     #puzzle {
-      width: 90%;
-      max-width: 380px;
-      aspect-ratio: 1 / 1;
+      width: 380px;
+      height: 380px;
       margin: 0 auto 20px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -126,24 +140,25 @@
       user-select: none;
     }
     .piece {
-      background-color: #fff0f8;
-      border: 2px solid #ff8ab8;
+      background-color: var(--color-placeholder-bg);
+      border: 2px solid var(--color-placeholder-border);
       border-radius: 15px;
-      box-shadow: 0 0 8px #ffb6c1;
+      box-shadow: 0 0 8px var(--color-shadow);
       cursor: grab;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 1.2rem;
-      color: #e91e63;
+      font-size: 1.5rem;
+      color: var(--color-accent-dark);
       font-weight: bold;
       position: relative;
       overflow: hidden;
-      user-select: none;
+      transition: box-shadow 0.3s ease;
     }
     .piece.dragging {
       opacity: 0.7;
       cursor: grabbing;
+      box-shadow: 0 0 15px var(--color-accent);
     }
     .piece img {
       width: 100%;
@@ -155,48 +170,35 @@
     }
     #puzzleMessage {
       font-weight: bold;
-      color: #e91e63;
+      color: var(--color-accent-dark);
       min-height: 24px;
       margin-bottom: 10px;
-      word-wrap: break-word;
     }
 
-    /* Responsive */
-    @media (max-width: 480px) {
-      body {
-        padding: 10px;
-      }
+    /* Responsive มือถือ */
+    @media (max-width: 600px) {
       .container {
-        padding: 20px 15px 20px;
-        max-width: 100%;
+        width: 95vw;
+        padding: 30px 20px 20px;
         min-height: auto;
-        max-height: 90vh;
+      }
+      .photo-placeholder,
+      #puzzle {
+        width: 90vw;
+        height: 90vw;
+        max-width: 380px;
+        max-height: 380px;
+        line-height: normal;
+      }
+      input[type="number"], input[type="password"] {
+        width: 80px;
+        font-size: 18px;
+        margin-right: 8px;
       }
       button {
         font-size: 16px;
         padding: 10px 20px;
-        margin: 5px;
-      }
-      input[type="number"], input[type="password"] {
-        width: 100%;
-        margin: 0 0 15px 0;
-      }
-      .buttons {
-        flex-direction: column;
-        gap: 12px;
-      }
-      .photo-placeholder {
-        width: 100%;
-        max-width: none;
-        aspect-ratio: 1 / 1;
-        font-size: 1.1rem;
-      }
-      #puzzle {
-        width: 100%;
-        max-width: none;
-      }
-      .piece {
-        font-size: 1rem;
+        margin: 0 8px;
       }
     }
   </style>
@@ -207,13 +209,13 @@
 
   <!-- หน้า Login -->
   <div id="loginPage" >
-    <h1>🌸 ยินดีต้อนรับ 🌸</h1>
-    <p>กรอกรหัสผ่านเพื่อเข้าเว็บลับของเรา 💖</p>
+    <h1>🌸 ยินดีต้อนรับ</h1>
+    <p>กรอกรหัสผ่านเพื่อเข้าเว็บลับของเรา 💙✨</p>
     <input type="password" id="password" placeholder="ใส่รหัสรัก..." />
     <div style="margin-top:15px;">
-      <button onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
+      <button onclick="checkPassword()">เข้าสู่เว็บไซต์ ✨</button>
     </div>
-    <p id="error" style="color: red; margin-top: 10px;"></p>
+    <p id="error" style="color: #d94e4e; margin-top: 10px;"></p>
   </div>
 
   <!-- เนื้อหาหลังล็อกอิน -->
@@ -221,45 +223,45 @@
 
     <!-- หน้า 1 -->
     <div class="page" id="page0">
-      <h1>💖 Happy Anniversary 💖</h1>
-      <p>ขอบคุณที่อยู่ด้วยกันมาตลอดนะ :)</p>
-      <div class="photo-placeholder">ใส่รูปคู่ตรงนี้</div>
+      <h1>💖 Happy Anniversary</h1>
+      <p>ขอบคุณที่อยู่ด้วยกันมาตลอดนะ 💙✨</p>
+      <div class="photo-placeholder">ใส่รูปคู่ตรงนี้ 💙</div>
     </div>
 
     <!-- หน้า 2 -->
     <div class="page hidden" id="page1">
       <h2>🌸 เดือนแรกของเรา</h2>
-      <p>ตอนนั้นเรายังเขินกันอยู่เลย</p>
+      <p>ตอนนั้นเรายังเขินกันอยู่เลย 💙✨</p>
       <div class="photo-placeholder">ใส่รูปเดือนแรก</div>
     </div>
 
     <!-- หน้า 3 -->
     <div class="page hidden" id="page2">
       <h2>🍰 เดือนที่สอง</h2>
-      <p>เริ่มไปเที่ยวด้วยกันมากขึ้น</p>
+      <p>เริ่มไปเที่ยวด้วยกันมากขึ้น 💙✨</p>
       <div class="photo-placeholder">ใส่รูปเดือนที่สอง</div>
     </div>
 
     <!-- หน้า 4 -->
     <div class="page hidden" id="page3">
       <h2>🎉 วันครบรอบของเรา</h2>
-      <p>ความรักของเรายังอบอุ่นเหมือนเดิมนะ</p>
+      <p>ความรักของเรายังอบอุ่นเหมือนเดิมนะ 💙✨</p>
       <div class="photo-placeholder">ใส่รูปวันครบรอบ</div>
     </div>
 
     <!-- หน้า 5 - เกมทายเลข -->
     <div class="page hidden" id="page4">
-      <h2>🎲 เกมทายเลข 🎲</h2>
-      <p>ลองทายเลข 1 ถึง 100 ดูสิ! 😊</p>
+      <h2>🎲 เกมทายเลข</h2>
+      <p>ลองทายเลข 1 ถึง 100 ดูสิ! 😊 💙✨</p>
       <input type="number" id="guessInput" min="1" max="100" placeholder="ใส่เลขที่นี่" />
-      <button id="guessBtn" onclick="checkGuess()">ทาย!</button>
+      <button id="guessBtn" onclick="checkGuess()">ทาย! ✨</button>
       <div id="gameMessage"></div>
     </div>
 
     <!-- หน้า 6 - เกมจิ๊กซอว์ -->
     <div class="page hidden" id="page5">
-      <h2>🧩 เกมจิ๊กซอว์ 🧩</h2>
-      <p>ลองต่อจิ๊กซอว์ให้ถูกต้องดูนะ! (เปลี่ยนรูปใน &lt;img&gt; เองได้)</p>
+      <h2>🧩 เกมจิ๊กซอว์</h2>
+      <p>ลองต่อจิ๊กซอว์ให้ถูกต้องดูนะ! (เปลี่ยนรูปใน &lt;img&gt; เองได้) 💙✨</p>
       <div id="puzzle">
         <!-- ชิ้นจิ๊กซอว์ 9 ชิ้น -->
       </div>
@@ -267,8 +269,8 @@
     </div>
 
     <div class="buttons">
-      <button id="prevBtn" onclick="prevPage()" disabled>ย้อนกลับ</button>
-      <button id="nextBtn" onclick="nextPage()">ถัดไป</button>
+      <button id="prevBtn" onclick="prevPage()" disabled>ย้อนกลับ 💙</button>
+      <button id="nextBtn" onclick="nextPage()">ถัดไป ✨</button>
     </div>
 
   </div>
@@ -382,10 +384,9 @@
         return false;
       }
     }
-    document.getElementById('puzzleMessage').textContent = "🎉 เย้! ต่อจิ๊กซอว์ถูกต้องแล้ว! รักนะจุ๊บ 💖";
+    document.getElementById('puzzleMessage').textContent = "🎉 เย้! ต่อจิ๊กซอว์ถูกต้องแล้ว! รักนะจุ๊บ 💙✨";
     return true;
   }
-
 
   function checkPassword() {
     const entered = document.getElementById("password").value;
@@ -411,12 +412,14 @@
 
     currentPage = n;
 
+    // เคลียร์ข้อความเกมเมื่อไม่อยู่หน้าเกมทายเลข
     if (n !== 4) {
       document.getElementById("gameMessage").textContent = "";
       document.getElementById("guessInput").value = "";
       attempts = 0;
     }
 
+    // เคลียร์ข้อความจิ๊กซอว์เมื่อไม่อยู่หน้าเกมจิ๊กซอว์
     if (n !== 5) {
       document.getElementById("puzzleMessage").textContent = "";
     }
@@ -439,16 +442,16 @@
     const message = document.getElementById("gameMessage");
     let guess = Number(guessInput.value);
     if (!guess || guess < 1 || guess > 100) {
-      message.textContent = "กรุณาใส่เลข 1 ถึง 100 นะจ๊ะ!";
+      message.textContent = "กรุณาใส่เลข 1 ถึง 100 นะจ๊ะ! 💙";
       return;
     }
     attempts++;
     if (guess === targetNumber) {
-      message.textContent = `🎉 เย้! ถูกแล้วใน ${attempts} ครั้ง! รักนะจุ๊บ 💖`;
+      message.textContent = `🎉 เย้! ถูกแล้วใน ${attempts} ครั้ง! รักนะจุ๊บ 💙✨`;
     } else if (guess < targetNumber) {
-      message.textContent = "เลขน้อยไป ลองสูงกว่านี้!";
+      message.textContent = "เลขน้อยไป ลองสูงกว่านี้! 💙";
     } else {
-      message.textContent = "เลขมากไป ลองต่ำกว่านี้!";
+      message.textContent = "เลขมากไป ลองต่ำกว่านี้! 💙";
     }
   }
 </script>
