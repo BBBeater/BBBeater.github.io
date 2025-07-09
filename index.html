@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Anniversary - หน้าแยก + เกม</title>
+  <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Itim', cursive;
+      background: linear-gradient(to bottom, #fff0f5, #ffe4e1);
+      color: #5e2b45;
+      margin: 0; padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      width: 520px;
+      max-width: 95vw;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 0 15px #ffb6c1;
+      padding: 40px 30px 30px;
+      text-align: center;
+      position: relative;
+      min-height: 700px;
+      box-sizing: border-box;
+    }
+    h1, h2 {
+      color: #e91e63;
+      margin-bottom: 15px;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    .photo-placeholder {
+      width: 380px;
+      height: 380px;
+      background: #fff0f8;
+      border: 3px dashed #ff8ab8;
+      border-radius: 25px;
+      margin: 0 auto 40px;
+      box-shadow: 0 0 15px #ffb6c1;
+      line-height: 380px;
+      color: #ff8ab8;
+      font-size: 1.3rem;
+    }
+    button {
+      background-color: #ff8ab8;
+      border: none;
+      color: white;
+      font-size: 18px;
+      padding: 12px 30px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin: 0 15px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #e91e63;
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    input[type="number"], input[type="password"] {
+      font-family: 'Itim', cursive;
+      font-size: 20px;
+      padding: 8px 12px;
+      width: 120px;
+      border: 2px solid #ffb6c1;
+      border-radius: 10px;
+      text-align: center;
+      margin-right: 10px;
+    }
+    #guessBtn {
+      padding: 10px 20px;
+      font-weight: bold;
+    }
+    #gameMessage {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      min-height: 28px;
+      color: #e91e63;
+      font-weight: bold;
+    }
+
+    /* จิ๊กซอว์ */
+    #puzzle {
+      width: 380px;
+      height: 380px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 5px;
+      user-select: none;
+      margin-bottom: 20px;
+    }
+    .piece {
+      background-color: #fff0f8;
+      border: 2px solid #ff8ab8;
+      border-radius: 15px;
+      box-shadow: 0 0 8px #ffb6c1;
+      cursor: grab;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      color: #e91e63;
+      font-weight: bold;
+      position: relative;
+      overflow: hidden;
+    }
+    .piece.dragging {
+      opacity: 0.7;
+      cursor: grabbing;
+    }
+    .piece img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+      pointer-events: none;
+      user-select: none;
+    }
+    #puzzleMessage {
+      font-weight: bold;
+      color: #e91e63;
+      min-height: 24px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- หน้า Login -->
+  <div id="loginPage" >
+    <h1>🌸 ยินดีต้อนรับ 🌸</h1>
+    <p>กรอกรหัสผ่านเพื่อเข้าเว็บลับของเรา 💖</p>
+    <input type="password" id="password" placeholder="ใส่รหัสรัก..." />
+    <div style="margin-top:15px;">
+      <button onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
+    </div>
+    <p id="error" style="color: red; margin-top: 10px;"></p>
+  </div>
+
+  <!-- เนื้อหาหลังล็อกอิน -->
+  <div id="contentPages" class="hidden">
+
+    <!-- หน้า 1 -->
+    <div class="page" id="page0">
+      <h1>💖 Happy Anniversary 💖</h1>
+      <p>ขอบคุณที่อยู่ด้วยกันมาตลอดนะ :)</p>
+      <div class="photo-placeholder">ใส่รูปคู่ตรงนี้</div>
+    </div>
+
+    <!-- หน้า 2 -->
+    <div class="page hidden" id="page1">
+      <h2>🌸 เดือนแรกของเรา</h2>
+      <p>ตอนนั้นเรายังเขินกันอยู่เลย</p>
+      <div class="photo-placeholder">ใส่รูปเดือนแรก</div>
+    </div>
+
+    <!-- หน้า 3 -->
+    <div class="page hidden" id="page2">
+      <h2>🍰 เดือนที่สอง</h2>
+      <p>เริ่มไปเที่ยวด้วยกันมากขึ้น</p>
+      <div class="photo-placeholder">ใส่รูปเดือนที่สอง</div>
+    </div>
+
+    <!-- หน้า 4 -->
+    <div class="page hidden" id="page3">
+      <h2>🎉 วันครบรอบของเรา</h2>
+      <p>ความรักของเรายังอบอุ่นเหมือนเดิมนะ</p>
+      <div class="photo-placeholder">ใส่รูปวันครบรอบ</div>
+    </div>
+
+    <!-- หน้า 5 - เกมทายเลข -->
+    <div class="page hidden" id="page4">
+      <h2>🎲 เกมทายเลข 🎲</h2>
+      <p>ลองทายเลข 1 ถึง 100 ดูสิ! 😊</p>
+      <input type="number" id="guessInput" min="1" max="100" placeholder="ใส่เลขที่นี่" />
+      <button id="guessBtn" onclick="checkGuess()">ทาย!</button>
+      <div id="gameMessage"></div>
+    </div>
+
+    <!-- หน้า 6 - เกมจิ๊กซอว์ -->
+    <div class="page hidden" id="page5">
+      <h2>🧩 เกมจิ๊กซอว์ 🧩</h2>
+      <p>ลองต่อจิ๊กซอว์ให้ถูกต้องดูนะ! (เปลี่ยนรูปใน &lt;img&gt; เองได้)</p>
+      <div id="puzzle">
+        <!-- ชิ้นจิ๊กซอว์ 9 ชิ้น -->
+      </div>
+      <div id="puzzleMessage"></div>
+    </div>
+
+    <div class="buttons">
+      <button id="prevBtn" onclick="prevPage()" disabled>ย้อนกลับ</button>
+      <button id="nextBtn" onclick="nextPage()">ถัดไป</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  const correctPassword = "iloveyou";
+  let currentPage = 0;
+  const totalPages = 6; // ปรับเพิ่มหน้าเกมจิ๊กซอว์
+
+  // เกมทายเลข
+  const targetNumber = Math.floor(Math.random() * 100) + 1;
+  let attempts = 0;
+
+  // เกมจิ๊กซอว์
+  const puzzle = document.getElementById('puzzle');
+  const puzzleSize = 3; // 3x3 จิ๊กซอว์
+  const totalPieces = puzzleSize * puzzleSize;
+  let dragged = null;
+
+  // ตัวอย่างรูป (เปลี่ยนเป็นลิงก์รูปที่อยากใช้จริงๆ ได้เลย)
+  // รูปควรตัดแบ่งเป็น 9 ชิ้นขนาดเท่าๆ กัน หรือใช้รูปใดก็ได้ที่ crop เป็น 9 ชิ้น
+  const images = [
+    'https://i.imgur.com/w5rXxHz.jpg', // ชิ้น 1
+    'https://i.imgur.com/2mjd3V9.jpg', // ชิ้น 2
+    'https://i.imgur.com/4JKX8Kg.jpg', // ชิ้น 3
+    'https://i.imgur.com/7FL1Jy9.jpg', // ชิ้น 4
+    'https://i.imgur.com/j7kcPEh.jpg', // ชิ้น 5
+    'https://i.imgur.com/0R5vG9S.jpg', // ชิ้น 6
+    'https://i.imgur.com/7iHVYbP.jpg', // ชิ้น 7
+    'https://i.imgur.com/91fPgoF.jpg', // ชิ้น 8
+    'https://i.imgur.com/NLhYfYb.jpg'  // ชิ้น 9
+  ];
+
+  // สุ่มตำแหน่งภาพเริ่มต้น (shuffle)
+  function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
+  }
+
+  // สร้างจิ๊กซอว์
+  function createPuzzle() {
+    puzzle.innerHTML = '';
+    // สร้างอาร์เรย์ index สำหรับภาพ
+    let order = Array.from(Array(totalPieces).keys());
+    order = shuffle(order);
+
+    for (let i = 0; i < totalPieces; i++) {
+      const piece = document.createElement('div');
+      piece.classList.add('piece');
+      piece.setAttribute('draggable', 'true');
+      piece.dataset.correctIndex = i; // ตำแหน่งถูกต้อง
+      piece.dataset.currentIndex = order[i]; // ตำแหน่งปัจจุบัน (สุ่ม)
+      // ใส่รูป
+      const img = document.createElement('img');
+      img.src = images[order[i]];
+      piece.appendChild(img);
+
+      piece.addEventListener('dragstart', dragStart);
+      piece.addEventListener('dragover', dragOver);
+      piece.addEventListener('drop', drop);
+      piece.addEventListener('dragend', dragEnd);
+
+      puzzle.appendChild(piece);
+    }
+  }
+
+  // Drag & Drop functions
+  function dragStart(e) {
+    dragged = e.currentTarget;
+    e.currentTarget.classList.add('dragging');
+  }
+
+  function dragOver(e) {
+    e.preventDefault();
+  }
+
+  function drop(e) {
+    e.preventDefault();
+    if (e.target.classList.contains('piece') && e.target !== dragged) {
+      const draggedIndex = Array.from(puzzle.children).indexOf(dragged);
+      const targetIndex = Array.from(puzzle.children).indexOf(e.target);
+
+      if (draggedIndex < targetIndex) {
+        puzzle.insertBefore(e.target, dragged.nextSibling);
+        puzzle.insertBefore(dragged, e.target);
+      } else {
+        puzzle.insertBefore(dragged, e.target);
+        puzzle.insertBefore(e.target, dragged.nextSibling);
+      }
+      checkWin();
+    }
+  }
+
+  function dragEnd(e) {
+    e.target.classList.remove('dragging');
+  }
+
+  // เช็คว่าต่อถูกมั้ย
+  function checkWin() {
+    const pieces = puzzle.children;
+    for (let i = 0; i < pieces.length; i++) {
+      // เช็คว่าชิ้นที่ตำแหน่ง i มี correctIndex = i ไหม
+      if (Number(pieces[i].dataset.correctIndex) !== i) {
+        document.getElementById('puzzleMessage').textContent = "";
+        return false;
+      }
+    }
+    document.getElementById('puzzleMessage').textContent = "🎉 เย้! ต่อจิ๊กซอว์ถูกต้องแล้ว! รักนะจุ๊บ 💖";
+    return true;
+  }
+
+
+  function checkPassword() {
+    const entered = document.getElementById("password").value;
+    const error = document.getElementById("error");
+    if (entered === correctPassword) {
+      document.getElementById("loginPage").style.display = "none";
+      document.getElementById("contentPages").classList.remove("hidden");
+      showPage(0);
+      createPuzzle();
+    } else {
+      error.textContent = "รหัสผิดน้า ลองใหม่อีกครั้ง 💔";
+    }
+  }
+
+  function showPage(n) {
+    for (let i = 0; i < totalPages; i++) {
+      document.getElementById("page" + i).classList.add("hidden");
+    }
+    document.getElementById("page" + n).classList.remove("hidden");
+
+    document.getElementById("prevBtn").disabled = n === 0;
+    document.getElementById("nextBtn").disabled = n === totalPages - 1;
+
+    currentPage = n;
+
+    // เคลียร์ข้อความเกมเมื่อไม่อยู่หน้าเกมทายเลข
+    if (n !== 4) {
+      document.getElementById("gameMessage").textContent = "";
+      document.getElementById("guessInput").value = "";
+      attempts = 0;
+    }
+
+    // เคลียร์ข้อความจิ๊กซอว์เมื่อไม่อยู่หน้าเกมจิ๊กซอว์
+    if (n !== 5) {
+      document.getElementById("puzzleMessage").textContent = "";
+    }
+  }
+
+  function nextPage() {
+    if (currentPage < totalPages - 1) {
+      showPage(currentPage + 1);
+    }
+  }
+
+  function prevPage() {
+    if (currentPage > 0) {
+      showPage(currentPage - 1);
+    }
+  }
+
+  function checkGuess() {
+    const guessInput = document.getElementById("guessInput");
+    const message = document.getElementById("gameMessage");
+    let guess = Number(guessInput.value);
+    if (!guess || guess < 1 || guess > 100) {
+      message.textContent = "กรุณาใส่เลข 1 ถึง 100 นะจ๊ะ!";
+      return;
+    }
+    attempts++;
+    if (guess === targetNumber) {
+      message.textContent = `🎉 เย้! ถูกแล้วใน ${attempts} ครั้ง! รักนะจุ๊บ 💖`;
+    } else if (guess < targetNumber) {
+      message.textContent = "เลขน้อยไป ลองสูงกว่านี้!";
+    } else {
+      message.textContent = "เลขมากไป ลองต่ำกว่านี้!";
+    }
+  }
+</script>
+
+</body>
+</html>
