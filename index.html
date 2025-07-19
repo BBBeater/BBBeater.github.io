@@ -3,167 +3,187 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anniversary Website</title>
+  <title>Anniversary Web</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
+    :root {
+      --main-color: #fcd6e5;
+      --accent-color: #ffe5f1;
+      --text-color: #3a3a3a;
+      --button-color: #ffb6d5;
+      --locked-color: #f4b6cc;
+      --unlocked-color: #b3f2c9;
     }
     body {
-      background-color: #ffeaf6;
-      color: #333;
-      padding: 2rem;
-      text-align: center;
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', sans-serif;
+      background-color: var(--main-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
-    .page {
+    .screen {
       display: none;
-      padding: 1rem;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
     }
     .active {
-      display: block;
+      display: flex;
+    }
+    h1 {
+      font-size: 2rem;
     }
     button {
-      background-color: #ffb6c1;
+      background-color: var(--button-color);
+      color: var(--text-color);
       border: none;
-      padding: 0.75rem 1.5rem;
-      margin: 0.5rem;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 20px;
       font-size: 1rem;
-      border-radius: 10px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: transform 0.2s ease;
     }
     button:hover {
-      background-color: #ff85a2;
-    }
-    .nav {
-      margin-top: 1rem;
+      transform: scale(1.05);
     }
     .locked {
-      opacity: 0.5;
-      pointer-events: none;
+      background-color: var(--locked-color);
     }
-    input[type="password"] {
-      padding: 0.5rem;
-      font-size: 1rem;
-      margin: 1rem 0;
+    .unlocked {
+      background-color: var(--unlocked-color);
+    }
+    .menu-button {
+      width: 250px;
     }
     .img-placeholder {
-      width: 300px;
-      height: 200px;
-      background-color: #fff0f5;
-      border: 2px dashed #ff85a2;
-      margin: 1rem auto;
+      width: 250px;
+      height: 250px;
+      background-color: var(--accent-color);
+      border-radius: 20px;
+      margin-top: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #ff85a2;
+      color: #aaa;
+    }
+    .nav-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
     }
   </style>
 </head>
 <body>
-  <div id="page1" class="page active">
-    <h2>กรอกรหัสผ่านเพื่อเข้าเว็บครบรอบของเรา</h2>
-    <input type="password" id="password" placeholder="รหัสผ่าน...">
-    <br>
-    <button onclick="checkPassword()">เข้าสู่เว็บ</button>
+  <!-- Screen: Password -->
+  <div id="screen-password" class="screen active">
+    <h1>ใส่รหัสเพื่อเข้าสู่เว็บไซต์</h1>
+    <input type="password" id="passwordInput" placeholder="รหัสผ่าน..." />
+    <button onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
   </div>
 
-  <div id="page2" class="page">
-    <h2>วันนี้วันครบรอบของเรานะะ 💖</h2>
-    <div class="img-placeholder">ใส่รูปครบรอบตรงนี้</div>
-    <div class="nav">
-      <button onclick="goToPage(1)">ย้อนกลับ</button>
-      <button onclick="goToPage(3)">ถัดไป</button>
-    </div>
+  <!-- Screen: Greeting -->
+  <div id="screen-greeting" class="screen">
+    <h1>วันนี้วันครบรอบของเรานะะ~</h1>
+    <div class="img-placeholder">[รูปครบรอบ]</div>
+    <button onclick="goToScreen('screen-menu')">ถัดไป</button>
   </div>
 
-  <div id="page3" class="page">
-    <h2>เลือกหมวดรูปภาพ</h2>
-    <button id="btn-cat1" class="locked" onclick="goToPage(4)">1. รูป the best ของแต่ละเดือน</button><br>
-    <button id="btn-cat2" class="locked" onclick="goToPage(5)">2. รูปที่ฮาที่สุด</button><br>
-    <button id="btn-cat3" class="locked" onclick="goToPage(6)">3. รูปที่แอบถ่าย</button><br>
-    <button id="btn-cat4" class="locked" onclick="goToPage(7)">4. รูปที่เราชอบทั้งคู่</button><br>
-    <div class="nav">
-      <button onclick="goToPage(2)">ย้อนกลับ</button>
-      <button onclick="goToPage(8)">ไปเล่นมินิเกม</button>
-    </div>
+  <!-- Screen: Menu -->
+  <div id="screen-menu" class="screen">
+    <h1>เลือกรูปภาพที่อยากดู 💖</h1>
+    <button class="menu-button locked" id="btn-cat1" onclick="goToGame(1)">🔒 The Best ของทุกเดือน</button>
+    <button class="menu-button locked" id="btn-cat2" onclick="goToGame(2)">🔒 รูปฮาที่สุด</button>
+    <button class="menu-button locked" id="btn-cat3" onclick="goToGame(3)">🔒 รูปแอบถ่าย</button>
+    <button class="menu-button locked" id="btn-cat4" onclick="goToGame(4)">🔒 รูปที่ชอบทั้งคู่</button>
   </div>
 
-  <!-- Category Pages -->
-  <div id="page4" class="page">
-    <h2>📅 The Best ของแต่ละเดือน</h2>
-    <div class="img-placeholder">วางรูปเป็นแบบปฏิทินตรงนี้</div>
-    <div class="nav">
-      <button onclick="goToPage(3)">ย้อนกลับ</button>
-    </div>
+  <!-- Game Screens -->
+  <div id="screen-game" class="screen">
+    <button class="nav-btn" onclick="goBackToMenu()">⬅️ ย้อนกลับ</button>
+    <h1>มินิเกม: ทายเลข 1-10</h1>
+    <input type="number" id="guessInput" placeholder="พิมพ์เลข..." />
+    <button onclick="checkGuess()">เดาเลย!</button>
+    <p id="guessResult"></p>
   </div>
 
-  <div id="page5" class="page">
-    <h2>🤣 รูปที่ฮาที่สุด</h2>
-    <div class="img-placeholder">รูปขำๆ อยู่ตรงนี้</div>
-    <div class="nav">
-      <button onclick="goToPage(3)">ย้อนกลับ</button>
-    </div>
+  <!-- Gallery Screens -->
+  <div id="screen-cat1" class="screen">
+    <button class="nav-btn" onclick="goToScreen('screen-menu')">⬅️ กลับเมนู</button>
+    <h1>The Best ของทุกเดือน</h1>
+    <div class="img-placeholder">[ปฏิทินรูปเด่นๆ]</div>
   </div>
-
-  <div id="page6" class="page">
-    <h2>📸 รูปที่แอบถ่าย</h2>
-    <div class="img-placeholder">แอบถ่ายไว้เยอะเลย!</div>
-    <div class="nav">
-      <button onclick="goToPage(3)">ย้อนกลับ</button>
-    </div>
+  <div id="screen-cat2" class="screen">
+    <button class="nav-btn" onclick="goToScreen('screen-menu')">⬅️ กลับเมนู</button>
+    <h1>รูปฮาที่สุดของเรา</h1>
+    <div class="img-placeholder">[รูปฮา]</div>
   </div>
-
-  <div id="page7" class="page">
-    <h2>💗 รูปที่เราชอบทั้งคู่</h2>
-    <div class="img-placeholder">รวมรูปสุดรักไว้ตรงนี้</div>
-    <div class="nav">
-      <button onclick="goToPage(3)">ย้อนกลับ</button>
-    </div>
+  <div id="screen-cat3" class="screen">
+    <button class="nav-btn" onclick="goToScreen('screen-menu')">⬅️ กลับเมนู</button>
+    <h1>รูปแอบถ่ายกัน</h1>
+    <div class="img-placeholder">[รูปแอบถ่าย]</div>
   </div>
-
-  <!-- Mini Games Page -->
-  <div id="page8" class="page">
-    <h2>🔓 มินิเกมปลดล็อคหมวด</h2>
-    <button onclick="goToGame(1)">เกม 1: ทายตัวเลข</button>
-    <button onclick="goToGame(2)">เกม 2</button>
-    <button onclick="goToGame(3)">เกม 3</button>
-    <button onclick="goToGame(4)">เกม 4</button>
-    <div class="nav">
-      <button onclick="goToPage(3)">ย้อนกลับ</button>
-    </div>
+  <div id="screen-cat4" class="screen">
+    <button class="nav-btn" onclick="goToScreen('screen-menu')">⬅️ กลับเมนู</button>
+    <h1>รูปที่เราชอบทั้งคู่</h1>
+    <div class="img-placeholder">[รูปโปรด]</div>
   </div>
 
   <script>
-    let unlocked = [false, false, false, false];
     let correctPassword = "0000";
+    let currentGameCategory = 1;
+    let gameAnswer = Math.floor(Math.random() * 10) + 1;
 
     function checkPassword() {
-      const input = document.getElementById("password").value;
+      const input = document.getElementById("passwordInput").value;
       if (input === correctPassword) {
-        goToPage(2);
+        goToScreen("screen-greeting");
       } else {
-        alert("รหัสผ่านไม่ถูกต้องน้าา ลองใหม่อีกครั้ง!");
+        alert("รหัสผิด ลองอีกครั้งนะ");
       }
     }
 
-    function goToPage(n) {
-      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-      document.getElementById("page" + n).classList.add("active");
+    function goToScreen(id) {
+      document.querySelectorAll(".screen").forEach((el) => el.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
     }
 
-    function goToGame(gameNum) {
-      const guess = prompt("เกมทายตัวเลข 1-10\nลองทายดูสิ! 🧠");
-      const answer = Math.floor(Math.random() * 10) + 1;
-      if (parseInt(guess) === answer) {
-        alert("เก่งมากก ทายถูกแล้ว! ปลดล็อคหมวดเรียบร้อย");
-        unlocked[gameNum - 1] = true;
-        document.getElementById("btn-cat" + gameNum).classList.remove("locked");
+    function goToGame(cat) {
+      currentGameCategory = cat;
+      gameAnswer = Math.floor(Math.random() * 10) + 1;
+      document.getElementById("guessResult").innerText = "";
+      document.getElementById("guessInput").value = "";
+      goToScreen("screen-game");
+    }
+
+    function checkGuess() {
+      const guess = parseInt(document.getElementById("guessInput").value);
+      if (guess === gameAnswer) {
+        document.getElementById("guessResult").innerText = "ถู๊กกกกก ปลดล็อคแล้ว! 💖";
+        unlockCategory(currentGameCategory);
+      } else if (guess < gameAnswer) {
+        document.getElementById("guessResult").innerText = "มากกว่านี้อีกนิด~";
       } else {
-        alert("ใกล้ละ ลองใหม่ดูน้าาาา 😜 คำตอบคือ " + answer);
+        document.getElementById("guessResult").innerText = "น้อยกว่านี้น้าา~";
       }
+    }
+
+    function unlockCategory(cat) {
+      const btn = document.getElementById("btn-cat" + cat);
+      btn.classList.remove("locked");
+      btn.classList.add("unlocked");
+      btn.innerText = btn.innerText.replace("🔒", "✅");
+      btn.onclick = () => goToScreen("screen-cat" + cat);
+    }
+
+    function goBackToMenu() {
+      goToScreen("screen-menu");
     }
   </script>
 </body>
