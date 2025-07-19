@@ -1,148 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anniversary 💖</title>
+  <title>เว็บครบรอบของเรา 💖</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      background-color: #ffe6f0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #ffeaf4;
       color: #333;
     }
     .page {
       display: none;
-      padding: 2rem;
-      text-align: center;
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
     }
-    .active {
+    .page.active {
       display: block;
     }
-    .input-password {
-      padding: 0.5rem;
-      font-size: 1rem;
+    .center {
+      text-align: center;
     }
-    .button {
-      background-color: #ffb6c1;
+    .password-input {
+      padding: 10px;
+      font-size: 1.2em;
+      width: 100%;
+      margin: 10px 0;
+    }
+    .button, button {
+      background-color: #ffb6d9;
+      color: white;
       border: none;
-      border-radius: 10px;
-      padding: 0.7rem 1.5rem;
-      font-size: 1rem;
-      margin: 1rem;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 1em;
+      margin: 10px 5px;
       cursor: pointer;
-      transition: background-color 0.2s;
     }
     .button:hover {
-      background-color: #ff9eb4;
+      background-color: #ff91c3;
     }
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 20px;
     }
-    .locked {
-      filter: grayscale(100%);
-      pointer-events: none;
-      opacity: 0.6;
+    .lock {
+      background-color: #f9c2d1;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
     }
     img.placeholder {
-      max-width: 80%;
-      height: auto;
-      border: 3px dashed #ffb6c1;
-      border-radius: 10px;
+      width: 100%;
+      height: 200px;
+      background: #ffd5e5;
+      display: block;
+      border-radius: 12px;
     }
   </style>
 </head>
 <body>
-  <!-- Page 1: Password -->
-  <div class="page active" id="page1">
-    <h2>ใส่รหัสผ่านเพื่อเข้าเว็บ 💕</h2>
-    <input class="input-password" type="password" id="passwordInput" placeholder="ใส่รหัส..." />
-    <br />
-    <button class="button" onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
-  </div>
-
-  <!-- Page 2: Greeting -->
-  <div class="page" id="page2">
-    <h1>วันนี้วันครบรอบของเรานะะ~ 💖</h1>
-    <p>ขอบคุณที่อยู่ด้วยกันมาตลอดนะ!</p>
-    <img class="placeholder" src="#" alt="ใส่รูปครบรอบตรงนี้น้า" />
-    <br />
-    <button class="button" onclick="goToPage(3)">ถัดไป</button>
-  </div>
-
-  <!-- Page 3: Menu with lock -->
-  <div class="page" id="page3">
-    <h2>เลือกหมวดที่อยากดู ✨</h2>
-    <div class="menu-grid">
-      <button class="button locked" id="btn1" onclick="goToPage(4)">📅 The Best ของแต่ละเดือน</button>
-      <button class="button locked" id="btn2" onclick="goToPage(5)">😂 รูปที่ฮาที่สุด</button>
-      <button class="button locked" id="btn3" onclick="goToPage(6)">📸 แอบถ่าย</button>
-      <button class="button locked" id="btn4" onclick="goToPage(7)">💞 รูปที่ชอบทั้งคู่</button>
+  <div id="page1" class="page active">
+    <div class="center">
+      <h2>ใส่รหัสผ่านเพื่อเข้าเว็บ 💕</h2>
+      <input type="password" id="password" class="password-input" placeholder="ใส่รหัสผ่าน...">
+      <br>
+      <button onclick="checkPassword()">เข้าสู่เว็บ</button>
     </div>
-    <br />
-    <button class="button" onclick="playMiniGame()">เล่นเกมเพื่อปลดล็อก</button>
   </div>
 
-  <!-- Mini game (simplified as confirm for now) -->
+  <div id="page2" class="page">
+    <div class="center">
+      <h2>วันนี้วันครบรอบของเรานะะ~ 💖</h2>
+      <div><img src="" class="placeholder" alt="รูปของเรา" /></div>
+      <button onclick="goToPage(1)">ย้อนกลับ</button>
+      <button onclick="goToPage(3)">ถัดไป</button>
+    </div>
+  </div>
+
+  <div id="page3" class="page">
+    <div class="center">
+      <h2>เลือกหมวดหมู่ที่อยากดู 🎀</h2>
+      <div class="menu-grid">
+        <div class="lock" onclick="startMiniGame(0)">🌸 The Best ของทุกเดือน</div>
+        <div class="lock" onclick="startMiniGame(1)">🤣 รูปที่ฮาที่สุด</div>
+        <div class="lock" onclick="startMiniGame(2)">📸 รูปแอบถ่าย</div>
+        <div class="lock" onclick="startMiniGame(3)">💞 รูปที่ชอบทั้งคู่</div>
+      </div>
+      <button onclick="goToPage(2)">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <div id="minigame" class="page">
+    <div class="center">
+      <h2>มินิเกม 🎮</h2>
+      <p id="minigame-question"></p>
+      <input type="text" id="minigame-answer" class="password-input" placeholder="คำตอบของคุณ">
+      <br>
+      <button onclick="submitMinigame()">ส่งคำตอบ</button>
+      <button onclick="goToPage(3)">ยกเลิก</button>
+    </div>
+  </div>
+
+  <div id="content-page" class="page">
+    <div class="center">
+      <h2 id="content-title">หมวด</h2>
+      <div><img src="" class="placeholder" alt="หมวดนี้ยังไม่มีรูป" /></div>
+      <button onclick="goToPage(3)">ย้อนกลับ</button>
+    </div>
+  </div>
+
   <script>
     const pages = document.querySelectorAll('.page');
+    let unlocked = [false, false, false, false];
+    let currentMiniGame = 0;
+    const miniGameQuestions = [
+      { question: 'เดือนที่เราคบกันคือเดือนอะไร (เช่น มกราคม)', answer: 'มกราคม' },
+      { question: 'ใครชอบหัวเราะก่อนเวลาถ่ายรูป?', answer: 'เธอ' },
+      { question: 'สถานที่แรกที่เราไปเที่ยวด้วยกัน?', answer: 'ทะเล' },
+      { question: 'ชานมรสโปรดของเรา?', answer: 'โกโก้' }
+    ];
+    const contentTitles = [
+      '🌸 The Best ของทุกเดือน',
+      '🤣 รูปที่ฮาที่สุด',
+      '📸 รูปแอบถ่าย',
+      '💞 รูปที่ชอบทั้งคู่'
+    ];
 
-    function goToPage(num) {
+    function goToPage(index) {
       pages.forEach(p => p.classList.remove('active'));
-      document.getElementById(`page${num}`).classList.add('active');
+      pages[index].classList.add('active');
     }
 
     function checkPassword() {
-      const pw = document.getElementById('passwordInput').value;
+      const pw = document.getElementById('password').value;
       if (pw === '0000') {
-        goToPage(2);
+        goToPage(1);
       } else {
-        alert('รหัสผิดน้า ลองใหม่อีกครั้ง 💔');
+        alert('รหัสผ่านไม่ถูกต้องนะคะ ลองใหม่อีกครั้ง 💔');
       }
     }
 
-    function playMiniGame() {
-      const yes = confirm("ตอบให้ได้ว่าใครน่ารักที่สุด? (ตอบในใจว่า 'แฟนเราไง!') 🥺\nพร้อมจะปลดล็อกหมวดแล้วหรือยัง?");
-      if (yes) {
-        document.getElementById('btn1').classList.remove('locked');
-        document.getElementById('btn2').classList.remove('locked');
-        document.getElementById('btn3').classList.remove('locked');
-        document.getElementById('btn4').classList.remove('locked');
-        alert("ปลดล็อกหมวดทั้งหมดแล้วน้า 💘");
+    function startMiniGame(index) {
+      if (unlocked[index]) {
+        showContent(index);
+        return;
       }
+      currentMiniGame = index;
+      document.getElementById('minigame-question').textContent = miniGameQuestions[index].question;
+      document.getElementById('minigame-answer').value = '';
+      goToPage(4);
+    }
+
+    function submitMinigame() {
+      const ans = document.getElementById('minigame-answer').value.trim();
+      if (ans === miniGameQuestions[currentMiniGame].answer) {
+        unlocked[currentMiniGame] = true;
+        alert('ปลดล็อกหมวดเรียบร้อยแล้ว 🎉');
+        showContent(currentMiniGame);
+      } else {
+        alert('คำตอบยังไม่ถูกต้อง ลองใหม่น้า~');
+      }
+    }
+
+    function showContent(index) {
+      document.getElementById('content-title').textContent = contentTitles[index];
+      goToPage(5);
     }
   </script>
-
-  <!-- Page 4: Best Photos Calendar -->
-  <div class="page" id="page4">
-    <h2>📅 The Best ของทุกเดือน</h2>
-    <p>ใส่รูปแต่ละเดือนได้ตรงนี้นะจ๊ะ~</p>
-    <!-- calendar-style layout แนะนำให้ใช้กริดหรือ flex -->
-    <button class="button" onclick="goToPage(3)">กลับไปหน้าเมนู</button>
-  </div>
-
-  <!-- Page 5: Funniest Photo -->
-  <div class="page" id="page5">
-    <h2>😂 รูปที่ฮาที่สุดของเรา</h2>
-    <img class="placeholder" src="#" alt="ใส่รูปฮา ๆ ตรงนี้เลยยย" />
-    <button class="button" onclick="goToPage(3)">กลับไปหน้าเมนู</button>
-  </div>
-
-  <!-- Page 6: Secret Shots -->
-  <div class="page" id="page6">
-    <h2>📸 แอบถ่ายกันแอบมองเธออยู่นะ~</h2>
-    <img class="placeholder" src="#" alt="ใส่รูปแอบถ่ายตรงนี้~" />
-    <button class="button" onclick="goToPage(3)">กลับไปหน้าเมนู</button>
-  </div>
-
-  <!-- Page 7: Favorite by both -->
-  <div class="page" id="page7">
-    <h2>💞 รูปที่เราชอบทั้งคู่</h2>
-    <img class="placeholder" src="#" alt="ใส่รูปที่ชอบกันตรงนี้เลย~" />
-    <button class="button" onclick="goToPage(3)">กลับไปหน้าเมนู</button>
-  </div>
 </body>
 </html>
