@@ -1,212 +1,734 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anniversary Site</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Quicksand', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      background: #ffeef3;
-      color: #333;
-      padding: 1rem;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Happy Anniversary - หน้าแยก + เกม</title>
+<link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
+<style>
+  /* พื้นฐานสไตล์ + ปรับน่ารักพาสเทล */
+  body {
+    font-family: 'Itim', cursive;
+    background: linear-gradient(135deg, #ffe4f1 0%, #fff8fb 100%);
+    color: #973553;
+    margin: 0; padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .container {
+    width: 95vw;
+    max-width: 600px;
+    background: #fff5fb;
+    border-radius: 28px;
+    box-shadow:
+      0 6px 15px rgba(243, 164, 191, 0.4),
+      inset 0 0 25px rgba(255, 182, 193, 0.4);
+    padding: 40px 30px 45px;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+  }
+  h1, h2 {
+    color: #d94b80;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px #fab1c1;
+  }
+  p {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    line-height: 1.5;
+    text-shadow: 0 0 2px #ffd6e8;
+  }
+  input[type="password"], input[type="number"] {
+    font-family: 'Itim', cursive;
+    font-size: 22px;
+    padding: 12px 16px;
+    width: 140px;
+    border: 2.5px solid #fbcde4;
+    border-radius: 18px;
+    text-align: center;
+    margin-bottom: 18px;
+    box-shadow: 0 0 10px #f8a1bd inset;
+    transition: border-color 0.3s ease;
+  }
+  input[type="password"]:focus, input[type="number"]:focus {
+    outline: none;
+    border-color: #e85c8f;
+    box-shadow: 0 0 15px #e85c8f;
+  }
+  button {
+    background-color: #f48fb1;
+    border: none;
+    color: white;
+    font-size: 19px;
+    padding: 14px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 0 12px;
+    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+    box-shadow: 0 6px 14px rgba(244,143,177,0.5);
+    user-select: none;
+  }
+  button:hover {
+    background-color: #d43f6f;
+    box-shadow:
+      0 10px 20px rgba(212, 63, 111, 0.7),
+      0 0 12px #ff7db6;
+  }
+  .buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .hidden {
+    display: none;
+  }
+  .photo-placeholder {
+    width: 100%;
+    max-width: 420px;
+    height: 320px;
+    background: #fff0f8;
+    border: 3px dashed #f5a7c3;
+    border-radius: 25px;
+    margin: 0 auto 42px;
+    box-shadow:
+      0 0 15px #f9bbcd,
+      inset 0 0 40px #fcd4df;
+    line-height: 320px;
+    color: #f58eb2;
+    font-size: 1.4rem;
+    font-weight: 600;
+    user-select: none;
+  }
+  #error {
+    color: #d43f6f;
+    font-weight: 700;
+    margin-top: 10px;
+    text-shadow: 0 0 3px #ffa1bb;
+  }
+  /* Menu grid */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+    gap: 22px;
+    justify-items: center;
+  }
+  .menu-card {
+    background: #fff0f8;
+    border-radius: 22px;
+    box-shadow:
+      0 6px 15px #f9bbcd,
+      inset 0 0 30px #fcd4df;
+    cursor: pointer;
+    padding: 18px 15px;
+    width: 140px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+    user-select: none;
+    position: relative;
+  }
+  .menu-card.locked {
+    cursor: default;
+    opacity: 0.45;
+    box-shadow: none;
+  }
+  .menu-card:not(.locked):hover {
+    transform: scale(1.12);
+    box-shadow:
+      0 0 25px #e85987,
+      inset 0 0 40px #f77aa7;
+  }
+  .menu-card img {
+    width: 84px;
+    height: 84px;
+    border-radius: 22px;
+    margin-bottom: 12px;
+    object-fit: cover;
+    user-select: none;
+    box-shadow: 0 3px 8px #f48fb1aa;
+    transition: box-shadow 0.3s ease;
+  }
+  .menu-card:hover img:not(.locked) {
+    box-shadow: 0 6px 14px #d43f6faa;
+  }
+  .menu-card .title {
+    font-weight: 700;
+    color: #d43f6f;
+    font-size: 1.1rem;
+    user-select: none;
+  }
+  .menu-card small {
+    display: block;
+    margin-top: 6px;
+    font-weight: 600;
+    color: #e85c8f;
+    user-select: none;
+  }
+  #gameMessage, #puzzleMessage {
+    font-weight: 700;
+    color: #d43f6f;
+    min-height: 28px;
+    margin-top: 18px;
+    user-select: none;
+    text-shadow: 0 0 3px #ff8ab8;
+  }
+  /* Game input */
+  #guessInput {
+    max-width: 140px;
+    margin-bottom: 14px;
+    border-radius: 20px;
+  }
+  /* Back to game menu button */
+  .back-game-menu-btn {
+    background: #f9c4d1;
+    color: #9e2c54;
+    border-radius: 28px;
+    border: none;
+    padding: 10px 26px;
+    cursor: pointer;
+    font-weight: 700;
+    margin-bottom: 20px;
+    box-shadow:
+      0 6px 15px rgba(249,196,209,0.7);
+    transition: background-color 0.4s ease, color 0.4s ease;
+    user-select: none;
+  }
+  .back-game-menu-btn:hover {
+    background: #d43f6f;
+    color: white;
+    box-shadow:
+      0 8px 18px #d43f6fcc;
+  }
+  /* Puzzle styles */
+  #puzzle {
+    width: 100%;
+    max-width: 420px;
+    height: 420px;
+    margin: 0 auto 28px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 8px;
+    user-select: none;
+    border-radius: 20px;
+    box-shadow:
+      0 0 25px #ff9eb7,
+      inset 0 0 30px #ffbad2;
+  }
+  .piece {
+    background-color: #fff0f8;
+    border: 3px solid #f9a8bf;
+    border-radius: 20px;
+    box-shadow:
+      0 0 12px #f48fb1,
+      inset 0 0 15px #f7b2c8;
+    cursor: grab;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    color: #d43f6f;
+    font-weight: 700;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+  }
+  .piece.dragging {
+    opacity: 0.75;
+    cursor: grabbing;
+    box-shadow:
+      0 0 18px #e85c8fcc,
+      inset 0 0 25px #d43f6faa;
+  }
+  .piece img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    pointer-events: none;
+    user-select: none;
+  }
+  /* Responsive */
+  @media (max-width: 480px) {
     .container {
-      max-width: 600px;
-      margin: auto;
-      background: white;
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px 20px 35px;
     }
-    h1, h2, h3 {
-      text-align: center;
-      margin-bottom: 1rem;
+    .photo-placeholder {
+      height: 280px;
     }
-    button {
-      background-color: #ff9eb3;
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin: 0.5rem;
-    }
-    button:hover {
-      background-color: #ff7595;
-    }
-    .input-group {
-      text-align: center;
-      margin: 2rem 0;
-    }
-    input[type="password"] {
-      padding: 0.75rem;
-      border: 2px solid #ffd6de;
-      border-radius: 10px;
-      font-size: 1rem;
-      width: 60%;
-    }
-    .menu-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-top: 2rem;
+    #puzzle {
+      height: 300px;
+      max-width: 300px;
+      gap: 5px;
     }
     .menu-card {
-      background: #fff0f6;
-      padding: 1rem;
+      width: 120px;
+      padding: 15px 12px;
+    }
+    .menu-card img {
+      width: 70px;
+      height: 70px;
+    }
+    input[type="password"], input[type="number"] {
+      width: 110px;
+      font-size: 18px;
+      padding: 10px 14px;
       border-radius: 15px;
-      text-align: center;
-      cursor: pointer;
-      box-shadow: 0 5px 10px rgba(255, 155, 180, 0.2);
-      transition: all 0.3s ease;
     }
-    .menu-card:hover {
-      transform: translateY(-3px);
-      background: #ffe1ec;
+    button {
+      font-size: 17px;
+      padding: 12px 24px;
+      margin: 0 8px;
     }
-    .hidden {
-      display: none;
-    }
-    .nav-buttons {
-      margin-top: 2rem;
-      display: flex;
-      justify-content: space-between;
-    }
-    .image-placeholder {
-      background: #fff0f6;
-      height: 200px;
-      border-radius: 15px;
-      margin: 1rem auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      color: #999;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <div class="container" id="page-password">
-    <h1>🔐 Welcome</h1>
-    <div class="input-group">
-      <input type="password" id="password" placeholder="Enter password" />
-      <button onclick="checkPassword()">Enter</button>
+<div class="container">
+
+  <!-- หน้า 0: ใส่รหัส -->
+  <div id="page0">
+    <h1>🌸 ยินดีต้อนรับ 🌸</h1>
+    <p>กรอกรหัสผ่านเพื่อเข้าเว็บลับของเรา 💖</p>
+    <input type="password" id="password" placeholder="ใส่รหัสรัก..." />
+    <br />
+    <button onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
+    <p id="error"></p>
+  </div>
+
+  <!-- หน้า 1: วันครบรอบ -->
+  <div id="page1" class="hidden">
+    <h1>วันนี้วันครบรอบของเรานะะ 💕</h1>
+    <div class="photo-placeholder">ใส่รูปที่นี่ (รอรูปจากคุณ)</div>
+    <div class="buttons">
+      <button onclick="showPage('page0')">ย้อนกลับ</button>
+      <button onclick="showPage('page2')">ถัดไป</button>
     </div>
   </div>
 
-  <div class="container hidden" id="page-greeting">
-    <h2>วันนี้วันครบรอบของเรานะะ~ 🎉💖</h2>
-    <div class="image-placeholder">[ รูปภาพคู่ของเรา ]</div>
-    <div class="nav-buttons">
-      <button onclick="goTo('page-password')">ย้อนกลับ</button>
-      <button onclick="goTo('page-menu')">ถัดไป</button>
+  <!-- หน้า 2: เมนูเลือกหมวด -->
+  <div id="page2" class="hidden">
+    <h2>เลือกหมวดที่อยากดู 💌</h2>
+    <div class="menu-grid" id="categoryMenu">
+      <div class="menu-card locked" data-category="best">
+        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Best" alt="Best of Month" />
+        <div class="title">The Best ของทุกเดือน</div>
+        <small>🔒 ต้องปลดล็อคก่อน</small>
+      </div>
+      <div class="menu-card locked" data-category="funny">
+        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Funny" alt="Funny" />
+        <div class="title">รูปที่ฮาที่สุดของเรา</div>
+        <small>🔒 ต้องปลดล็อคก่อน</small>
+      </div>
+      <div class="menu-card locked" data-category="secret">
+        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Secret" alt="Secret" />
+        <div class="title">รูปแอบถ่าย</div>
+        <small>🔒 ต้องปลดล็อคก่อน</small>
+      </div>
+      <div class="menu-card locked" data-category="love">
+        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Love" alt="Love" />
+        <div class="title">รูปที่ชอบกันทั้งคู่</div>
+        <small>🔒 ต้องปลดล็อคก่อน</small>
+      </div>
+    </div>
+    <div class="buttons">
+      <button onclick="showPage('page1')">ย้อนกลับ</button>
+      <button onclick="showPage('page7')">ไปเล่นเกมปลดล็อค 🔓</button>
     </div>
   </div>
 
-  <div class="container hidden" id="page-menu">
-    <h2>💌 เมนูหมวดหมู่รูปภาพ</h2>
-    <div class="menu-grid">
-      <div class="menu-card" onclick="playGame('best')">The Best ของทุกเดือน 📅</div>
-      <div class="menu-card" onclick="playGame('funny')">รูปฮาที่สุดของเรา 😂</div>
-      <div class="menu-card" onclick="playGame('secret')">รูปแอบถ่ายกันแหละ~ 🤫</div>
-      <div class="menu-card" onclick="playGame('fav')">รูปที่ชอบทั้งคู่ 💕</div>
-    </div>
-    <div class="nav-buttons">
-      <button onclick="goTo('page-greeting')">ย้อนกลับ</button>
+  <!-- หน้า 3: The Best ของทุกเดือน (ปฏิทิน) -->
+  <div id="page3" class="hidden">
+    <h2>The Best ของทุกเดือน</h2>
+    <p>นี่คือรูปที่ดีที่สุดของแต่ละเดือน 💖</p>
+    <div class="menu-grid" id="bestGrid"></div>
+    <div class="buttons">
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
     </div>
   </div>
 
-  <div class="container hidden" id="page-game">
-    <h2>🔓 มินิเกม ปลดล็อคหมวด: <span id="game-title"></span></h2>
-    <p id="game-instructions">ทายตัวเลขจาก 1-10</p>
-    <div class="input-group">
-      <input type="number" id="guess" placeholder="ใส่ตัวเลข" min="1" max="10" />
-      <button onclick="checkGuess()">ทาย!</button>
-    </div>
-    <p id="game-feedback"></p>
-    <div class="nav-buttons">
-      <button onclick="goTo('page-menu')">ย้อนกลับ</button>
+  <!-- หน้า 4: รูปที่ฮาที่สุด -->
+  <div id="page4" class="hidden">
+    <h2>รูปที่ฮาที่สุดของเรา 😂</h2>
+    <div class="menu-grid" id="funnyGrid"></div>
+    <div class="buttons">
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
     </div>
   </div>
 
-  <div class="container hidden" id="page-gallery">
-    <h2>📸 หมวด: <span id="gallery-title"></span></h2>
-    <div class="image-placeholder">[ รูปของหมวดนี้ ]</div>
-    <div class="nav-buttons">
-      <button onclick="goTo('page-menu')">ย้อนกลับ</button>
+  <!-- หน้า 5: รูปแอบถ่าย -->
+  <div id="page5" class="hidden">
+    <h2>รูปแอบถ่าย 📸</h2>
+    <div class="menu-grid" id="secretGrid"></div>
+    <div class="buttons">
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
     </div>
   </div>
 
-  <script>
-    const correctPassword = "0000";
-    let currentGallery = "";
-    let unlocked = {};
-    let numberToGuess = 0;
+  <!-- หน้า 6: รูปที่ชอบกันทั้งคู่ -->
+  <div id="page6" class="hidden">
+    <h2>รูปที่ชอบกันทั้งคู่ 💞</h2>
+    <div class="menu-grid" id="loveGrid"></div>
+    <div class="buttons">
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
+    </div>
+  </div>
 
-    function goTo(id) {
-      document.querySelectorAll(".container").forEach(c => c.classList.add("hidden"));
-      document.getElementById(id).classList.remove("hidden");
+  <!-- หน้า 7: เมนูเกมปลดล็อค -->
+  <div id="page7" class="hidden">
+    <h2>🎮 เลือกเกมเล่นเพื่อปลดล็อคหมวด! 🎮</h2>
+    <div class="menu-grid" id="gameMenuGrid"></div>
+    <div class="buttons">
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <!-- เกม1: เกมทายเลข -->
+  <div id="game1" class="hidden">
+    <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
+    <h2>เกมทายเลข 1-100</h2>
+    <p>ลองทายเลขในใจ แล้วกดทาย! ฉันจะบอกว่าตัวเลขสูงหรือต่ำกว่าคำตอบ</p>
+    <input type="number" id="guessInput" min="1" max="100" placeholder="ใส่เลขที่นี่" />
+    <button id="guessBtn" onclick="checkGuess()">ทาย!</button>
+    <div id="gameMessage"></div>
+  </div>
+
+  <!-- เกม2: เกมจับคู่คำง่ายๆ -->
+  <div id="game2" class="hidden">
+    <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
+    <h2>เกมจับคู่คำง่ายๆ</h2>
+    <p>จับคู่คำที่เหมือนกันให้ถูกต้อง!</p>
+    <div id="matchGame" style="margin: 0 auto; max-width: 400px; text-align:left;">
+      <p><b>คำที่ต้องจับคู่:</b></p>
+      <ul id="wordsList" style="list-style:none; padding-left:0;"></ul>
+      <p>คลิกที่คำในกล่องสีชมพูด้านล่างเพื่อจับคู่</p>
+      <div id="matchChoices" style="display:flex; flex-wrap: wrap; gap: 10px;"></div>
+      <button onclick="resetMatchGame()" style="margin-top:15px;">เล่นใหม่</button>
+      <div id="matchResult" style="margin-top:15px; font-weight:bold; color:#d43f6f;"></div>
+    </div>
+  </div>
+
+  <!-- เกม3: เกมกดนับเลข -->
+  <div id="game3" class="hidden">
+    <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
+    <h2>เกมกดนับเลข 🐾</h2>
+    <p>กดปุ่มจำนวนครั้งที่กำหนดให้ถูกต้องเพื่อปลดล็อค!</p>
+    <div id="countGame" style="margin: 0 auto; max-width: 320px;">
+      <p><b>จำนวนที่ต้องกด:</b> <span id="countTarget"></span></p>
+      <p><b>จำนวนที่กดแล้ว:</b> <span id="countCurrent">0</span></p>
+      <button id="countBtn" style="background:#f48fb1; color:#fff; border:none; border-radius:30px; padding:16px 30px; font-size: 20px; cursor:pointer;">กดนี่!</button>
+      <div id="countMessage" style="margin-top: 15px; font-weight: 700; color: #d43f6f;"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ตัวแปรสถานะ
+  const PASSWORD = '0000';
+  const unlockedCategories = {
+    best: false,
+    funny: false,
+    secret: false,
+    love: false,
+  };
+
+  // รูปตัวอย่างสำหรับแต่ละหมวด (ใส่รูปจริงได้)
+  const photos = {
+    best: [
+      { month: "ม.ค.", src: "https://placekitten.com/300/200" },
+      { month: "ก.พ.", src: "https://placekitten.com/301/200" },
+      { month: "มี.ค.", src: "https://placekitten.com/302/200" },
+      { month: "เม.ย.", src: "https://placekitten.com/303/200" },
+      { month: "พ.ค.", src: "https://placekitten.com/304/200" },
+      { month: "มิ.ย.", src: "https://placekitten.com/305/200" },
+      { month: "ก.ค.", src: "https://placekitten.com/306/200" },
+      { month: "ส.ค.", src: "https://placekitten.com/307/200" },
+      { month: "ก.ย.", src: "https://placekitten.com/308/200" },
+      { month: "ต.ค.", src: "https://placekitten.com/309/200" },
+      { month: "พ.ย.", src: "https://placekitten.com/310/200" },
+      { month: "ธ.ค.", src: "https://placekitten.com/311/200" },
+    ],
+    funny: [
+      { title: "ฮาๆ 1", src: "https://placebear.com/300/200" },
+      { title: "ฮาๆ 2", src: "https://placebear.com/301/200" },
+      { title: "ฮาๆ 3", src: "https://placebear.com/302/200" },
+    ],
+    secret: [
+      { title: "แอบถ่าย 1", src: "https://placeimg.com/300/200/nature" },
+      { title: "แอบถ่าย 2", src: "https://placeimg.com/301/200/nature" },
+    ],
+    love: [
+      { title: "รักกัน 1", src: "https://placeimg.com/300/200/people" },
+      { title: "รักกัน 2", src: "https://placeimg.com/301/200/people" },
+    ],
+  };
+
+  // เกมจับคู่คำง่ายๆ
+  const matchPairs = [
+    ["แมว", "cat"],
+    ["หมา", "dog"],
+    ["ปลา", "fish"],
+    ["นก", "bird"],
+  ];
+  let matchSelected = [];
+  let matchedPairs = [];
+
+  // เกมกดนับเลข
+  let countTarget = 0;
+  let countCurrent = 0;
+
+  // สลับหน้าแสดง
+  function showPage(id) {
+    document.querySelectorAll('.container > div').forEach(div => {
+      if(div.id === id) div.classList.remove('hidden');
+      else div.classList.add('hidden');
+    });
+    if(id === 'page2') updateCategoryMenu();
+    if(id === 'page3') loadPhotoGrid('best', 'bestGrid');
+    if(id === 'page4') loadPhotoGrid('funny', 'funnyGrid');
+    if(id === 'page5') loadPhotoGrid('secret', 'secretGrid');
+    if(id === 'page6') loadPhotoGrid('love', 'loveGrid');
+    if(id === 'page7') loadGameMenu();
+    if(id === 'game2') startMatchGame();
+    if(id === 'game3') startCountGame();
+    if(id === 'game1') resetGuessGame();
+  }
+
+  // ตรวจสอบรหัสผ่าน
+  function checkPassword() {
+    const pass = document.getElementById('password').value.trim();
+    const err = document.getElementById('error');
+    if(pass === PASSWORD) {
+      err.textContent = '';
+      showPage('page1');
+    } else {
+      err.textContent = 'รหัสผ่านไม่ถูกต้อง ลองอีกครั้งนะ 😊';
     }
+  }
 
-    function checkPassword() {
-      const pw = document.getElementById("password").value;
-      if (pw === correctPassword) {
-        goTo("page-greeting");
+  // อัปเดตสถานะเมนูหมวด
+  function updateCategoryMenu() {
+    const menu = document.getElementById('categoryMenu');
+    menu.querySelectorAll('.menu-card').forEach(card => {
+      const cat = card.getAttribute('data-category');
+      if(unlockedCategories[cat]) {
+        card.classList.remove('locked');
+        card.querySelector('small').textContent = '🔓 ปลดล็อคแล้ว';
+        card.onclick = () => {
+          if(cat === 'best') showPage('page3');
+          else if(cat === 'funny') showPage('page4');
+          else if(cat === 'secret') showPage('page5');
+          else if(cat === 'love') showPage('page6');
+        };
       } else {
-        alert("รหัสผิดน้า ลองใหม่อีกที 💦");
+        card.classList.add('locked');
+        card.querySelector('small').textContent = '🔒 ต้องปลดล็อคก่อน';
+        card.onclick = null;
+      }
+    });
+  }
+
+  // โหลดกริดรูปภาพ
+  function loadPhotoGrid(category, gridId) {
+    const grid = document.getElementById(gridId);
+    grid.innerHTML = '';
+    const items = photos[category];
+    items.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'menu-card';
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = item.title || item.month;
+      card.appendChild(img);
+      const title = document.createElement('div');
+      title.className = 'title';
+      title.textContent = item.title || item.month;
+      card.appendChild(title);
+      grid.appendChild(card);
+    });
+  }
+
+  // โหลดเมนูเกม
+  function loadGameMenu() {
+    const gameMenu = document.getElementById('gameMenuGrid');
+    gameMenu.innerHTML = '';
+
+    const games = [
+      { id: 'game1', name: 'เกมทายเลข', desc: 'ทายเลข 1-100', icon: '🎲' },
+      { id: 'game2', name: 'เกมจับคู่คำ', desc: 'จับคู่คำง่ายๆ', icon: '🧩' },
+      { id: 'game3', name: 'เกมกดนับเลข', desc: 'กดปุ่มตามจำนวน', icon: '🐾' },
+    ];
+
+    games.forEach(game => {
+      const card = document.createElement('div');
+      card.className = 'menu-card';
+      card.innerHTML = `<div style="font-size:48px; user-select:none;">${game.icon}</div>
+                        <div class="title">${game.name}</div>
+                        <small>${game.desc}</small>`;
+      card.onclick = () => {
+        showPage(game.id);
+      };
+      gameMenu.appendChild(card);
+    });
+  }
+
+  // ====== เกม 1: เกมทายเลข ======
+  let secretNumber = 0;
+  let guessAttempts = 0;
+  function resetGuessGame() {
+    secretNumber = Math.floor(Math.random() * 100) + 1;
+    guessAttempts = 0;
+    document.getElementById('guessInput').value = '';
+    document.getElementById('gameMessage').textContent = '';
+  }
+  function checkGuess() {
+    const input = document.getElementById('guessInput');
+    const msg = document.getElementById('gameMessage');
+    let guess = Number(input.value);
+    if (!guess || guess < 1 || guess > 100) {
+      msg.textContent = 'กรุณาใส่เลข 1-100 นะจ๊ะ 😊';
+      return;
+    }
+    guessAttempts++;
+    if(guess === secretNumber) {
+      msg.textContent = `🎉 ถูกต้อง! ใช้ ${guessAttempts} ครั้งในการทาย 🎉`;
+      unlockCategory('best');
+    } else if(guess < secretNumber) {
+      msg.textContent = 'เลขที่ทายต่ำกว่าจ้า ลองใหม่!';
+    } else {
+      msg.textContent = 'เลขที่ทายสูงกว่าจ้า ลองใหม่!';
+    }
+  }
+
+  // ====== เกม 2: เกมจับคู่คำง่ายๆ ======
+  function startMatchGame() {
+    matchedPairs = [];
+    matchSelected = [];
+    const wordsList = document.getElementById('wordsList');
+    const matchChoices = document.getElementById('matchChoices');
+    const matchResult = document.getElementById('matchResult');
+    matchResult.textContent = '';
+    wordsList.innerHTML = '';
+    matchChoices.innerHTML = '';
+
+    // สุ่มคำทั้งหมด และเลือกคำซ้ำ 1 ชุดให้จับคู่
+    let leftWords = matchPairs.map(pair => pair[0]);
+    let rightWords = matchPairs.map(pair => pair[1]);
+
+    // สุ่มตำแหน่งคำ
+    rightWords = shuffleArray(rightWords);
+
+    // สร้างรายการคำซ้าย
+    leftWords.forEach(word => {
+      const li = document.createElement('li');
+      li.textContent = word;
+      li.style.padding = '6px 0';
+      li.style.fontWeight = '700';
+      li.style.color = '#d43f6f';
+      wordsList.appendChild(li);
+    });
+
+    // สร้างตัวเลือกขวา
+    rightWords.forEach(word => {
+      const btn = document.createElement('button');
+      btn.textContent = word;
+      btn.style.backgroundColor = '#f8bbd0';
+      btn.style.border = 'none';
+      btn.style.borderRadius = '20px';
+      btn.style.padding = '8px 16px';
+      btn.style.cursor = 'pointer';
+      btn.style.fontWeight = '700';
+      btn.style.color = '#9c2a57';
+      btn.onclick = () => {
+        if (matchSelected.includes(word)) {
+          matchSelected = matchSelected.filter(w => w !== word);
+          btn.style.backgroundColor = '#f8bbd0';
+        } else {
+          matchSelected.push(word);
+          btn.style.backgroundColor = '#d43f6f';
+          btn.style.color = 'white';
+        }
+        if(matchSelected.length === 2) {
+          checkMatch();
+        }
+      };
+      matchChoices.appendChild(btn);
+    });
+  }
+  function checkMatch() {
+    const matchResult = document.getElementById('matchResult');
+    let leftWord = null;
+    // หา left word ที่ตรงกับ right word ที่เลือก
+    for(let pair of matchPairs) {
+      if(pair.includes(matchSelected[0]) && pair.includes(matchSelected[1])) {
+        leftWord = pair[0];
+        break;
       }
     }
-
-    function playGame(galleryKey) {
-      if (unlocked[galleryKey]) {
-        openGallery(galleryKey);
-      } else {
-        currentGallery = galleryKey;
-        numberToGuess = Math.floor(Math.random() * 10) + 1;
-        document.getElementById("game-title").textContent = getGalleryTitle(galleryKey);
-        document.getElementById("game-feedback").textContent = "";
-        document.getElementById("guess").value = "";
-        goTo("page-game");
-      }
+    if(leftWord && matchSelected.includes(leftWord)) {
+      // ถูกคู่
+      matchedPairs.push(matchSelected);
+      matchResult.textContent = 'จับคู่ถูกต้อง! 🎉';
+      unlockCategory('funny');
+      // รีเซ็ต
+      matchSelected = [];
+      startMatchGame();
+    } else {
+      matchResult.textContent = 'จับคู่ผิด! ลองใหม่ 😊';
+      matchSelected = [];
+      startMatchGame();
     }
+  }
+  function resetMatchGame() {
+    startMatchGame();
+  }
 
-    function checkGuess() {
-      const guess = parseInt(document.getElementById("guess").value);
-      const feedback = document.getElementById("game-feedback");
-      if (guess === numberToGuess) {
-        feedback.textContent = "เก่งมาก! ปลดล็อคหมวดแล้ว 💖";
-        unlocked[currentGallery] = true;
-        setTimeout(() => openGallery(currentGallery), 1000);
-      } else if (guess < numberToGuess) {
-        feedback.textContent = "มากกว่านี้นะ~";
-      } else {
-        feedback.textContent = "น้อยกว่านี้น้าา~";
-      }
+  // ====== เกม 3: เกมกดนับเลข ======
+  function startCountGame() {
+    countTarget = Math.floor(Math.random() * 15) + 5; // 5-19
+    countCurrent = 0;
+    document.getElementById('countTarget').textContent = countTarget;
+    document.getElementById('countCurrent').textContent = countCurrent;
+    document.getElementById('countMessage').textContent = '';
+  }
+  document.getElementById('countBtn').onclick = () => {
+    countCurrent++;
+    document.getElementById('countCurrent').textContent = countCurrent;
+    if(countCurrent === countTarget) {
+      document.getElementById('countMessage').textContent = '🎉 สำเร็จ! ปลดล็อคหมวดนี้แล้ว 🎉';
+      unlockCategory('secret');
+    } else if(countCurrent > countTarget) {
+      document.getElementById('countMessage').textContent = 'เกินจำนวนแล้ว ลองเล่นใหม่!';
+      countCurrent = 0;
+      document.getElementById('countCurrent').textContent = countCurrent;
     }
+  };
 
-    function openGallery(key) {
-      document.getElementById("gallery-title").textContent = getGalleryTitle(key);
-      goTo("page-gallery");
+  // ปลดล็อคหมวด
+  function unlockCategory(category) {
+    if(!unlockedCategories[category]) {
+      unlockedCategories[category] = true;
+      alert(`🎉 หมวด "${category}" ถูกปลดล็อคแล้ว! กลับไปเลือกดูรูปกันเลย! 🎉`);
+      showPage('page2');
     }
+  }
 
-    function getGalleryTitle(key) {
-      switch (key) {
-        case "best": return "The Best ของทุกเดือน";
-        case "funny": return "รูปฮาที่สุดของเรา";
-        case "secret": return "รูปแอบถ่ายกันแหละ~";
-        case "fav": return "รูปที่ชอบทั้งคู่";
-        default: return "";
-      }
+  // ฟังก์ชันสุ่ม Array
+  function shuffleArray(array) {
+    let arr = array.slice();
+    for(let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i+1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-  </script>
+    return arr;
+  }
+
+  // เริ่มต้น
+  showPage('page0');
+</script>
 </body>
 </html>
