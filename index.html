@@ -1,160 +1,148 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Anniversary 💗</title>
-  <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+  <title>Anniversary 💖</title>
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Itim', cursive;
-    }
     body {
       margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
       background-color: #ffe6f0;
       color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      padding: 20px;
     }
     .page {
-      max-width: 500px;
-      width: 100%;
-      background: white;
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
       display: none;
+      padding: 2rem;
+      text-align: center;
     }
-    .page.active {
+    .active {
       display: block;
     }
-    h1, h2 {
-      text-align: center;
-      color: #d63384;
+    .input-password {
+      padding: 0.5rem;
+      font-size: 1rem;
     }
-    .input-group {
-      text-align: center;
-      margin-top: 20px;
-    }
-    input[type="password"] {
-      padding: 10px;
-      font-size: 18px;
-      border: 2px solid #d63384;
-      border-radius: 10px;
-    }
-    button {
-      margin-top: 20px;
-      background-color: #ff99cc;
-      color: white;
+    .button {
+      background-color: #ffb6c1;
       border: none;
-      padding: 10px 20px;
       border-radius: 10px;
-      font-size: 16px;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      margin: 1rem;
       cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .button:hover {
+      background-color: #ff9eb4;
     }
     .menu-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
     }
-    .menu-item {
-      background-color: #ffe6f0;
-      border: 2px dashed #d63384;
-      padding: 20px;
-      border-radius: 15px;
-      text-align: center;
-      cursor: not-allowed;
-      opacity: 0.5;
-      transition: 0.3s;
+    .locked {
+      filter: grayscale(100%);
+      pointer-events: none;
+      opacity: 0.6;
     }
-    .menu-item.unlocked {
-      cursor: pointer;
-      opacity: 1;
-      background-color: #ffccdd;
-    }
-    .image-placeholder {
-      background-color: #eee;
-      width: 100%;
-      height: 250px;
+    img.placeholder {
+      max-width: 80%;
+      height: auto;
+      border: 3px dashed #ffb6c1;
       border-radius: 10px;
-      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <!-- หน้า 1: ใส่รหัส -->
+  <!-- Page 1: Password -->
   <div class="page active" id="page1">
-    <h1>🔒 ใส่รหัสเพื่อเข้าสู่เว็บ</h1>
-    <div class="input-group">
-      <input type="password" id="passwordInput" placeholder="ใส่รหัส 4 หลัก" />
-      <br>
-      <button onclick="checkPassword()">เข้าสู่เว็บ</button>
-    </div>
+    <h2>ใส่รหัสผ่านเพื่อเข้าเว็บ 💕</h2>
+    <input class="input-password" type="password" id="passwordInput" placeholder="ใส่รหัส..." />
+    <br />
+    <button class="button" onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
   </div>
 
-  <!-- หน้า 2: ข้อความ + รูป -->
+  <!-- Page 2: Greeting -->
   <div class="page" id="page2">
     <h1>วันนี้วันครบรอบของเรานะะ~ 💖</h1>
-    <div class="image-placeholder">ใส่รูปตรงนี้</div>
-    <div style="text-align:center">
-      <button onclick="goToPage(3)">ไปต่อ 💌</button>
-    </div>
+    <p>ขอบคุณที่อยู่ด้วยกันมาตลอดนะ!</p>
+    <img class="placeholder" src="#" alt="ใส่รูปครบรอบตรงนี้น้า" />
+    <br />
+    <button class="button" onclick="goToPage(3)">ถัดไป</button>
   </div>
 
-  <!-- หน้า 3: เมนูปลดล็อก -->
+  <!-- Page 3: Menu with lock -->
   <div class="page" id="page3">
-    <h2>เลือกหมวดที่อยากดู 💞</h2>
+    <h2>เลือกหมวดที่อยากดู ✨</h2>
     <div class="menu-grid">
-      <div class="menu-item" id="menu1" onclick="openMenu(1)">📅 The Best ของทุกเดือน</div>
-      <div class="menu-item" id="menu2" onclick="openMenu(2)">😂 รูปที่ฮาที่สุด</div>
-      <div class="menu-item" id="menu3" onclick="openMenu(3)">📸 แอบถ่าย</div>
-      <div class="menu-item" id="menu4" onclick="openMenu(4)">💗 รูปที่เราชอบทั้งคู่</div>
+      <button class="button locked" id="btn1" onclick="goToPage(4)">📅 The Best ของแต่ละเดือน</button>
+      <button class="button locked" id="btn2" onclick="goToPage(5)">😂 รูปที่ฮาที่สุด</button>
+      <button class="button locked" id="btn3" onclick="goToPage(6)">📸 แอบถ่าย</button>
+      <button class="button locked" id="btn4" onclick="goToPage(7)">💞 รูปที่ชอบทั้งคู่</button>
     </div>
-    <div style="text-align:center">
-      <button onclick="playMiniGame()">เล่นเกมเพื่อปลดล็อก 🔓</button>
-    </div>
+    <br />
+    <button class="button" onclick="playMiniGame()">เล่นเกมเพื่อปลดล็อก</button>
   </div>
 
+  <!-- Mini game (simplified as confirm for now) -->
   <script>
-    function checkPassword() {
-      const pw = document.getElementById("passwordInput").value;
-      if (pw === "0000") {
-        goToPage(2);
-      } else {
-        alert("รหัสผิดน้า ลองใหม่อีกทีนะ 💦");
-      }
+    const pages = document.querySelectorAll('.page');
+
+    function goToPage(num) {
+      pages.forEach(p => p.classList.remove('active'));
+      document.getElementById(`page${num}`).classList.add('active');
     }
 
-    function goToPage(pageNum) {
-      const pages = document.querySelectorAll('.page');
-      pages.forEach(p => p.classList.remove('active'));
-      document.getElementById(`page${pageNum}`).classList.add('active');
+    function checkPassword() {
+      const pw = document.getElementById('passwordInput').value;
+      if (pw === '0000') {
+        goToPage(2);
+      } else {
+        alert('รหัสผิดน้า ลองใหม่อีกครั้ง 💔');
+      }
     }
 
     function playMiniGame() {
-      // ตอนนี้ยังไม่มีเกมจริง แค่ปลดล็อกไว้ก่อน
-      alert("เย่ เล่นเกมสำเร็จ! ปลดล็อกหมวดแล้วนะ~ 🎉");
-      for (let i = 1; i <= 4; i++) {
-        const item = document.getElementById(`menu${i}`);
-        item.classList.add('unlocked');
-        item.style.cursor = 'pointer';
+      const yes = confirm("ตอบให้ได้ว่าใครน่ารักที่สุด? (ตอบในใจว่า 'แฟนเราไง!') 🥺\nพร้อมจะปลดล็อกหมวดแล้วหรือยัง?");
+      if (yes) {
+        document.getElementById('btn1').classList.remove('locked');
+        document.getElementById('btn2').classList.remove('locked');
+        document.getElementById('btn3').classList.remove('locked');
+        document.getElementById('btn4').classList.remove('locked');
+        alert("ปลดล็อกหมวดทั้งหมดแล้วน้า 💘");
       }
-    }
-
-    function openMenu(num) {
-      const item = document.getElementById(`menu${num}`);
-      if (!item.classList.contains('unlocked')) {
-        alert("ต้องเล่นเกมก่อนน้า~ 🔒");
-        return;
-      }
-      alert(`เปิดหมวดที่ ${num} ได้แล้ว!`);
-      // ต่อไปจะเพิ่มหน้ารายละเอียดของแต่ละหมวด
     }
   </script>
+
+  <!-- Page 4: Best Photos Calendar -->
+  <div class="page" id="page4">
+    <h2>📅 The Best ของทุกเดือน</h2>
+    <p>ใส่รูปแต่ละเดือนได้ตรงนี้นะจ๊ะ~</p>
+    <!-- calendar-style layout แนะนำให้ใช้กริดหรือ flex -->
+    <button class="button" onclick="goToPage(3)">กลับไปหน้าเมนู</button>
+  </div>
+
+  <!-- Page 5: Funniest Photo -->
+  <div class="page" id="page5">
+    <h2>😂 รูปที่ฮาที่สุดของเรา</h2>
+    <img class="placeholder" src="#" alt="ใส่รูปฮา ๆ ตรงนี้เลยยย" />
+    <button class="button" onclick="goToPage(3)">กลับไปหน้าเมนู</button>
+  </div>
+
+  <!-- Page 6: Secret Shots -->
+  <div class="page" id="page6">
+    <h2>📸 แอบถ่ายกันแอบมองเธออยู่นะ~</h2>
+    <img class="placeholder" src="#" alt="ใส่รูปแอบถ่ายตรงนี้~" />
+    <button class="button" onclick="goToPage(3)">กลับไปหน้าเมนู</button>
+  </div>
+
+  <!-- Page 7: Favorite by both -->
+  <div class="page" id="page7">
+    <h2>💞 รูปที่เราชอบทั้งคู่</h2>
+    <img class="placeholder" src="#" alt="ใส่รูปที่ชอบกันตรงนี้เลย~" />
+    <button class="button" onclick="goToPage(3)">กลับไปหน้าเมนู</button>
+  </div>
 </body>
 </html>
