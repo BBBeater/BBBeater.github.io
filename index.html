@@ -1,206 +1,236 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Anniversary Web 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Anniversary!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --main-color: #ffb6c1;
-      --accent-color: #ffe4e1;
-      --text-color: #333;
+      --pink: #ffc7d1;
+      --peach: #ffe5b4;
+      --white: #fffafc;
+      --font: 'Fredoka', sans-serif;
     }
+
     * {
-      box-sizing: border-box;
-      font-family: 'Comic Sans MS', cursive;
-    }
-    body {
       margin: 0;
-      background: var(--accent-color);
-      color: var(--text-color);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .screen {
-      display: none;
+
+    body {
+      font-family: var(--font);
+      background: linear-gradient(135deg, var(--pink), var(--peach));
+      color: #444;
+      min-height: 100vh;
+      display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--white);
+      border-radius: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 400px;
       text-align: center;
-      padding: 2rem;
-      max-width: 600px;
+      animation: fadeIn 1s ease forwards;
     }
-    .screen.active {
-      display: flex;
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
     }
+
+    input[type="password"],
     button {
-      padding: 10px 20px;
-      margin-top: 1rem;
+      padding: 10px;
+      font-size: 16px;
       border: none;
-      border-radius: 15px;
-      background: var(--main-color);
-      color: white;
-      font-size: 1rem;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: var(--pink);
       cursor: pointer;
       transition: 0.3s;
     }
+
     button:hover {
-      background: #ff99aa;
+      background-color: #f7aab6;
     }
-    .menu {
+
+    .hidden {
+      display: none;
+    }
+
+    img.placeholder {
+      width: 100%;
+      height: 200px;
+      background: #eee;
+      border-radius: 16px;
+      margin-top: 20px;
+    }
+
+    .menu-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+      gap: 15px;
     }
-    .locked {
-      filter: grayscale(1);
+
+    .menu-button {
+      background-color: var(--peach);
+      padding: 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .menu-button.locked {
       opacity: 0.5;
+      pointer-events: none;
     }
-    .image-gallery img {
-      max-width: 100%;
-      border-radius: 10px;
-      margin: 1rem 0;
+
+    .nav-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
     }
-    .back {
-      margin-top: auto;
-    }
-    .fade-in {
-      animation: fadeIn 1s ease-in;
-    }
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
+
 <body>
-  <!-- Page: Password -->
-  <div class="screen active" id="page-password">
-    <h2>ใส่รหัสลับ 💖</h2>
-    <input type="password" id="password" placeholder="รหัส 0000" />
-    <button onclick="checkPassword()">ถัดไป</button>
+  <div class="container" id="page1">
+    <h1>ใส่รหัสเพื่อเข้าสู่เว็บไซต์ครบรอบ 💖</h1>
+    <input type="password" id="password" placeholder="รหัสผ่าน" />
+    <button onclick="checkPassword()">เข้าสู่เว็บ</button>
   </div>
 
-  <!-- Page: Anniversary Message -->
-  <div class="screen" id="page-anniversary">
-    <h2>วันนี้วันครบรอบของเรานะะ~ 🥰</h2>
-    <p>ขอบคุณที่อยู่ด้วยกันมาตลอดนะ 💞</p>
-    <img src="your-photo.jpg" alt="Anniversary" />
-    <button onclick="nextPage('page-menu')">ถัดไป</button>
-    <button class="back" onclick="backPage('page-password')">ย้อนกลับ</button>
-  </div>
-
-  <!-- Page: Menu -->
-  <div class="screen" id="page-menu">
-    <h2>เลือกหมวดหมู่รูป 💌</h2>
-    <div class="menu">
-      <button id="btn-best" class="locked" onclick="goToLocked('best')">The Best ของทุกเดือน</button>
-      <button id="btn-funny" class="locked" onclick="goToLocked('funny')">รูปฮาที่สุด</button>
-      <button id="btn-secret" class="locked" onclick="goToLocked('secret')">รูปแอบถ่าย</button>
-      <button id="btn-love" class="locked" onclick="goToLocked('love')">รูปที่เราชอบทั้งคู่</button>
+  <div class="container hidden" id="page2">
+    <h1>วันนี้วันครบรอบของเรานะะ~ 🥰</h1>
+    <img class="placeholder" alt="รูปครบรอบ" />
+    <div class="nav-buttons">
+      <button onclick="goBack(1)">ย้อนกลับ</button>
+      <button onclick="goNext(3)">ถัดไป</button>
     </div>
-    <button class="back" onclick="backPage('page-anniversary')">ย้อนกลับ</button>
   </div>
 
-  <!-- Page: MiniGames -->
-  <div class="screen" id="page-minigames">
-    <h2>มินิเกมเพื่อปลดล็อก 💡</h2>
-    <p>ทายเลข 1-10: <input id="guess" type="number" min="1" max="10" /></p>
-    <button onclick="playGuess()">ทายเลย!</button>
-    <p id="hint"></p>
-    <button class="back" onclick="backPage('page-menu')">ย้อนกลับ</button>
-  </div>
-
-  <!-- Page: Gallery -->
-  <div class="screen" id="page-gallery">
-    <h2 id="gallery-title">แกลเลอรี่</h2>
-    <div class="image-gallery" id="gallery-content">
-      <!-- รูปจะแทรกที่นี่ -->
+  <div class="container hidden" id="page3">
+    <h1>เลือกรูปที่อยากดู 💌</h1>
+    <div class="menu-grid">
+      <div class="menu-button locked" id="btn1" onclick="goToGallery(1)">🌸 The Best ของทุกเดือน</div>
+      <div class="menu-button locked" id="btn2" onclick="goToGallery(2)">🤣 รูปฮาที่สุด</div>
+      <div class="menu-button locked" id="btn3" onclick="goToGallery(3)">📸 รูปแอบถ่าย</div>
+      <div class="menu-button locked" id="btn4" onclick="goToGallery(4)">💑 รูปที่เราชอบทั้งคู่</div>
     </div>
-    <button class="back" onclick="backPage('page-menu')">ย้อนกลับ</button>
+    <div style="margin-top: 20px">
+      <button onclick="goNext(4)">🔓 ไปเล่นเกมเพื่อปลดล็อก</button>
+    </div>
+    <div class="nav-buttons">
+      <button onclick="goBack(2)">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="page4">
+    <h1>เลือกมินิเกม 🎮</h1>
+    <div class="menu-grid">
+      <button onclick="startGame(1)">เกมทายตัวเลข 🔢</button>
+      <button onclick="startGame(2)">เกมจับคู่รูป 🧩</button>
+      <button onclick="startGame(3)">เกมความจำ 🧠</button>
+      <button onclick="startGame(4)">เกมกดให้ทัน 💥</button>
+    </div>
+    <div class="nav-buttons">
+      <button onclick="goBack(3)">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="game">
+    <h1 id="gameTitle">มินิเกม</h1>
+    <div id="gameContent">(เนื้อหาเกมจะมาแสดงตรงนี้)</div>
+    <div class="nav-buttons">
+      <button onclick="goBack(4)">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="gallery">
+    <h1 id="galleryTitle">แกลเลอรี</h1>
+    <div class="placeholder">(รูปต่าง ๆ)</div>
+    <div class="nav-buttons">
+      <button onclick="goBack(3)">ย้อนกลับ</button>
+    </div>
   </div>
 
   <script>
-    let correctPass = "0000";
-    let randomNum = Math.floor(Math.random() * 10) + 1;
-    let unlockStatus = {
-      best: false,
-      funny: false,
-      secret: false,
-      love: false
-    };
+    const pages = ["page1", "page2", "page3", "page4", "game", "gallery"];
+    let unlocked = [false, false, false, false];
 
-    function showPage(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
+    function showPage(n) {
+      pages.forEach(p => document.getElementById(p).classList.add("hidden"));
+      document.getElementById(pages[n - 1]).classList.remove("hidden");
     }
 
     function checkPassword() {
-      let val = document.getElementById('password').value;
-      if (val === correctPass) {
-        showPage('page-anniversary');
+      const pw = document.getElementById("password").value;
+      if (pw === "0000") {
+        showPage(2);
       } else {
-        alert("รหัสผิดน้าา 💢");
+        alert("รหัสผิดน้า~ ลองอีกทีนะ");
       }
     }
 
-    function nextPage(id) {
-      showPage(id);
+    function goNext(n) {
+      showPage(n);
     }
 
-    function backPage(id) {
-      showPage(id);
+    function goBack(n) {
+      showPage(n);
     }
 
-    function goToLocked(type) {
-      if (unlockStatus[type]) {
-        openGallery(type);
+    function goToGallery(i) {
+      if (unlocked[i - 1]) {
+        const titles = ["🌸 The Best ของทุกเดือน", "🤣 รูปฮาที่สุด", "📸 รูปแอบถ่าย", "💑 รูปที่ชอบทั้งคู่"];
+        document.getElementById("galleryTitle").innerText = titles[i - 1];
+        showPage(6);
       } else {
-        currentUnlock = type;
-        showPage('page-minigames');
+        alert("ต้องปลดล็อกก่อนน้าา~");
       }
     }
 
-    function playGuess() {
-      const guess = parseInt(document.getElementById('guess').value);
-      const hint = document.getElementById('hint');
-
-      if (guess === randomNum) {
-        unlockStatus[currentUnlock] = true;
-        document.getElementById(`btn-${currentUnlock}`).classList.remove('locked');
-        hint.innerText = "ถูกต้อง! หมวดปลดล็อกแล้ว 🎉";
-      } else if (guess < randomNum) {
-        hint.innerText = "มากกว่านี้อีก 💡";
-      } else {
-        hint.innerText = "น้อยกว่านี้นะ ✨";
-      }
+    function startGame(n) {
+      const gameTitle = document.getElementById("gameTitle");
+      const gameContent = document.getElementById("gameContent");
+      gameTitle.innerText = `มินิเกมที่ ${n}`;
+      gameContent.innerHTML = `
+        <p>นี่คือเกมที่ ${n} (ยังไม่ได้ทำจริงจัง ใส่แทนไว้ก่อน)</p>
+        <button onclick="unlock(${n})">ปลดล็อกหมวด ${n}</button>
+      `;
+      showPage(5);
     }
 
-    function openGallery(type) {
-      const titleMap = {
-        best: "📅 รูป The Best ของทุกเดือน",
-        funny: "😂 รูปที่ฮาที่สุด",
-        secret: "📸 รูปแอบถ่าย",
-        love: "💖 รูปที่ชอบทั้งคู่"
-      };
-      const imgMap = {
-        best: ["best1.jpg", "best2.jpg"],
-        funny: ["funny1.jpg"],
-        secret: ["secret1.jpg"],
-        love: ["love1.jpg"]
-      };
-
-      document.getElementById("gallery-title").innerText = titleMap[type];
-      const container = document.getElementById("gallery-content");
-      container.innerHTML = "";
-      imgMap[type].forEach(img => {
-        let image = document.createElement("img");
-        image.src = img;
-        container.appendChild(image);
-      });
-      showPage("page-gallery");
+    function unlock(n) {
+      unlocked[n - 1] = true;
+      document.getElementById("btn" + n).classList.remove("locked");
+      alert("ปลดล็อกหมวดสำเร็จ! กลับไปดูรูปได้เลย~");
+      showPage(3);
     }
   </script>
 </body>
+
 </html>
