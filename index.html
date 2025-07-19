@@ -6,6 +6,7 @@
 <title>Happy Anniversary - หน้าแยก + เกม</title>
 <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
 <style>
+  /* --- รักษาสไตล์เหมือนเดิม --- */
   body {
     font-family: 'Itim', cursive;
     background: linear-gradient(135deg, #ffd6e8, #fff0f5);
@@ -105,7 +106,11 @@
     transition: transform 0.3s ease;
     user-select: none;
   }
-  .menu-card:hover {
+  .menu-card.locked {
+    cursor: default;
+    opacity: 0.5;
+  }
+  .menu-card:hover:not(.locked) {
     transform: scale(1.07);
     box-shadow: 0 0 20px #d43f6f;
   }
@@ -234,8 +239,8 @@
     <h1>วันนี้วันครบรอบของเรานะะ 💕</h1>
     <div class="photo-placeholder">ใส่รูปที่นี่ (รอรูปจากคุณ)</div>
     <div class="buttons">
-      <button onclick="showPage(0)">ย้อนกลับ</button>
-      <button onclick="showPage(2)">ถัดไป</button>
+      <button onclick="showPage('page0')">ย้อนกลับ</button>
+      <button onclick="showPage('page2')">ถัดไป</button>
     </div>
   </div>
 
@@ -265,8 +270,8 @@
       </div>
     </div>
     <div class="buttons">
-      <button onclick="showPage(1)">ย้อนกลับ</button>
-      <button onclick="showPage(7)">ไปเล่นเกมปลดล็อค 🔓</button>
+      <button onclick="showPage('page1')">ย้อนกลับ</button>
+      <button onclick="showPage('page7')">ไปเล่นเกมปลดล็อค 🔓</button>
     </div>
   </div>
 
@@ -274,63 +279,51 @@
   <div id="page3" class="hidden">
     <h2>The Best ของทุกเดือน</h2>
     <p>นี่คือรูปที่ดีที่สุดของแต่ละเดือน 💖</p>
-    <div class="menu-grid" id="bestGrid">
-      <!-- รูปเดือนต่างๆ จะเพิ่มที่นี่ -->
-    </div>
+    <div class="menu-grid" id="bestGrid"></div>
     <div class="buttons">
-      <button onclick="showPage(2)">ย้อนกลับ</button>
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
     </div>
   </div>
 
   <!-- หน้า 4: รูปที่ฮาที่สุด -->
   <div id="page4" class="hidden">
     <h2>รูปที่ฮาที่สุดของเรา 😂</h2>
-    <div class="menu-grid" id="funnyGrid">
-      <!-- รูปฮาจะเพิ่มที่นี่ -->
-    </div>
+    <div class="menu-grid" id="funnyGrid"></div>
     <div class="buttons">
-      <button onclick="showPage(2)">ย้อนกลับ</button>
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
     </div>
   </div>
 
   <!-- หน้า 5: รูปแอบถ่าย -->
   <div id="page5" class="hidden">
     <h2>รูปแอบถ่าย 📸</h2>
-    <div class="menu-grid" id="secretGrid">
-      <!-- รูปแอบถ่ายจะเพิ่มที่นี่ -->
-    </div>
+    <div class="menu-grid" id="secretGrid"></div>
     <div class="buttons">
-      <button onclick="showPage(2)">ย้อนกลับ</button>
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
     </div>
   </div>
 
   <!-- หน้า 6: รูปที่ชอบกันทั้งคู่ -->
   <div id="page6" class="hidden">
     <h2>รูปที่ชอบกันทั้งคู่ 💞</h2>
-    <div class="menu-grid" id="loveGrid">
-      <!-- รูปจะเพิ่มที่นี่ -->
-    </div>
+    <div class="menu-grid" id="loveGrid"></div>
     <div class="buttons">
-      <button onclick="showPage(2)">ย้อนกลับ</button>
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
     </div>
   </div>
 
   <!-- หน้า 7: เมนูเกมปลดล็อค -->
   <div id="page7" class="hidden">
     <h2>🎮 เลือกเกมเล่นเพื่อปลดล็อคหมวด! 🎮</h2>
-    <div class="menu-grid" id="gameMenuGrid">
-      <!-- เกมจะเพิ่มที่นี่ -->
-    </div>
+    <div class="menu-grid" id="gameMenuGrid"></div>
     <div class="buttons">
-      <button onclick="showPage(2)">ย้อนกลับ</button>
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
     </div>
   </div>
 
-  <!-- หน้าเกม 4 เกม -->
-
   <!-- เกม1: เกมทายเลข -->
   <div id="game1" class="hidden">
-    <button class="back-game-menu-btn" id="backToGameMenu1">← กลับสู่เมนูเกม</button>
+    <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
     <h2>เกมทายเลข 1-100</h2>
     <p>ลองทายเลขในใจ แล้วกดทาย! ฉันจะบอกว่าตัวเลขสูงหรือต่ำกว่าคำตอบ</p>
     <input type="number" id="guessInput" min="1" max="100" placeholder="ใส่เลขที่นี่" />
@@ -340,7 +333,7 @@
 
   <!-- เกม2: เกมจับคู่คำง่ายๆ -->
   <div id="game2" class="hidden">
-    <button class="back-game-menu-btn" id="backToGameMenu2">← กลับสู่เมนูเกม</button>
+    <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
     <h2>เกมจับคู่คำง่ายๆ</h2>
     <p>จับคู่คำที่เหมือนกันให้ถูกต้อง!</p>
     <div id="matchGame" style="margin: 0 auto; max-width: 400px; text-align:left;">
@@ -355,7 +348,7 @@
 
   <!-- เกม3: เกมกดนับเลข -->
   <div id="game3" class="hidden">
-    <button class="back-game-menu-btn" id="backToGameMenu3">← กลับสู่เมนูเกม</button>
+    <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
     <h2>เกมกดนับเลข</h2>
     <p>กดปุ่มให้ครบจำนวนที่สุ่มมา!</p>
     <div id="countGame" style="margin-top:20px;">
@@ -369,7 +362,7 @@
 
   <!-- เกม4: เกมเลือกถูก-ผิด -->
   <div id="game4" class="hidden">
-    <button class="back-game-menu-btn" id="backToGameMenu4">← กลับสู่เมนูเกม</button>
+    <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
     <h2>เกมเลือกถูก-ผิดง่ายๆ</h2>
     <p>เลือกว่าข้อความนี้ถูกหรือผิด!</p>
     <div id="trueFalseGame" style="margin-top:20px; max-width:400px; margin-left:auto; margin-right:auto; text-align:center;">
@@ -384,34 +377,10 @@
 </div>
 
 <script>
-  // รหัสผ่าน
   const correctPassword = "0000";
+  const unlockedCategories = { best: false, funny: false, secret: false, love: false };
 
-  // ตัวแปรสถานะปลดล็อคแต่ละหมวด
-  const unlockedCategories = {
-    best: false,
-    funny: false,
-    secret: false,
-    love: false
-  };
-
-  // สถานะหน้าปัจจุบัน
-  let currentPageId = "page0";
-
-  // ฟังก์ชันแสดงหน้า
-  function showPage(id) {
-    // ซ่อนทุกหน้า
-    document.querySelectorAll(".container > div").forEach(div => {
-      div.classList.add("hidden");
-    });
-    // แสดงหน้าที่เลือก
-    document.getElementById(id).classList.remove("hidden");
-    currentPageId = id;
-
-    updateCategoryLocks();
-  }
-
-  // เช็ครหัสผ่าน
+  // หน้าแรกใส่รหัส
   function checkPassword() {
     const entered = document.getElementById("password").value.trim();
     const error = document.getElementById("error");
@@ -423,10 +392,22 @@
     }
   }
 
-  // อัพเดทสถานะล็อคของหมวด
+  function showPage(id) {
+    document.querySelectorAll(".container > div").forEach(div => {
+      div.classList.add("hidden");
+    });
+    document.getElementById(id).classList.remove("hidden");
+    // เรียกเริ่มเกมถ้าเป็นเกม
+    if (id === "game1") startGame1();
+    else if (id === "game2") resetMatchGame();
+    else if (id === "game3") startCountGame();
+    else if (id === "game4") startTrueFalseGame();
+    updateCategoryLocks();
+  }
+
+  // อัพเดตสถานะล็อคของหมวด
   function updateCategoryLocks() {
-    const categoryCards = document.querySelectorAll("#categoryMenu .menu-card");
-    categoryCards.forEach(card => {
+    document.querySelectorAll("#categoryMenu .menu-card").forEach(card => {
       const cat = card.dataset.category;
       if (unlockedCategories[cat]) {
         card.classList.remove("locked");
@@ -440,7 +421,7 @@
     });
   }
 
-  // กดเลือกหมวด (ถ้าปลดล็อคแล้วเข้าไปหน้าได้)
+  // เลือกหมวดในเมนู
   document.getElementById("categoryMenu").addEventListener("click", e => {
     const card = e.target.closest(".menu-card");
     if (!card) return;
@@ -455,7 +436,7 @@
     else if (cat === "love") showPage("page6");
   });
 
-  // ตัวอย่างรูป (ใส่รูปจริงเองได้)
+  // ตัวอย่างรูป (เปลี่ยนได้)
   const bestPhotos = [
     { month: "ม.ค.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Jan" },
     { month: "ก.พ.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Feb" },
@@ -485,7 +466,6 @@
   ];
 
   function loadPhotos() {
-    // โหลด best photos
     const bestGrid = document.getElementById("bestGrid");
     bestGrid.innerHTML = "";
     bestPhotos.forEach(b => {
@@ -495,7 +475,6 @@
                        <div>${b.month}</div>`;
       bestGrid.appendChild(div);
     });
-    // โหลด funny
     const funnyGrid = document.getElementById("funnyGrid");
     funnyGrid.innerHTML = "";
     funnyPhotos.forEach(src => {
@@ -507,7 +486,6 @@
       img.style.userSelect = "none";
       funnyGrid.appendChild(img);
     });
-    // โหลด secret
     const secretGrid = document.getElementById("secretGrid");
     secretGrid.innerHTML = "";
     secretPhotos.forEach(src => {
@@ -519,7 +497,6 @@
       img.style.userSelect = "none";
       secretGrid.appendChild(img);
     });
-    // โหลด love
     const loveGrid = document.getElementById("loveGrid");
     loveGrid.innerHTML = "";
     lovePhotos.forEach(src => {
@@ -533,39 +510,20 @@
     });
   }
 
-  // เมื่อโหลดหน้าต่าง
   window.onload = () => {
     loadPhotos();
     loadGameMenu();
   };
 
-  // ========== เกมปลดล็อค ==========
+  // เกมปลดล็อค
 
-  // ข้อมูลเกม
   const games = [
-    {
-      id: "game1",
-      title: "เกมทายเลข",
-      unlockCategory: "best"
-    },
-    {
-      id: "game2",
-      title: "เกมจับคู่คำ",
-      unlockCategory: "funny"
-    },
-    {
-      id: "game3",
-      title: "เกมกดนับเลข",
-      unlockCategory: "secret"
-    },
-    {
-      id: "game4",
-      title: "เกมถูก-ผิด",
-      unlockCategory: "love"
-    }
+    { id: "game1", title: "เกมทายเลข", unlockCategory: "best" },
+    { id: "game2", title: "เกมจับคู่คำ", unlockCategory: "funny" },
+    { id: "game3", title: "เกมกดนับเลข", unlockCategory: "secret" },
+    { id: "game4", title: "เกมถูก-ผิด", unlockCategory: "love" }
   ];
 
-  // โหลดเมนูเกม
   const gameMenuGrid = document.getElementById("gameMenuGrid");
   function loadGameMenu() {
     gameMenuGrid.innerHTML = "";
@@ -592,13 +550,7 @@
     });
   }
 
-  // ปุ่มกลับสู่เมนูเกมในแต่ละหน้าเกม
-  document.getElementById("backToGameMenu1").onclick = () => showPage("page7");
-  document.getElementById("backToGameMenu2").onclick = () => showPage("page7");
-  document.getElementById("backToGameMenu3").onclick = () => showPage("page7");
-  document.getElementById("backToGameMenu4").onclick = () => showPage("page7");
-
-  // --- เกม 1: เกมทายเลข ---
+  // เกม 1: เกมทายเลข
   let secretNumber;
   function startGame1() {
     secretNumber = Math.floor(Math.random() * 100) + 1;
@@ -622,15 +574,8 @@
       msg.textContent = "เลขมากไป ลองใหม่!";
     }
   }
-  // เริ่มเกม1 ทุกครั้งที่เข้า
-  document.getElementById("game1").addEventListener("show", startGame1);
-  // เริ่มเกม1 ตอนเปิดหน้า
-  function enterGame1() {
-    showPage("game1");
-    startGame1();
-  }
 
-  // --- เกม 2: เกมจับคู่คำง่ายๆ ---
+  // เกม 2: เกมจับคู่คำง่ายๆ
   const matchWords = [
     { pair: ["แมว", "Cat"] },
     { pair: ["หมา", "Dog"] },
@@ -649,7 +594,6 @@
     wordsList.innerHTML = "";
     matchChoices.innerHTML = "";
 
-    // สุ่มคำแบบไม่ซ้ำ
     const words = [];
     matchWords.forEach(pairObj => {
       words.push(...pairObj.pair);
@@ -688,7 +632,6 @@
       li.style.backgroundColor = "#f7b6cc";
       selectedWord = null;
     } else {
-      // reset ทุกอัน
       document.querySelectorAll("#wordsList li").forEach(el => el.style.backgroundColor = "#f7b6cc");
       li.style.backgroundColor = "#d43f6f";
       selectedWord = word;
@@ -712,11 +655,11 @@
     }
   }
 
-  // --- เกม 3: เกมกดนับเลข ---
+  // เกม 3: เกมกดนับเลข
   let countTarget = 0;
   let countCurrent = 0;
   function startCountGame() {
-    countTarget = Math.floor(Math.random() * 10) + 5; // 5-14
+    countTarget = Math.floor(Math.random() * 10) + 5; 
     countCurrent = 0;
     document.getElementById("countTarget").textContent = countTarget;
     document.getElementById("countCurrent").textContent = countCurrent;
@@ -732,7 +675,7 @@
     }
   };
 
-  // --- เกม 4: เกมถูก-ผิด ---
+  // เกม 4: เกมถูก-ผิด
   const tfQuestions = [
     { q: "วันนี้เป็นวันครบรอบของเรา", a: true },
     { q: "เราจะเลิกกันเร็วๆนี้", a: false },
@@ -770,11 +713,6 @@
     }
   }
 
-  // เริ่มเกม2,3,4 ตอนเปิดหน้า
-  document.getElementById("game2").addEventListener("show", resetMatchGame);
-  document.getElementById("game3").addEventListener("show", startCountGame);
-  document.getElementById("game4").addEventListener("show", startTrueFalseGame);
-
   // ฟังก์ชันช่วย
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -782,17 +720,6 @@
       [array[i], array[j]] = [array[j], array[i]];
     }
   }
-
-  // เวลาเปลี่ยนหน้า ถ้าเป็นเกม เรียกฟังก์ชันเริ่มเกม
-  const originalShowPage = showPage;
-  showPage = function(id) {
-    originalShowPage(id);
-    if (id === "game1") startGame1();
-    else if (id === "game2") resetMatchGame();
-    else if (id === "game3") startCountGame();
-    else if (id === "game4") startTrueFalseGame();
-  };
-
 </script>
 </body>
 </html>
