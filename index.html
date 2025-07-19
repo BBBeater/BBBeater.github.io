@@ -427,4 +427,372 @@
   function updateCategoryLocks() {
     const categoryCards = document.querySelectorAll("#categoryMenu .menu-card");
     categoryCards.forEach(card => {
-      const
+      const cat = card.dataset.category;
+      if (unlockedCategories[cat]) {
+        card.classList.remove("locked");
+        card.querySelector("small").textContent = "🔓 ปลดล็อคแล้ว!";
+        card.style.cursor = "pointer";
+      } else {
+        card.classList.add("locked");
+        card.querySelector("small").textContent = "🔒 ต้องปลดล็อคก่อน";
+        card.style.cursor = "default";
+      }
+    });
+  }
+
+  // กดเลือกหมวด (ถ้าปลดล็อคแล้วเข้าไปหน้าได้)
+  document.getElementById("categoryMenu").addEventListener("click", e => {
+    const card = e.target.closest(".menu-card");
+    if (!card) return;
+    if (card.classList.contains("locked")) {
+      alert("ต้องปลดล็อคหมวดนี้ก่อนนะจ๊ะ 😊");
+      return;
+    }
+    const cat = card.dataset.category;
+    if (cat === "best") showPage("page3");
+    else if (cat === "funny") showPage("page4");
+    else if (cat === "secret") showPage("page5");
+    else if (cat === "love") showPage("page6");
+  });
+
+  // ตัวอย่างรูป (ใส่รูปจริงเองได้)
+  const bestPhotos = [
+    { month: "ม.ค.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Jan" },
+    { month: "ก.พ.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Feb" },
+    { month: "มี.ค.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Mar" },
+    { month: "เม.ย.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Apr" },
+    { month: "พ.ค.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=May" },
+    { month: "มิ.ย.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Jun" },
+    { month: "ก.ค.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Jul" },
+    { month: "ส.ค.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Aug" },
+    { month: "ก.ย.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Sep" },
+    { month: "ต.ค.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Oct" },
+    { month: "พ.ย.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Nov" },
+    { month: "ธ.ค.", img: "https://via.placeholder.com/130/f7b6cc/fff?text=Dec" },
+  ];
+  const funnyPhotos = [
+    "https://via.placeholder.com/140/f7b6cc/fff?text=Funny1",
+    "https://via.placeholder.com/140/f7b6cc/fff?text=Funny2",
+    "https://via.placeholder.com/140/f7b6cc/fff?text=Funny3",
+  ];
+  const secretPhotos = [
+    "https://via.placeholder.com/140/f7b6cc/fff?text=Secret1",
+    "https://via.placeholder.com/140/f7b6cc/fff?text=Secret2",
+  ];
+  const lovePhotos = [
+    "https://via.placeholder.com/140/f7b6cc/fff?text=Love1",
+    "https://via.placeholder.com/140/f7b6cc/fff?text=Love2",
+  ];
+
+  function loadPhotos() {
+    // โหลด best photos
+    const bestGrid = document.getElementById("bestGrid");
+    bestGrid.innerHTML = "";
+    bestPhotos.forEach(b => {
+      const div = document.createElement("div");
+      div.style.textAlign = "center";
+      div.innerHTML = `<img src="${b.img}" alt="Best ${b.month}" style="border-radius:15px; box-shadow: 0 0 10px #f48fb1; user-select:none;">
+                       <div>${b.month}</div>`;
+      bestGrid.appendChild(div);
+    });
+    // โหลด funny
+    const funnyGrid = document.getElementById("funnyGrid");
+    funnyGrid.innerHTML = "";
+    funnyPhotos.forEach(src => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "Funny";
+      img.style.borderRadius = "15px";
+      img.style.boxShadow = "0 0 10px #f48fb1";
+      img.style.userSelect = "none";
+      funnyGrid.appendChild(img);
+    });
+    // โหลด secret
+    const secretGrid = document.getElementById("secretGrid");
+    secretGrid.innerHTML = "";
+    secretPhotos.forEach(src => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "Secret";
+      img.style.borderRadius = "15px";
+      img.style.boxShadow = "0 0 10px #f48fb1";
+      img.style.userSelect = "none";
+      secretGrid.appendChild(img);
+    });
+    // โหลด love
+    const loveGrid = document.getElementById("loveGrid");
+    loveGrid.innerHTML = "";
+    lovePhotos.forEach(src => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "Love";
+      img.style.borderRadius = "15px";
+      img.style.boxShadow = "0 0 10px #f48fb1";
+      img.style.userSelect = "none";
+      loveGrid.appendChild(img);
+    });
+  }
+
+  // เมื่อโหลดหน้าต่าง
+  window.onload = () => {
+    loadPhotos();
+    loadGameMenu();
+  };
+
+  // ========== เกมปลดล็อค ==========
+
+  // ข้อมูลเกม
+  const games = [
+    {
+      id: "game1",
+      title: "เกมทายเลข",
+      unlockCategory: "best"
+    },
+    {
+      id: "game2",
+      title: "เกมจับคู่คำ",
+      unlockCategory: "funny"
+    },
+    {
+      id: "game3",
+      title: "เกมกดนับเลข",
+      unlockCategory: "secret"
+    },
+    {
+      id: "game4",
+      title: "เกมถูก-ผิด",
+      unlockCategory: "love"
+    }
+  ];
+
+  // โหลดเมนูเกม
+  const gameMenuGrid = document.getElementById("gameMenuGrid");
+  function loadGameMenu() {
+    gameMenuGrid.innerHTML = "";
+    games.forEach(g => {
+      const div = document.createElement("div");
+      div.className = "menu-card";
+      div.dataset.gameId = g.id;
+
+      const img = document.createElement("img");
+      img.alt = g.title;
+      img.src = "https://via.placeholder.com/80/f7b6cc/fff?text=" + encodeURIComponent(g.title.split(" ")[0]);
+      div.appendChild(img);
+
+      const title = document.createElement("div");
+      title.className = "title";
+      title.textContent = g.title;
+      div.appendChild(title);
+
+      div.onclick = () => {
+        showPage(g.id);
+      };
+
+      gameMenuGrid.appendChild(div);
+    });
+  }
+
+  // ปุ่มกลับสู่เมนูเกมในแต่ละหน้าเกม
+  document.getElementById("backToGameMenu1").onclick = () => showPage("page7");
+  document.getElementById("backToGameMenu2").onclick = () => showPage("page7");
+  document.getElementById("backToGameMenu3").onclick = () => showPage("page7");
+  document.getElementById("backToGameMenu4").onclick = () => showPage("page7");
+
+  // --- เกม 1: เกมทายเลข ---
+  let secretNumber;
+  function startGame1() {
+    secretNumber = Math.floor(Math.random() * 100) + 1;
+    document.getElementById("gameMessage").textContent = "";
+    document.getElementById("guessInput").value = "";
+  }
+  function checkGuess() {
+    const guess = Number(document.getElementById("guessInput").value);
+    const msg = document.getElementById("gameMessage");
+    if (!guess || guess < 1 || guess > 100) {
+      msg.textContent = "กรุณาใส่เลข 1-100 นะจ๊ะ";
+      return;
+    }
+    if (guess === secretNumber) {
+      msg.textContent = "เย้! ถูกต้องแล้ว 🎉 หมวดนี้ปลดล็อคแล้ว!";
+      unlockedCategories.best = true;
+      updateCategoryLocks();
+    } else if (guess < secretNumber) {
+      msg.textContent = "เลขน้อยไป ลองใหม่!";
+    } else {
+      msg.textContent = "เลขมากไป ลองใหม่!";
+    }
+  }
+  // เริ่มเกม1 ทุกครั้งที่เข้า
+  document.getElementById("game1").addEventListener("show", startGame1);
+  // เริ่มเกม1 ตอนเปิดหน้า
+  function enterGame1() {
+    showPage("game1");
+    startGame1();
+  }
+
+  // --- เกม 2: เกมจับคู่คำง่ายๆ ---
+  const matchWords = [
+    { pair: ["แมว", "Cat"] },
+    { pair: ["หมา", "Dog"] },
+    { pair: ["ปลา", "Fish"] },
+    { pair: ["นก", "Bird"] },
+  ];
+  let selectedWord = null;
+  let matchedCount = 0;
+
+  function resetMatchGame() {
+    matchedCount = 0;
+    selectedWord = null;
+    document.getElementById("matchResult").textContent = "";
+    const wordsList = document.getElementById("wordsList");
+    const matchChoices = document.getElementById("matchChoices");
+    wordsList.innerHTML = "";
+    matchChoices.innerHTML = "";
+
+    // สุ่มคำแบบไม่ซ้ำ
+    const words = [];
+    matchWords.forEach(pairObj => {
+      words.push(...pairObj.pair);
+    });
+    shuffle(words);
+
+    words.forEach(word => {
+      const li = document.createElement("li");
+      li.textContent = word;
+      li.style.backgroundColor = "#f7b6cc";
+      li.style.padding = "8px 12px";
+      li.style.borderRadius = "12px";
+      li.style.marginBottom = "10px";
+      li.style.cursor = "pointer";
+      li.onclick = () => selectWord(li, word);
+      wordsList.appendChild(li);
+    });
+
+    words.forEach(word => {
+      const btn = document.createElement("button");
+      btn.textContent = word;
+      btn.style.backgroundColor = "#f48fb1";
+      btn.style.color = "white";
+      btn.style.border = "none";
+      btn.style.borderRadius = "15px";
+      btn.style.padding = "8px 16px";
+      btn.style.margin = "5px";
+      btn.style.cursor = "pointer";
+      btn.onclick = () => chooseMatch(btn, word);
+      matchChoices.appendChild(btn);
+    });
+  }
+
+  function selectWord(li, word) {
+    if (selectedWord === word) {
+      li.style.backgroundColor = "#f7b6cc";
+      selectedWord = null;
+    } else {
+      // reset ทุกอัน
+      document.querySelectorAll("#wordsList li").forEach(el => el.style.backgroundColor = "#f7b6cc");
+      li.style.backgroundColor = "#d43f6f";
+      selectedWord = word;
+    }
+  }
+
+  function chooseMatch(btn, word) {
+    if (!selectedWord) {
+      alert("กรุณาเลือกคำจากด้านบนก่อนนะ!");
+      return;
+    }
+    const pairObj = matchWords.find(p => p.pair.includes(selectedWord));
+    if (pairObj.pair.includes(word) && word !== selectedWord) {
+      document.getElementById("matchResult").textContent = "ถูกต้อง! 🎉";
+      matchedCount++;
+      unlockedCategories.funny = true;
+      updateCategoryLocks();
+      resetMatchGame();
+    } else {
+      document.getElementById("matchResult").textContent = "ผิดนะ ลองอีกครั้ง!";
+    }
+  }
+
+  // --- เกม 3: เกมกดนับเลข ---
+  let countTarget = 0;
+  let countCurrent = 0;
+  function startCountGame() {
+    countTarget = Math.floor(Math.random() * 10) + 5; // 5-14
+    countCurrent = 0;
+    document.getElementById("countTarget").textContent = countTarget;
+    document.getElementById("countCurrent").textContent = countCurrent;
+    document.getElementById("countMessage").textContent = "";
+  }
+  document.getElementById("countBtn").onclick = () => {
+    countCurrent++;
+    document.getElementById("countCurrent").textContent = countCurrent;
+    if (countCurrent === countTarget) {
+      document.getElementById("countMessage").textContent = "สำเร็จ! ปลดล็อคหมวดนี้แล้ว 🎉";
+      unlockedCategories.secret = true;
+      updateCategoryLocks();
+    }
+  };
+
+  // --- เกม 4: เกมถูก-ผิด ---
+  const tfQuestions = [
+    { q: "วันนี้เป็นวันครบรอบของเรา", a: true },
+    { q: "เราจะเลิกกันเร็วๆนี้", a: false },
+    { q: "เราชอบกินเค้กร่วมกัน", a: true },
+    { q: "ฉันไม่รักเธอเลย", a: false }
+  ];
+  let tfIndex = 0;
+  function startTrueFalseGame() {
+    tfIndex = 0;
+    document.getElementById("tfMessage").textContent = "";
+    showTfQuestion();
+  }
+  function showTfQuestion() {
+    if (tfIndex >= tfQuestions.length) {
+      document.getElementById("tfMessage").textContent = "ยินดีด้วย! ปลดล็อคหมวดนี้แล้ว 🎉";
+      unlockedCategories.love = true;
+      updateCategoryLocks();
+      return;
+    }
+    document.getElementById("tfQuestion").textContent = tfQuestions[tfIndex].q;
+  }
+  document.getElementById("trueBtn").onclick = () => checkTfAnswer(true);
+  document.getElementById("falseBtn").onclick = () => checkTfAnswer(false);
+  function checkTfAnswer(ans) {
+    const msg = document.getElementById("tfMessage");
+    if (ans === tfQuestions[tfIndex].a) {
+      msg.textContent = "ถูกต้อง!";
+      tfIndex++;
+      setTimeout(() => {
+        msg.textContent = "";
+        showTfQuestion();
+      }, 800);
+    } else {
+      msg.textContent = "ผิด! ลองใหม่";
+    }
+  }
+
+  // เริ่มเกม2,3,4 ตอนเปิดหน้า
+  document.getElementById("game2").addEventListener("show", resetMatchGame);
+  document.getElementById("game3").addEventListener("show", startCountGame);
+  document.getElementById("game4").addEventListener("show", startTrueFalseGame);
+
+  // ฟังก์ชันช่วย
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  // เวลาเปลี่ยนหน้า ถ้าเป็นเกม เรียกฟังก์ชันเริ่มเกม
+  const originalShowPage = showPage;
+  showPage = function(id) {
+    originalShowPage(id);
+    if (id === "game1") startGame1();
+    else if (id === "game2") resetMatchGame();
+    else if (id === "game3") startCountGame();
+    else if (id === "game4") startTrueFalseGame();
+  };
+
+</script>
+</body>
+</html>
