@@ -471,8 +471,8 @@
     bestPhotos.forEach(b => {
       const div = document.createElement("div");
       div.style.textAlign = "center";
-      div.innerHTML = <img src="${b.img}" alt="Best ${b.month}" style="border-radius:15px; box-shadow: 0 0 10px #f48fb1; user-select:none;">
-                       <div>${b.month}</div>;
+      div.innerHTML = `<img src="${b.img}" alt="Best ${b.month}" style="border-radius:15px; box-shadow: 0 0 10px #f48fb1; user-select:none;">
+                       <div>${b.month}</div>`;
       bestGrid.appendChild(div);
     });
     const funnyGrid = document.getElementById("funnyGrid");
