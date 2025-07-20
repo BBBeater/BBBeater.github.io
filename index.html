@@ -1,792 +1,192 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="th">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Happy Anniversary - หน้าแยก + เกม</title>
-<link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
-<style>
-  /* --- สไตล์เดิมที่คุณชอบ (เป๊ะ ๆ) --- */
-  body {
-    font-family: 'Itim', cursive;
-    background: linear-gradient(135deg, #ffd6e8, #fff0f5);
-    color: #5e2b45;
-    margin: 0; padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
-  .container {
-    width: 95vw;
-    max-width: 600px;
-    background: white;
-    border-radius: 25px;
-    box-shadow: 0 0 25px #ffb6c1;
-    padding: 35px 25px 40px;
-    text-align: center;
-    box-sizing: border-box;
-    position: relative;
-  }
-  h1, h2 {
-    color: #d43f6f;
-    margin-bottom: 15px;
-  }
-  p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    line-height: 1.4;
-  }
-  input[type="password"], input[type="number"] {
-    font-family: 'Itim', cursive;
-    font-size: 20px;
-    padding: 10px 14px;
-    width: 130px;
-    border: 2px solid #ffb6c1;
-    border-radius: 12px;
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  button {
-    background-color: #f48fb1;
-    border: none;
-    color: white;
-    font-size: 18px;
-    padding: 12px 28px;
-    border-radius: 20px;
-    cursor: pointer;
-    margin: 0 10px;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 10px rgba(244,143,177,0.5);
-  }
-  button:hover {
-    background-color: #d43f6f;
-  }
-  .buttons {
-    display: flex;
-    justify-content: center;
-    margin-top: 25px;
-    gap: 15px;
-  }
-  .hidden {
-    display: none;
-  }
-  .photo-placeholder {
-    width: 100%;
-    max-width: 420px;
-    height: 320px;
-    background: #fff0f8;
-    border: 3px dashed #ff8ab8;
-    border-radius: 25px;
-    margin: 0 auto 40px;
-    box-shadow: 0 0 15px #ffb6c1;
-    line-height: 320px;
-    color: #ff8ab8;
-    font-size: 1.3rem;
-  }
-  #error {
-    color: #d43f6f;
-    font-weight: bold;
-    margin-top: 8px;
-  }
-  /* Menu grid */
-  .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
-    gap: 20px;
-    justify-items: center;
-  }
-  .menu-card {
-    background: #fff0f8;
-    border-radius: 20px;
-    box-shadow: 0 0 12px #ffb6c1;
-    cursor: pointer;
-    padding: 15px;
-    width: 140px;
-    transition: transform 0.3s ease;
-    user-select: none;
-  }
-  .menu-card.locked {
-    cursor: default;
-    opacity: 0.5;
-  }
-  .menu-card:hover:not(.locked) {
-    transform: scale(1.07);
-    box-shadow: 0 0 20px #d43f6f;
-  }
-  .menu-card img {
-    width: 80px;
-    height: 80px;
-    border-radius: 15px;
-    margin-bottom: 10px;
-    object-fit: cover;
-    user-select: none;
-  }
-  .menu-card .title {
-    font-weight: bold;
-    color: #d43f6f;
-  }
-  #gameMessage, #puzzleMessage {
-    font-weight: bold;
-    color: #d43f6f;
-    min-height: 28px;
-    margin-top: 15px;
-  }
-  /* Game input */
-  #guessInput {
-    max-width: 130px;
-    margin-bottom: 10px;
-  }
-  /* Back to game menu button */
-  .back-game-menu-btn {
-    background: #f8bbd0;
-    color: #a6265a;
-    border-radius: 25px;
-    border: none;
-    padding: 8px 22px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-bottom: 15px;
-    box-shadow: 0 3px 8px rgba(248,187,208,0.6);
-    transition: background-color 0.3s ease;
-  }
-  .back-game-menu-btn:hover {
-    background: #d43f6f;
-    color: white;
-  }
-  /* Puzzle styles */
-  #puzzle {
-    width: 100%;
-    max-width: 420px;
-    height: 420px;
-    margin: 0 auto 20px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 6px;
-    user-select: none;
-  }
-  .piece {
-    background-color: #fff0f8;
-    border: 2px solid #ff8ab8;
-    border-radius: 18px;
-    box-shadow: 0 0 8px #ffb6c1;
-    cursor: grab;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    color: #d43f6f;
-    font-weight: bold;
-    position: relative;
-    overflow: hidden;
-  }
-  .piece.dragging {
-    opacity: 0.7;
-    cursor: grabbing;
-  }
-  .piece img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 18px;
-    pointer-events: none;
-    user-select: none;
-  }
-  /* Responsive */
-  @media (max-width: 480px) {
-    .container {
-      padding: 25px 15px 30px;
-    }
-    .photo-placeholder {
-      height: 280px;
-    }
-    #puzzle {
-      height: 300px;
-      max-width: 300px;
-      gap: 4px;
-    }
-    .menu-card {
-      width: 120px;
-    }
-    .menu-card img {
-      width: 70px;
-      height: 70px;
-    }
-    input[type="password"], input[type="number"] {
-      width: 100px;
-      font-size: 18px;
-      padding: 8px 12px;
-    }
-  }
-  
-  /* Lightbox overlay */
-  #lightboxOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(95, 35, 70, 0.9);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  #lightboxOverlay img {
-    max-width: 90vw;
-    max-height: 90vh;
-    border-radius: 20px;
-    box-shadow: 0 0 25px #ffb6c1;
-    cursor: zoom-out;
-    user-select: none;
-  }
-
-  /* --- สไลด์โชว์หน้า page1 --- */
-  #slideShow {
-    position: relative;
-    width: 100%;
-    max-width: 420px;
-    height: 320px;
-    margin: 0 auto 40px;
-    border-radius: 25px;
-    overflow: hidden;
-    box-shadow: 0 0 15px #ffb6c1;
-  }
-  #slideShow img {
-    width: 100%;
-    height: 320px;
-    object-fit: cover;
-    position: absolute;
-    top: 0; left: 0;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    border-radius: 25px;
-    user-select: none;
-  }
-  #slideShow img.active {
-    opacity: 1;
-    position: relative;
-  }
-  /* ปุ่มลูกศรเลื่อนสไลด์ */
-  .slide-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(244,143,177,0.9);
-    border: none;
-    color: white;
-    font-size: 36px;
-    padding: 8px 16px;
-    border-radius: 50%;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.3s ease;
-    z-index: 10;
-  }
-  .slide-btn:hover {
-    background: #d43f6f;
-  }
-  #prevBtn {
-    left: 10px;
-  }
-  #nextBtn {
-    right: 10px;
-  }
-</style>
-</head>
-<body>
-<div class="container">
-
-  <!-- หน้า 0: ใส่รหัส -->
-  <div id="page0">
-    <h1>🌸 ยินดีต้อนรับ 🌸</h1>
-    <p>กรอกรหัสผ่านเพื่อเข้าเว็บลับของเรา 💖</p>
-    <input type="password" id="password" placeholder="ใส่รหัสรัก..." />
-    <br />
-    <button onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
-    <p id="error"></p>
-  </div>
-
-  <!-- หน้า 1: วันครบรอบ (สไลด์โชว์รูป) -->
-  <div id="page1" class="hidden">
-    <h1>วันนี้วันครบรอบของเรานะะ 💕</h1>
-    <div id="slideShow">
-      <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=600&q=80" alt="มกราคม" class="active" />
-      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="กุมภาพันธ์" />
-      <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80" alt="มีนาคม" />
-      <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80" alt="เมษายน" />
-    </div>
-    <button id="prevBtn" class="slide-btn" aria-label="Previous Slide">&#10094;</button>
-    <button id="nextBtn" class="slide-btn" aria-label="Next Slide">&#10095;</button>
-    <div class="buttons">
-      <button onclick="showPage('page0')">ย้อนกลับ</button>
-      <button onclick="showPage('page2')">ถัดไป</button>
-    </div>
-  </div>
-
-  <!-- หน้า 2: เมนูเลือกหมวด -->
-  <div id="page2" class="hidden">
-    <h2>เลือกหมวดที่อยากดู 💌</h2>
-    <div class="menu-grid" id="categoryMenu">
-      <div class="menu-card locked" data-category="best">
-        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Best" alt="Best of Month" />
-        <div class="title">The Best ของทุกเดือน</div>
-        <small>🔒 ต้องปลดล็อคก่อน</small>
-      </div>
-      <div class="menu-card locked" data-category="funny">
-        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Funny" alt="Funny" />
-        <div class="title">รูปที่ฮาที่สุดของเรา</div>
-        <small>🔒 ต้องปลดล็อคก่อน</small>
-      </div>
-      <div class="menu-card locked" data-category="secret">
-        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Secret" alt="Secret" />
-        <div class="title">รูปแอบถ่าย</div>
-        <small>🔒 ต้องปลดล็อคก่อน</small>
-      </div>
-      <div class="menu-card locked" data-category="love">
-        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Love" alt="Love" />
-        <div class="title">รูปที่ชอบกันทั้งคู่</div>
-        <small>🔒 ต้องปลดล็อคก่อน</small>
-      </div>
-    </div>
-    <div class="buttons">
-      <button onclick="showPage('page1')">ย้อนกลับ</button>
-      <button onclick="showPage('page7')">ไปเล่นเกมปลดล็อค 🔓</button>
-    </div>
-  </div>
-
-  <!-- หน้า 3: The Best ของทุกเดือน (ปฏิทิน) -->
-  <div id="page3" class="hidden">
-    <h2>The Best ของทุกเดือน</h2>
-    <p>นี่คือรูปที่ดีที่สุดของแต่ละเดือน 💖</p>
-    <div class="menu-grid" id="bestGrid"></div>
-    <div class="buttons">
-      <button onclick="showPage('page2')">ย้อนกลับ</button>
-    </div>
-  </div>
-
-  <!-- หน้า 4: รูปที่ฮาที่สุด -->
-  <div id="page4" class="hidden">
-    <h2>รูปที่ฮาที่สุดของเรา 😂</h2>
-    <div class="menu-grid" id="funnyGrid"></div>
-    <div class="buttons">
-      <button onclick="showPage('page2')">ย้อนกลับ</button>
-    </div>
-  </div>
-
-  <!-- หน้า 5: รูปแอบถ่าย -->
-  <div id="page5" class="hidden">
-    <h2>รูปแอบถ่าย 📸</h2>
-    <div class="menu-grid" id="secretGrid"></div>
-    <div class="buttons">
-      <button onclick="showPage('page2')">ย้อนกลับ</button>
-    </div>
-  </div>
-
-  <!-- หน้า 6: รูปที่ชอบกันทั้งคู่ -->
-  <div id="page6" class="hidden">
-    <h2>รูปที่ชอบกันทั้งคู่ 💞</h2>
-    <div class="menu-grid" id="loveGrid"></div>
-    <div class="buttons">
-      <button onclick="showPage('page2')">ย้อนกลับ</button>
-    </div>
-  </div>
-
-  <!-- หน้า 7: เมนูเกมปลดล็อค -->
-  <div id="page7" class="hidden">
-    <h2>🎮 เลือกเกมเล่นเพื่อปลดล็อคหมวด! 🎮</h2>
-    <div class="menu-grid" id="gameMenuGrid">
-      <div class="menu-card" data-game="game1">
-        <img src="https://via.placeholder.com/80/f48fb1/fff?text=เกม1" alt="เกมทายเลข" />
-        <div class="title">เกมทายเลข</div>
-      </div>
-      <div class="menu-card" data-game="game2">
-        <img src="https://via.placeholder.com/80/f48fb1/fff?text=เกม2" alt="เกมหาไพ่หัวใจ" />
-        <div class="title">เกมหาไพ่หัวใจ</div>
-      </div>
-      <div class="menu-card" data-game="game3">
-        <img src="https://via.placeholder.com/80/f48fb1/fff?text=เกม3" alt="เกมกาชา" />
-        <div class="title">เกมกาชา</div>
-      </div>
-      <div class="menu-card" data-game="game4">
-        <img src="https://via.placeholder.com/80/f48fb1/fff?text=เกม4" alt="เกมชู้ตหัวใจลงห่วง" />
-        <div class="title">เกมชู้ตหัวใจลงห่วง</div>
-      </div>
-    </div>
-    <div class="buttons">
-      <button onclick="showPage('page2')">ย้อนกลับ</button>
-    </div>
-  </div>
-
-  <!-- เกม1: เกมทายเลข -->
-  <div id="game1" class="hidden">
-    <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
-    <h2>เกมทายเลข 1-100</h2>
-    <p>ลองทายเลขในใจ แล้วกดทาย! ฉันจะบอกว่าตัวเลขสูงหรือต่ำกว่าคำตอบ</p>
-    <input type="number" id="guessInput" min="1" max="100" placeholder="ใส่เลขที่นี่" />
-    <button id="guessBtn" onclick="checkGuess()">ทาย!</button>
-    <div id="gameMessage"></div>
-  </div>
-
-  <!-- เกม2: เกมหาไพ่หัวใจ -->
-  <div id="game2" class="hidden"></div>
-
-  <!-- เกม3: เกมกาชา -->
-  <div id="game3" class="hidden"></div>
-
-  <!-- เกม4: เกมชู้ตหัวใจลงห่วง -->
-  <div id="game4" class="hidden"></div>
-
-</div>
-
-<!-- Lightbox รูปขยาย -->
-<div id="lightboxOverlay" onclick="closeLightbox()">
-  <img src="" alt="ขยายรูป" id="lightboxImage" />
-</div>
-
-<script>
-  // --- ข้อมูลรูปในแต่ละหมวด ---
-  const photos = {
-    best: [
-      { src: "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=400&q=80", alt: "มกราคม" },
-      { src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80", alt: "กุมภาพันธ์" },
-      { src: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=80", alt: "มีนาคม" }
-    ],
-    funny: [
-      { src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=80", alt: "ฮาที่สุด 1" },
-      { src: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80", alt: "ฮาที่สุด 2" }
-    ],
-    secret: [
-      { src: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=400&q=80", alt: "แอบถ่าย 1" },
-      { src: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=400&q=80", alt: "แอบถ่าย 2" }
-    ],
-    love: [
-      { src: "https://images.unsplash.com/photo-1463107971871-fbac9ddb920f?auto=format&fit=crop&w=400&q=80", alt: "รักเรา 1" },
-      { src: "https://images.unsplash.com/photo-1434494878577-86c23a4476d8?auto=format&fit=crop&w=400&q=80", alt: "รักเรา 2" }
-    ]
-  };
-
-  // สถานะปลดล็อคหมวด
-  const unlocked = {
-    best: false,
-    funny: false,
-    secret: false,
-    love: false
-  };
-
-  // --- ฟังก์ชันแสดงหน้า ---
-  function showPage(pageId) {
-    // ซ่อนหน้าทั้งหมด
-    const pages = document.querySelectorAll('.container > div');
-    pages.forEach(p => p.classList.add('hidden'));
-    // แสดงหน้าที่ต้องการ
-    document.getElementById(pageId).classList.remove('hidden');
-
-    // แสดงเมนูปลดล็อค
-    if (pageId === 'page2') {
-      updateCategoryMenu();
-    }
-
-    // แสดงรูปในหมวด
-    if (pageId === 'page3') {
-      showPhotosGrid('bestGrid', photos.best);
-    } else if (pageId === 'page4') {
-      showPhotosGrid('funnyGrid', photos.funny);
-    } else if (pageId === 'page5') {
-      showPhotosGrid('secretGrid', photos.secret);
-    } else if (pageId === 'page6') {
-      showPhotosGrid('loveGrid', photos.love);
-    }
-  }
-
-  // แสดงรูปใน grid
-  function showPhotosGrid(gridId, photoArray) {
-    const grid = document.getElementById(gridId);
-    grid.innerHTML = '';
-    photoArray.forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'menu-card';
-      card.innerHTML = `<img src="${p.src}" alt="${p.alt}" loading="lazy" />
-                        <div class="title">${p.alt}</div>`;
-      card.onclick = () => openLightbox(p.src, p.alt);
-      grid.appendChild(card);
-    });
-  }
-
-  // อัพเดตเมนูหมวด (ล็อค/ปลดล็อค)
-  function updateCategoryMenu() {
-    const menuCards = document.querySelectorAll('#categoryMenu .menu-card');
-    menuCards.forEach(card => {
-      const cat = card.dataset.category;
-      if (unlocked[cat]) {
-        card.classList.remove('locked');
-        card.querySelector('small').textContent = '🔓 ปลดล็อคแล้ว';
-        card.onclick = () => {
-          if (cat === 'best') showPage('page3');
-          else if (cat === 'funny') showPage('page4');
-          else if (cat === 'secret') showPage('page5');
-          else if (cat === 'love') showPage('page6');
-        };
-      } else {
-        card.classList.add('locked');
-        card.querySelector('small').textContent = '🔒 ต้องปลดล็อคก่อน';
-        card.onclick = null;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Happy Anniversary - หน้าแยก + เกม</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Kanit', sans-serif;
+        background: linear-gradient(135deg, #ffe6f0, #fff8dc);
+        overflow-x: hidden;
       }
-    });
-  }
-
-  // --- รหัสผ่าน ---
-  function checkPassword() {
-    const pwInput = document.getElementById('password');
-    const error = document.getElementById('error');
-    if (pwInput.value === '0000') {
-      error.textContent = '';
-      showPage('page1');
-      startSlideShow();
-    } else {
-      error.textContent = 'รหัสผ่านไม่ถูกต้อง ลองใหม่อีกครั้งนะคะ';
-    }
-  }
-
-  // --- สไลด์โชว์หน้า page1 ---
-  let slideIndex = 0;
-  const slides = document.querySelectorAll('#slideShow img');
-  function showSlide(n) {
-    slides.forEach((slide, i) => {
-      slide.classList.toggle('active', i === n);
-    });
-  }
-  function startSlideShow() {
-    slideIndex = 0;
-    showSlide(slideIndex);
-  }
-  document.getElementById('prevBtn').addEventListener('click', () => {
-    slideIndex = (slideIndex - 1 + slides.length) % slides.length;
-    showSlide(slideIndex);
-  });
-  document.getElementById('nextBtn').addEventListener('click', () => {
-    slideIndex = (slideIndex + 1) % slides.length;
-    showSlide(slideIndex);
-  });
-
-  // --- Lightbox ---
-  function openLightbox(src, alt) {
-    const overlay = document.getElementById('lightboxOverlay');
-    const img = document.getElementById('lightboxImage');
-    img.src = src;
-    img.alt = alt;
-    overlay.style.display = 'flex';
-  }
-  function closeLightbox() {
-    document.getElementById('lightboxOverlay').style.display = 'none';
-  }
-
-  // --- เกมปลดล็อค --- //
-  // ปลดล็อคหมวดเมื่อชนะเกม
-  function unlockCategory(cat) {
-    if (!unlocked[cat]) {
-      unlocked[cat] = true;
-      alert(`🎉 ยินดีด้วย! คุณปลดล็อคหมวด "${cat.toUpperCase()}" เรียบร้อยแล้ว!`);
-      updateCategoryMenu();
-    }
-  }
-
-  // สลับหน้าเกมเมื่อคลิกเมนูเกม
-  document.querySelectorAll('#gameMenuGrid .menu-card').forEach(card => {
-    card.addEventListener('click', () => {
-      if (card.dataset.game) {
-        initGame(card.dataset.game);
-        showPage(card.dataset.game);
+      h1, h2, h3 {
+        color: #ff5e99;
       }
-    });
-  });
-
-  // --- เกม1: เกมทายเลข 1-100 ---
-  let secretNumber;
-
-  function initGame(gameId) {
-    if (gameId === "game1") {
-      secretNumber = Math.floor(Math.random() * 100) + 1;
-      document.getElementById('gameMessage').textContent = "";
-      document.getElementById('guessInput').value = "";
-    } else if (gameId === "game2") {
-      initCardGame();
-    } else if (gameId === "game3") {
-      initGachaGame();
-    } else if (gameId === "game4") {
-      initShootGame();
-    }
-  }
-
-  function checkGuess() {
-    const guessInput = document.getElementById('guessInput');
-    const guess = parseInt(guessInput.value);
-    const message = document.getElementById('gameMessage');
-    if (isNaN(guess) || guess < 1 || guess > 100) {
-      message.textContent = "กรุณาใส่เลข 1-100 เท่านั้นนะ";
-      return;
-    }
-    if (guess === secretNumber) {
-      message.textContent = "🎉 ถูกต้อง! คุณปลดล็อคหมวด The Best แล้ว!";
-      unlockCategory('best');
-    } else if (guess < secretNumber) {
-      message.textContent = "เลขน้อยไป ลองใหม่!";
-    } else {
-      message.textContent = "เลขมากไป ลองใหม่!";
-    }
-  }
-
-  // --- เกม2: เกมหาไพ่หัวใจ ---
-  let cards = [];
-  let shuffledCards = [];
-  let selectedCardIndex = null;
-  let shuffling = false;
-
-  function initCardGame() {
-    const container = document.getElementById('game2');
-    container.innerHTML = `
-      <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
-      <h2>เกมหาไพ่หัวใจ</h2>
-      <p>จำตำแหน่งไพ่หัวใจ 3 ใบนี้ให้ดี แล้วดูไพ่ที่สลับกัน หลังจากนั้นเลือกตำแหน่งไพ่หัวใจที่ถูกต้อง</p>
-      <div id="cardContainer" style="display:flex;justify-content:center;gap:15px;margin:20px 0;"></div>
-      <button id="startCardGameBtn" style="background:#d43f6f;color:white;padding:10px 24px;border:none;border-radius:20px;cursor:pointer;">เริ่มสลับไพ่</button>
-      <div id="cardMessage" style="color:#d43f6f;font-weight:bold;margin-top:15px;"></div>
-    `;
-
-    cards = ["♡", "♡", "♡", "♢", "♢"]; // 3 หัวใจ ♡, 2 เพชร ♢
-    shuffledCards = [...cards];
-    selectedCardIndex = null;
-    shuffling = false;
-
-    showCards();
-
-    document.getElementById('startCardGameBtn').onclick = startShuffle;
-  }
-
-  function showCards() {
-    const cardContainer = document.getElementById('cardContainer');
-    cardContainer.innerHTML = "";
-    shuffledCards.forEach((card, i) => {
-      const cardDiv = document.createElement('div');
-      cardDiv.textContent = card;
-      cardDiv.style.fontSize = '48px';
-      cardDiv.style.width = '60px';
-      cardDiv.style.height = '80px';
-      cardDiv.style.border = '2px solid #d43f6f';
-      cardDiv.style.borderRadius = '12px';
-      cardDiv.style.display = 'flex';
-      cardDiv.style.justifyContent = 'center';
-      cardDiv.style.alignItems = 'center';
-      cardDiv.style.cursor = shuffling ? 'default' : 'pointer';
-      cardDiv.dataset.index = i;
-      cardDiv.title = shuffling ? '' : 'คลิกเลือกไพ่ใบนี้';
-
-      cardDiv.onclick = () => {
-        if (shuffling) return;
-        selectedCardIndex = i;
-        checkCardChoice();
-      };
-
-      cardContainer.appendChild(cardDiv);
-    });
-  }
-
-  function startShuffle() {
-    if (shuffling) return;
-    shuffling = true;
-    document.getElementById('cardMessage').textContent = "กำลังสลับไพ่...";
-    let shuffleCount = 0;
-    const maxShuffle = 10;
-
-    const shuffleInterval = setInterval(() => {
-      shuffleCount++;
-      for (let i = shuffledCards.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledCards[i], shuffledCards[j]] = [shuffledCards[j], shuffledCards[i]];
+      .container {
+        text-align: center;
+        padding: 2rem;
+        animation: fadeIn 1s ease-in-out;
       }
-      showCards();
-
-      if (shuffleCount >= maxShuffle) {
-        clearInterval(shuffleInterval);
-        shuffling = false;
-        document.getElementById('cardMessage').textContent = "สลับไพ่เสร็จแล้ว! กรุณาเลือกตำแหน่งไพ่หัวใจที่ถูกต้อง";
+      .game-card {
+        background: #fffafc;
+        border-radius: 2rem;
+        box-shadow: 0 0 15px rgba(255, 182, 193, 0.3);
+        padding: 2rem;
+        margin: 2rem auto;
+        max-width: 400px;
+        transition: transform 0.3s ease;
       }
-    }, 400);
-  }
-
-  function checkCardChoice() {
-    const message = document.getElementById('cardMessage');
-    if (shuffledCards[selectedCardIndex] === "♡") {
-      message.textContent = "🎉 ถูกต้อง! คุณปลดล็อคหมวด The Funny แล้ว!";
-      unlockCategory('funny');
-      showPage('page7');
-    } else {
-      message.textContent = "ผิด! ลองใหม่อีกครั้งนะ";
-    }
-  }
-
-  // --- เกม3: เกมกาชา ---
-  let gachaStars = 5; // ดาวสูงสุด
-  function initGachaGame() {
-    const container = document.getElementById('game3');
-    container.innerHTML = `
-      <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
-      <h2>เกมกาชา</h2>
-      <p>กดกาชาสุ่มตัวละครระดับ 1-5 ดาว เพื่อปลดล็อครูปหมวด Secret</p>
-      <button id="gachaBtn" style="background:#d43f6f;color:white;padding:12px 28px;border:none;border-radius:20px;cursor:pointer;">กาชาเลย!</button>
-      <div id="gachaResult" style="font-size: 32px; margin-top: 30px; font-weight: bold; color:#d43f6f;"></div>
-    `;
-
-    document.getElementById('gachaBtn').onclick = () => {
-      // ความน่าจะเป็นโดยประมาณ (1ดาว 40%, 2ดาว 30%, 3ดาว 15%, 4ดาว 10%, 5ดาว 5%)
-      const rand = Math.random();
-      let star = 1;
-      if (rand < 0.05) star = 5;
-      else if (rand < 0.15) star = 4;
-      else if (rand < 0.30) star = 3;
-      else if (rand < 0.60) star = 2;
-      else star = 1;
-
-      const resultDiv = document.getElementById('gachaResult');
-      resultDiv.textContent = `⭐️⭐️⭐️⭐️⭐️`.slice(0, star) + ` (ระดับ ${star} ดาว)`;
-
-      if (star >= 4) {
-        unlockCategory('secret');
+      .game-card:hover {
+        transform: scale(1.03);
       }
-    };
-  }
+      button {
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        background: linear-gradient(135deg, #ffa5c2, #ffe6b5);
+        border: none;
+        border-radius: 999px;
+        cursor: pointer;
+        color: #fff;
+        box-shadow: 0 5px 15px rgba(255, 105, 135, 0.3);
+        transition: all 0.3s ease;
+      }
+      button:hover {
+        transform: scale(1.05);
+        background: linear-gradient(135deg, #ff7ba9, #ffdf7b);
+      }
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      .modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff8fc;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        z-index: 100;
+        display: none;
+      }
+      .modal.show {
+        display: block;
+        animation: popIn 0.4s ease;
+      }
+      @keyframes popIn {
+        0% { transform: scale(0.7) translate(-50%, -50%); opacity: 0; }
+        100% { transform: scale(1) translate(-50%, -50%); opacity: 1; }
+      }
+      .confetti {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>มินิเกมสุ่มหัวใจ 💖</h1>
+      <div class="game-card">
+        <p>ยิงหัวใจเข้าเป้าเพื่อปลดล็อครูป!</p>
+        <canvas id="shootingGame" width="300" height="300" style="background: #fff0f5; border-radius: 1rem;"></canvas>
+        <button onclick="startGame()">เริ่มเล่น</button>
+      </div>
+    </div>
 
-  // --- เกม4: เกมชู้ตหัวใจลงห่วง ---
-  let shootScore = 0;
-  const shootTarget = 9;
+    <div class="modal" id="successModal">
+      <h2>สำเร็จแล้ว~!</h2>
+      <p>ปลดล็อคภาพเรียบร้อยแล้ว 💗</p>
+      <button onclick="closeModal()">เย่!</button>
+    </div>
 
-  function initShootGame() {
-    const container = document.getElementById('game4');
-    shootScore = 0;
-    container.innerHTML = `
-      <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
-      <h2>เกมชู้ตหัวใจลงห่วง</h2>
-      <p>ยิงหัวใจลงห่วงให้ครบ 9 ครั้งเพื่อปลดล็อครูปหมวด Love</p>
-      <button id="shootBtn" style="background:#d43f6f;color:white;padding:12px 28px;border:none;border-radius:20px;cursor:pointer;">ยิงหัวใจ!</button>
-      <div id="shootMessage" style="font-size: 24px; margin-top: 25px; font-weight: bold; color:#d43f6f;">ยิงได้ 0 / 9</div>
-    `;
-    document.getElementById('shootBtn').onclick = shootHeart;
-  }
+    <canvas class="confetti" id="confetti"></canvas>
 
-  function shootHeart() {
-    shootScore++;
-    const msg = document.getElementById('shootMessage');
-    msg.textContent = `ยิงได้ ${shootScore} / ${shootTarget}`;
-    if (shootScore >= shootTarget) {
-      alert('🎉 คุณปลดล็อคหมวด Love เรียบร้อยแล้ว!');
-      unlockCategory('love');
-      showPage('page7');
-    }
-  }
+    <script>
+      const canvas = document.getElementById("shootingGame");
+      const ctx = canvas.getContext("2d");
+      const successModal = document.getElementById("successModal");
+      let heartX = 140, heartY = 260, hoopX = 120, hoopY = 20, shooting = false;
 
-  // --- โหลดเริ่มต้น ---
-  showPage('page0');
-</script>
-</body>
+      function drawHeart(x, y) {
+        ctx.fillStyle = "#ff5e99";
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.bezierCurveTo(x - 10, y - 10, x - 15, y + 10, x, y + 20);
+        ctx.bezierCurveTo(x + 15, y + 10, x + 10, y - 10, x, y);
+        ctx.fill();
+      }
+
+      function drawHoop() {
+        ctx.strokeStyle = "#ffc0cb";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(hoopX + 30, hoopY + 30, 25, 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+
+      function startGame() {
+        heartY = 260;
+        shooting = true;
+        gameLoop();
+      }
+
+      function gameLoop() {
+        ctx.clearRect(0, 0, 300, 300);
+        drawHoop();
+        drawHeart(heartX, heartY);
+
+        if (shooting) {
+          heartY -= 5;
+          if (heartY < hoopY + 50 && heartY > hoopY + 10 && heartX > hoopX && heartX < hoopX + 60) {
+            shooting = false;
+            showSuccess();
+            launchConfetti();
+          } else if (heartY < 0) {
+            shooting = false;
+          }
+          requestAnimationFrame(gameLoop);
+        }
+      }
+
+      function showSuccess() {
+        successModal.classList.add("show");
+        new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_7b84ee5c68.mp3").play();
+      }
+
+      function closeModal() {
+        successModal.classList.remove("show");
+      }
+
+      function launchConfetti() {
+        const confettiCanvas = document.getElementById("confetti");
+        const confettiCtx = confettiCanvas.getContext("2d");
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+
+        let particles = [];
+        for (let i = 0; i < 100; i++) {
+          particles.push({
+            x: Math.random() * confettiCanvas.width,
+            y: Math.random() * confettiCanvas.height - 100,
+            color: `hsl(${Math.random() * 360}, 100%, 75%)`,
+            radius: Math.random() * 6 + 2,
+            speedY: Math.random() * 3 + 1
+          });
+        }
+
+        function renderConfetti() {
+          confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+          particles.forEach(p => {
+            confettiCtx.beginPath();
+            confettiCtx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
+            confettiCtx.fillStyle = p.color;
+            confettiCtx.fill();
+            p.y += p.speedY;
+            if (p.y > confettiCanvas.height) p.y = -10;
+          });
+          requestAnimationFrame(renderConfetti);
+        }
+        renderConfetti();
+        setTimeout(() => confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height), 4000);
+      }
+    </script>
+  </body>
 </html>
