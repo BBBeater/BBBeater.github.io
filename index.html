@@ -1,192 +1,226 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Happy Anniversary - หน้าแยก + เกม</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Kanit', sans-serif;
-        background: linear-gradient(135deg, #ffe6f0, #fff8dc);
-        overflow-x: hidden;
-      }
-      h1, h2, h3 {
-        color: #ff5e99;
-      }
-      .container {
-        text-align: center;
-        padding: 2rem;
-        animation: fadeIn 1s ease-in-out;
-      }
-      .game-card {
-        background: #fffafc;
-        border-radius: 2rem;
-        box-shadow: 0 0 15px rgba(255, 182, 193, 0.3);
-        padding: 2rem;
-        margin: 2rem auto;
-        max-width: 400px;
-        transition: transform 0.3s ease;
-      }
-      .game-card:hover {
-        transform: scale(1.03);
-      }
-      button {
-        padding: 1rem 2rem;
-        font-size: 1.2rem;
-        background: linear-gradient(135deg, #ffa5c2, #ffe6b5);
-        border: none;
-        border-radius: 999px;
-        cursor: pointer;
-        color: #fff;
-        box-shadow: 0 5px 15px rgba(255, 105, 135, 0.3);
-        transition: all 0.3s ease;
-      }
-      button:hover {
-        transform: scale(1.05);
-        background: linear-gradient(135deg, #ff7ba9, #ffdf7b);
-      }
-      @keyframes fadeIn {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
-      }
-      .modal {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: #fff8fc;
-        padding: 2rem;
-        border-radius: 1rem;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        z-index: 100;
-        display: none;
-      }
-      .modal.show {
-        display: block;
-        animation: popIn 0.4s ease;
-      }
-      @keyframes popIn {
-        0% { transform: scale(0.7) translate(-50%, -50%); opacity: 0; }
-        100% { transform: scale(1) translate(-50%, -50%); opacity: 1; }
-      }
-      .confetti {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 999;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>มินิเกมสุ่มหัวใจ 💖</h1>
-      <div class="game-card">
-        <p>ยิงหัวใจเข้าเป้าเพื่อปลดล็อครูป!</p>
-        <canvas id="shootingGame" width="300" height="300" style="background: #fff0f5; border-radius: 1rem;"></canvas>
-        <button onclick="startGame()">เริ่มเล่น</button>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Anniversary - For ยีนส์ 💖</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;500;700&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Prompt', sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #ffe3ec, #fff9e7);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    h1, h2, h3 {
+      color: #ff7fa2;
+      text-shadow: 1px 1px #fff;
+    }
+    button {
+      background: linear-gradient(to right, #ffb6c1, #ffc3a0);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-size: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+    }
+    button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(to right, #ffa5c1, #ffb07c);
+    }
+    .page {
+      display: none;
+      padding: 20px;
+      text-align: center;
+      animation: fade 0.6s ease forwards;
+    }
+    .active {
+      display: block;
+    }
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .image-card {
+      background: #fff5f8;
+      border: 2px solid #ffd1dc;
+      border-radius: 20px;
+      padding: 10px;
+      margin: 10px auto;
+      max-width: 300px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .locked {
+      opacity: 0.5;
+    }
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <!-- PAGE 1: PASSWORD -->
+  <div id="page1" class="page active">
+    <h1>🌸 Happy Anniversary 🌸</h1>
+    <p>ใส่รหัสลับเพื่อเข้าเว็บนี้นะะ</p>
+    <input type="password" id="passwordInput" placeholder="พิมพ์รหัส... (0000)" />
+    <br><br>
+    <button onclick="checkPassword()">เข้าสู่เว็บ</button>
+  </div>
+
+  <!-- PAGE 2: GREETING -->
+  <div id="page2" class="page">
+    <h2>วันนี้วันครบรอบของเรานะะ~ 💗</h2>
+    <p>ขอบคุณที่อยู่ด้วยกันมาตลอดนะ 🥺</p>
+    <img src="https://i.imgur.com/hJQzGIP.jpeg" width="200" style="border-radius: 20px; margin-top: 20px;">
+    <br><br>
+    <button onclick="goToPage(3)">ไปดูเมนูความทรงจำ 💝</button>
+  </div>
+
+  <!-- PAGE 3: MENU -->
+  <div id="page3" class="page">
+    <h2>🔒 หมวดหมู่รูปภาพของเรา 🔒</h2>
+    <div class="image-card locked" onclick="startGame('best')">🌟 รูปที่ดีที่สุดของแต่ละเดือน</div>
+    <div class="image-card locked" onclick="startGame('funny')">😂 รูปตลกที่สุด</div>
+    <div class="image-card locked" onclick="startGame('secret')">📸 รูปแอบถ่าย</div>
+    <div class="image-card locked" onclick="startGame('favorite')">💞 รูปที่ชอบที่สุด</div>
+  </div>
+
+  <!-- PAGE 4: GAME -->
+  <div id="page4" class="page">
+    <h2 id="gameTitle">มินิเกม 🔐</h2>
+    <div id="gameArea">
+      <p>กดปุ่มให้ได้เลข 7 เพื่อปลดล็อคหมวดหมู่!</p>
+      <button onclick="playGame()">สุ่มเลข!</button>
+      <p id="resultText"></p>
     </div>
+    <br>
+    <button onclick="goToPage(3)">กลับไปเมนู</button>
+  </div>
 
-    <div class="modal" id="successModal">
-      <h2>สำเร็จแล้ว~!</h2>
-      <p>ปลดล็อคภาพเรียบร้อยแล้ว 💗</p>
-      <button onclick="closeModal()">เย่!</button>
+  <!-- PAGE 5: IMAGE GALLERY -->
+  <div id="page5" class="page">
+    <h2 id="categoryTitle">🌸 หมวดภาพ</h2>
+    <div id="imageGallery">
+      <!-- Images will be shown here -->
     </div>
+    <br>
+    <button onclick="goToPage(3)">ย้อนกลับ</button>
+  </div>
 
-    <canvas class="confetti" id="confetti"></canvas>
+  <canvas id="confettiCanvas" class="confetti"></canvas>
 
-    <script>
-      const canvas = document.getElementById("shootingGame");
-      const ctx = canvas.getContext("2d");
-      const successModal = document.getElementById("successModal");
-      let heartX = 140, heartY = 260, hoopX = 120, hoopY = 20, shooting = false;
+  <script>
+    let unlocked = {};
+    let currentCategory = '';
 
-      function drawHeart(x, y) {
-        ctx.fillStyle = "#ff5e99";
+    function checkPassword() {
+      const pw = document.getElementById('passwordInput').value;
+      if (pw === '0000') goToPage(2);
+      else alert('รหัสผิดน้า~');
+    }
+
+    function goToPage(n) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page'+n).classList.add('active');
+    }
+
+    function startGame(cat) {
+      currentCategory = cat;
+      document.getElementById('gameTitle').innerText = `🔐 เกมปลดล็อค: ${getCategoryName(cat)}`;
+      document.getElementById('resultText').innerText = '';
+      goToPage(4);
+    }
+
+    function playGame() {
+      const result = Math.floor(Math.random() * 10);
+      const resText = document.getElementById('resultText');
+      if (result === 7) {
+        unlocked[currentCategory] = true;
+        resText.innerHTML = `🎉 ยินดีด้วย! ปลดล็อคหมวด ${getCategoryName(currentCategory)} แล้ว!`;
+        confettiBurst();
+        setTimeout(() => showGallery(currentCategory), 1000);
+      } else {
+        resText.innerText = `ยังไม่ใช่น้าา ลองใหม่อีกที~ (เลขที่ได้: ${result})`;
+      }
+    }
+
+    function getCategoryName(key) {
+      return {
+        best: 'รูปที่ดีที่สุด',
+        funny: 'รูปตลกที่สุด',
+        secret: 'รูปแอบถ่าย',
+        favorite: 'รูปที่ชอบที่สุด'
+      }[key];
+    }
+
+    function showGallery(cat) {
+      const title = document.getElementById('categoryTitle');
+      const area = document.getElementById('imageGallery');
+      title.innerText = `🌸 ${getCategoryName(cat)}`;
+      area.innerHTML = '';
+      for (let i = 1; i <= 4; i++) {
+        const img = document.createElement('img');
+        img.src = `https://i.imgur.com/hJQzGIP.jpeg`;
+        img.width = 200;
+        img.style.margin = '10px';
+        img.style.borderRadius = '15px';
+        area.appendChild(img);
+      }
+      goToPage(5);
+    }
+
+    // 🎉 Confetti Effect
+    const confetti = document.getElementById("confettiCanvas");
+    const ctx = confetti.getContext("2d");
+    confetti.width = window.innerWidth;
+    confetti.height = window.innerHeight;
+
+    let particles = [];
+    function confettiBurst() {
+      particles = [];
+      for (let i = 0; i < 150; i++) {
+        particles.push({
+          x: Math.random() * confetti.width,
+          y: Math.random() * confetti.height - confetti.height,
+          size: Math.random() * 6 + 2,
+          color: `hsl(${Math.random() * 360}, 100%, 75%)`,
+          speed: Math.random() * 4 + 2
+        });
+      }
+      requestAnimationFrame(updateConfetti);
+    }
+
+    function updateConfetti() {
+      ctx.clearRect(0, 0, confetti.width, confetti.height);
+      particles.forEach(p => {
         ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.bezierCurveTo(x - 10, y - 10, x - 15, y + 10, x, y + 20);
-        ctx.bezierCurveTo(x + 15, y + 10, x + 10, y - 10, x, y);
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
         ctx.fill();
-      }
-
-      function drawHoop() {
-        ctx.strokeStyle = "#ffc0cb";
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.arc(hoopX + 30, hoopY + 30, 25, 0, 2 * Math.PI);
-        ctx.stroke();
-      }
-
-      function startGame() {
-        heartY = 260;
-        shooting = true;
-        gameLoop();
-      }
-
-      function gameLoop() {
-        ctx.clearRect(0, 0, 300, 300);
-        drawHoop();
-        drawHeart(heartX, heartY);
-
-        if (shooting) {
-          heartY -= 5;
-          if (heartY < hoopY + 50 && heartY > hoopY + 10 && heartX > hoopX && heartX < hoopX + 60) {
-            shooting = false;
-            showSuccess();
-            launchConfetti();
-          } else if (heartY < 0) {
-            shooting = false;
-          }
-          requestAnimationFrame(gameLoop);
-        }
-      }
-
-      function showSuccess() {
-        successModal.classList.add("show");
-        new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_7b84ee5c68.mp3").play();
-      }
-
-      function closeModal() {
-        successModal.classList.remove("show");
-      }
-
-      function launchConfetti() {
-        const confettiCanvas = document.getElementById("confetti");
-        const confettiCtx = confettiCanvas.getContext("2d");
-        confettiCanvas.width = window.innerWidth;
-        confettiCanvas.height = window.innerHeight;
-
-        let particles = [];
-        for (let i = 0; i < 100; i++) {
-          particles.push({
-            x: Math.random() * confettiCanvas.width,
-            y: Math.random() * confettiCanvas.height - 100,
-            color: `hsl(${Math.random() * 360}, 100%, 75%)`,
-            radius: Math.random() * 6 + 2,
-            speedY: Math.random() * 3 + 1
-          });
-        }
-
-        function renderConfetti() {
-          confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-          particles.forEach(p => {
-            confettiCtx.beginPath();
-            confettiCtx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
-            confettiCtx.fillStyle = p.color;
-            confettiCtx.fill();
-            p.y += p.speedY;
-            if (p.y > confettiCanvas.height) p.y = -10;
-          });
-          requestAnimationFrame(renderConfetti);
-        }
-        renderConfetti();
-        setTimeout(() => confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height), 4000);
-      }
-    </script>
-  </body>
+        p.y += p.speed;
+      });
+      requestAnimationFrame(updateConfetti);
+    }
+  </script>
+</body>
 </html>
