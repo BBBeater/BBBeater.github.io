@@ -2,114 +2,308 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Anniversary 💕</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anniversary</title>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
-      font-family: 'Arial Rounded MT Bold', 'Kanit', sans-serif;
-      background-color: #fff6f9;
-      color: #ff6392;
+      font-family: 'Kanit', sans-serif;
+      background: linear-gradient(to bottom right, #ffe6f0, #fff4cc);
+      color: #444;
     }
-    header {
+    .container {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
       text-align: center;
-      padding: 2rem;
-      font-size: 2rem;
-      background-color: #ffe4ed;
-      border-bottom: 4px solid #ffb6c1;
+      font-size: 2.2em;
+      margin-bottom: 20px;
+      color: #ff69b4;
     }
     .slider {
       position: relative;
-      max-width: 100%;
-      height: 60vh;
       overflow: hidden;
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     .slides {
       display: flex;
-      width: 100%;
-      height: 100%;
       transition: transform 0.5s ease-in-out;
     }
     .slides img {
-      width: 100vw;
-      height: 100%;
+      width: 100%;
       object-fit: cover;
-      flex-shrink: 0;
+      border-radius: 20px;
     }
     .arrow {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 3rem;
-      color: #ff6392;
+      font-size: 2em;
+      color: #ff69b4;
       background: rgba(255, 255, 255, 0.6);
       border-radius: 50%;
-      padding: 0.5rem 1rem;
+      padding: 5px 10px;
       cursor: pointer;
-      z-index: 10;
+      z-index: 2;
     }
-    .arrow.left { left: 1rem; }
-    .arrow.right { right: 1rem; }
-    main {
-      padding: 2rem;
-      text-align: center;
-    }
+    .arrow.left { left: 10px; }
+    .arrow.right { right: 10px; }
+
     .game-menu {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
-    .game-btn {
-      padding: 1rem;
-      font-size: 1.2rem;
-      background-color: #ffb6c1;
+    .game-button {
+      background: #ffd6ec;
       border: none;
+      padding: 15px;
+      font-size: 1.2em;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    .game-button:hover {
+      background: #ffc1e3;
+    }
+    .locked {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .game-area {
+      display: none;
+      margin-top: 30px;
+      padding: 20px;
+      background: #fff5fa;
+      border-radius: 20px;
+      box-shadow: 0 0 10px #ffb3d9;
+    }
+
+    .heart {
+      font-size: 1.4em;
+      color: #ff4d88;
+    }
+
+    .input {
+      padding: 8px;
+      margin-top: 10px;
+      font-size: 1em;
+    }
+    .submit {
+      padding: 8px 16px;
+      font-size: 1em;
+      margin-top: 10px;
+      background: #ffaacc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .card-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .card {
+      width: 60px;
+      height: 90px;
+      background: pink;
+      text-align: center;
+      line-height: 90px;
       border-radius: 10px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      font-weight: bold;
+      font-size: 1.5em;
     }
-    .game-btn:hover {
-      background-color: #ff6392;
-      color: white;
+
+    .gacha-box {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .hoop {
+      width: 80px;
+      height: 80px;
+      border: 4px solid #f06292;
+      border-radius: 50%;
+      margin: 20px auto;
+      position: relative;
+    }
+
+    .heartball {
+      width: 25px;
+      height: 25px;
+      background: red;
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 100%;
+      transition: bottom 0.5s ease;
+    }
+
+    footer {
+      text-align: center;
+      margin: 50px 0 10px;
+      color: #999;
     }
   </style>
 </head>
 <body>
-  <header>
-    วันนี้วันครบรอบของเรานะะ 💕
-  </header>
-  <section class="slider">
-    <div class="arrow left" onclick="prevSlide()">❮</div>
-    <div class="arrow right" onclick="nextSlide()">❯</div>
-    <div class="slides" id="slides">
-      <img src="https://drive.google.com/uc?export=view&id=YOUR_IMAGE_ID1" alt="img1" />
-      <img src="https://drive.google.com/uc?export=view&id=YOUR_IMAGE_ID2" alt="img2" />
-      <img src="https://drive.google.com/uc?export=view&id=YOUR_IMAGE_ID3" alt="img3" />
+  <div class="container">
+    <h1>วันนี้วันครบรอบของเรานะะ 💕</h1>
+
+    <div class="slider">
+      <div class="slides" id="slides">
+        <img src="https://drive.google.com/uc?export=view&id=รูป1" alt="slide1">
+        <img src="https://drive.google.com/uc?export=view&id=รูป2" alt="slide2">
+        <img src="https://drive.google.com/uc?export=view&id=รูป3" alt="slide3">
+      </div>
+      <div class="arrow left" onclick="prevSlide()">‹</div>
+      <div class="arrow right" onclick="nextSlide()">›</div>
     </div>
-  </section>
-  <main>
-    <h2>เลือกมินิเกมที่อยากเล่นเพื่อปลดล็อกหมวดภาพ 💌</h2>
+
     <div class="game-menu">
-      <button class="game-btn" onclick="location.href='game1.html'">เกมทายเลข</button>
-      <button class="game-btn" onclick="location.href='game2.html'">เกมหาไพ่หัวใจ</button>
-      <button class="game-btn" onclick="location.href='game3.html'">เกมกาชา</button>
-      <button class="game-btn" onclick="location.href='game4.html'">เกมชู้ตหัวใจลงห่วง</button>
+      <button class="game-button" onclick="showGame(1)">เกมทายตัวเลข</button>
+      <button class="game-button" onclick="showGame(2)">หาไพ่หัวใจ</button>
+      <button class="game-button" onclick="showGame(3)">เกมกาชา</button>
+      <button class="game-button" onclick="showGame(4)">ยิงหัวใจลงห่วง</button>
     </div>
-  </main>
+
+    <div class="game-area" id="game1">
+      <h3>เกมทายเลข</h3>
+      <p>ทายเลข 1 - 20</p>
+      <input type="number" class="input" id="guessInput" />
+      <button class="submit" onclick="checkGuess()">ทาย!</button>
+      <p id="guessResult"></p>
+    </div>
+
+    <div class="game-area" id="game2">
+      <h3>หาไพ่หัวใจ</h3>
+      <div class="card-row" id="cardRow"></div>
+      <p id="cardHint"></p>
+      <button class="submit" onclick="resetCardGame()">เริ่มใหม่</button>
+    </div>
+
+    <div class="game-area" id="game3">
+      <h3>เกมกาชา</h3>
+      <div class="gacha-box">
+        <button class="submit" onclick="rollGacha()">กดสุ่ม!</button>
+        <p id="gachaResult"></p>
+      </div>
+    </div>
+
+    <div class="game-area" id="game4">
+      <h3>ยิงหัวใจลงห่วง</h3>
+      <div class="hoop" onclick="shootHeart()">
+        <div class="heartball" id="heartball"></div>
+      </div>
+      <p id="shootResult">ลงห่วง: 0 / 9</p>
+    </div>
+  </div>
+
+  <footer>Made with 💖</footer>
+
   <script>
+    // Slide logic
+    let currentSlide = 0;
     const slides = document.getElementById('slides');
     const totalSlides = slides.children.length;
-    let index = 0;
 
-    function showSlide(i) {
-      index = (i + totalSlides) % totalSlides;
-      slides.style.transform = `translateX(-${index * 100}vw)`;
+    function showSlide(index) {
+      currentSlide = (index + totalSlides) % totalSlides;
+      slides.style.transform = `translateX(-${currentSlide * 100}%)`;
     }
-    function nextSlide() { showSlide(index + 1); }
-    function prevSlide() { showSlide(index - 1); }
+    function nextSlide() { showSlide(currentSlide + 1); }
+    function prevSlide() { showSlide(currentSlide - 1); }
+    setInterval(() => nextSlide(), 4000);
 
-    setInterval(() => nextSlide(), 5000);
+    // Game logic
+    function hideAllGames() {
+      document.querySelectorAll('.game-area').forEach(el => el.style.display = 'none');
+    }
+
+    function showGame(num) {
+      hideAllGames();
+      document.getElementById('game' + num).style.display = 'block';
+    }
+
+    // Game 1 - Guess Number
+    let secret = Math.floor(Math.random() * 20) + 1;
+    function checkGuess() {
+      const val = parseInt(document.getElementById('guessInput').value);
+      const result = document.getElementById('guessResult');
+      if (val === secret) result.innerText = "ถูกรางวัลแล้วว 💖";
+      else result.innerText = val > secret ? "น้อยกว่านี้นิดนึง~" : "มากกว่านี้หน่อย~";
+    }
+
+    // Game 2 - Card shuffle
+    let heartIndex = 0;
+    function setupCards() {
+      const row = document.getElementById('cardRow');
+      row.innerHTML = '';
+      heartIndex = Math.floor(Math.random() * 5);
+      for (let i = 0; i < 5; i++) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerText = i === heartIndex ? '♥' : '?';
+        row.appendChild(card);
+      }
+      setTimeout(() => {
+        Array.from(row.children).forEach(c => c.innerText = '?');
+      }, 1500);
+    }
+    function resetCardGame() {
+      setupCards();
+      document.getElementById('cardHint').innerText = '';
+      const row = document.getElementById('cardRow');
+      row.querySelectorAll('.card').forEach((card, idx) => {
+        card.onclick = () => {
+          if (idx === heartIndex) {
+            document.getElementById('cardHint').innerText = 'เก่งมากเลยย~ 💖';
+          } else {
+            document.getElementById('cardHint').innerText = 'ไม่ใช่น้าา ลองใหม่!';
+          }
+        };
+      });
+    }
+    resetCardGame();
+
+    // Game 3 - Gacha
+    function rollGacha() {
+      const rate = [0.5, 1.5, 3, 15, 80]; // 5 to 1 star
+      const rand = Math.random() * 100;
+      let star = 1, sum = 0;
+      for (let i = 0; i < 5; i++) {
+        sum += rate[i];
+        if (rand < sum) {
+          star = 5 - i;
+          break;
+        }
+      }
+      document.getElementById('gachaResult').innerText = `สุ่มได้ ${star} ดาว! ${star === 5 ? 'เย้!' : ''}`;
+    }
+
+    // Game 4 - Shoot heart
+    let score = 0;
+    function shootHeart() {
+      const ball = document.getElementById('heartball');
+      ball.style.bottom = '100%';
+      setTimeout(() => {
+        score++;
+        document.getElementById('shootResult').innerText = `ลงห่วง: ${score} / 9`;
+        ball.style.bottom = '0%';
+        if (score >= 9) alert("สุดยอดเลย! 💘");
+      }, 500);
+    }
   </script>
 </body>
 </html>
