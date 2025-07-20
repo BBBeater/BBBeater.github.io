@@ -71,57 +71,6 @@
   .hidden {
     display: none;
   }
-  /* ปรับสไตล์สไลด์โชว์ */
-  #slideshow {
-    position: relative;
-    width: 100%;
-    max-width: 420px;
-    height: 320px;
-    margin: 0 auto 40px;
-    border-radius: 25px;
-    box-shadow: 0 0 15px #ffb6c1;
-    overflow: hidden;
-    background: #fff0f8;
-  }
-  #slideshow img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 25px;
-    position: absolute;
-    top: 0; left: 0;
-    opacity: 0;
-    transition: opacity 0.8s ease;
-    user-select: none;
-  }
-  #slideshow img.active {
-    opacity: 1;
-    position: relative;
-  }
-  /* ปุ่มเลื่อนสไลด์ */
-  .slide-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(244,143,177,0.7);
-    border: none;
-    color: white;
-    font-size: 24px;
-    padding: 6px 12px;
-    border-radius: 15px;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.3s ease;
-  }
-  .slide-btn:hover {
-    background: #d43f6f;
-  }
-  #prevBtn {
-    left: 10px;
-  }
-  #nextBtn {
-    right: 10px;
-  }
   .photo-placeholder {
     width: 100%;
     max-width: 420px;
@@ -249,9 +198,13 @@
     .container {
       padding: 25px 15px 30px;
     }
-    #slideshow {
+    .photo-placeholder {
       height: 280px;
-      max-width: 320px;
+    }
+    #puzzle {
+      height: 300px;
+      max-width: 300px;
+      gap: 4px;
     }
     .menu-card {
       width: 120px;
@@ -288,6 +241,58 @@
     cursor: zoom-out;
     user-select: none;
   }
+
+  /* --- สไลด์โชว์หน้า page1 --- */
+  #slideShow {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    height: 320px;
+    margin: 0 auto 40px;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 0 15px #ffb6c1;
+  }
+  #slideShow img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    position: absolute;
+    top: 0; left: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    border-radius: 25px;
+    user-select: none;
+  }
+  #slideShow img.active {
+    opacity: 1;
+    position: relative;
+  }
+  /* ปุ่มลูกศรเลื่อนสไลด์ */
+  .slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(244,143,177,0.9);
+    border: none;
+    color: white;
+    font-size: 36px;
+    padding: 8px 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+  }
+  .slide-btn:hover {
+    background: #d43f6f;
+  }
+  #prevBtn {
+    left: 10px;
+  }
+  #nextBtn {
+    right: 10px;
+  }
 </style>
 </head>
 <body>
@@ -303,14 +308,17 @@
     <p id="error"></p>
   </div>
 
-  <!-- หน้า 1: วันครบรอบ (เพิ่ม slideshow) -->
+  <!-- หน้า 1: วันครบรอบ (สไลด์โชว์รูป) -->
   <div id="page1" class="hidden">
     <h1>วันนี้วันครบรอบของเรานะะ 💕</h1>
-    <div id="slideshow">
-      <!-- รูปจะถูกเพิ่มด้วย JS -->
-      <button id="prevBtn" class="slide-btn" aria-label="Previous Slide">&#10094;</button>
-      <button id="nextBtn" class="slide-btn" aria-label="Next Slide">&#10095;</button>
+    <div id="slideShow">
+      <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=600&q=80" alt="มกราคม" class="active" />
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="กุมภาพันธ์" />
+      <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80" alt="มีนาคม" />
+      <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80" alt="เมษายน" />
     </div>
+    <button id="prevBtn" class="slide-btn" aria-label="Previous Slide">&#10094;</button>
+    <button id="nextBtn" class="slide-btn" aria-label="Next Slide">&#10095;</button>
     <div class="buttons">
       <button onclick="showPage('page0')">ย้อนกลับ</button>
       <button onclick="showPage('page2')">ถัดไป</button>
@@ -424,114 +432,328 @@
   <!-- เกม2: เกมจับคู่คำง่ายๆ -->
   <div id="game2" class="hidden">
     <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
-    <h2>เกมจับคู่คำง่ายๆ</h2>
-    <p>จับคู่คำที่เหมือนกันให้ถูกต้อง!</p>
-    <div id="matchGame" style="margin: 0 auto; max-width: 400px; text-align:left;">
-      <p><b>คำที่ต้องจับคู่:</b></p>
-      <ul id="wordsList" style="list-style:none; padding-left:0;"></ul>
-      <p>คลิกที่คำในกล่องสีชมพูด้านล่างเพื่อจับคู่</p>
-      <div id="matchChoices" style="display:flex; flex-wrap: wrap; gap: 10px;"></div>
-      <button onclick="resetMatchGame()" style="margin-top:15px;">เล่นใหม่</button>
-      <div id="matchResult" style="margin-top:15px; font-weight:bold; color:#d43f6f;"></div>
-    </div>
+    <h2>เกมจับคู่คำ</h2>
+    <p>จับคู่คำที่ตรงกันให้ถูกต้องเพื่อปลดล็อค!</p>
+    <div id="puzzle"></div>
+    <div id="puzzleMessage"></div>
   </div>
 
-  <!-- เกม3: เกมกดนับเลข -->
-  <div id="game3" class="hidden">
-    <button class="back-game-menu-btn" onclick="showPage('page7')">← กลับสู่เมนูเกม</button>
-    <h2>เกมกดนับเลข</h2>
-    <p>กดปุ่มให้ครบจำนวนที่สุ่มมา!</p>
-    <!-- เพิ่มโค้ดเกมกดนับเลขได้ที่นี่ -->
+  <!-- Lightbox overlay รูปขยาย -->
+  <div id="lightboxOverlay">
+    <img id="lightboxImg" src="" alt="ขยายรูป" />
   </div>
-
 </div>
 
 <script>
-  // รูปภาพสไลด์โชว์
-  const images = [
-    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=420&q=80",
-    "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=420&q=80",
-    "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=420&q=80"
-  ];
+  // รหัสผ่านเข้าเว็บ
+  const password = "0000";
 
-  let currentSlide = 0;
-  const slideshowDiv = document.getElementById('slideshow');
-
-  function createSlides() {
-    images.forEach((src, i) => {
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = `รูปที่ ${i+1}`;
-      if (i === 0) img.classList.add('active');
-      slideshowDiv.appendChild(img);
-    });
+  function checkPassword() {
+    const input = document.getElementById('password').value.trim();
+    const error = document.getElementById('error');
+    if (input === password) {
+      error.textContent = "";
+      showPage('page1');
+    } else {
+      error.textContent = "รหัสผิดนะ ลองอีกครั้งค่ะ!";
+    }
   }
 
-  function showSlide(index) {
-    const slides = slideshowDiv.querySelectorAll('img');
-    if (index >= slides.length) currentSlide = 0;
-    else if (index < 0) currentSlide = slides.length - 1;
-    else currentSlide = index;
-
-    slides.forEach((slide, i) => {
-      slide.classList.toggle('active', i === currentSlide);
+  // ฟังก์ชันแสดงหน้า
+  function showPage(pageId) {
+    const pages = document.querySelectorAll('.container > div');
+    pages.forEach(p => {
+      p.classList.add('hidden');
     });
+    document.getElementById(pageId).classList.remove('hidden');
+  }
+
+  // --- สไลด์โชว์หน้า 1 ---
+  const slideShow = document.getElementById('slideShow');
+  const slides = slideShow.querySelectorAll('img');
+  let currentSlide = 0;
+  let slideInterval;
+
+  function showSlide(index) {
+    slides.forEach((img, i) => {
+      img.classList.toggle('active', i === index);
+    });
+    currentSlide = index;
   }
 
   function nextSlide() {
-    showSlide(currentSlide + 1);
+    let next = (currentSlide + 1) % slides.length;
+    showSlide(next);
   }
   function prevSlide() {
-    showSlide(currentSlide - 1);
+    let prev = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(prev);
   }
 
-  // Auto slide ทุก 5 วินาที
-  let slideInterval;
+  // เริ่มสไลด์ auto
   function startSlideShow() {
-    slideInterval = setInterval(() => {
-      nextSlide();
-    }, 5000);
+    slideInterval = setInterval(nextSlide, 4000);
   }
   function stopSlideShow() {
     clearInterval(slideInterval);
   }
 
-  document.getElementById('nextBtn').addEventListener('click', () => {
-    stopSlideShow();
-    nextSlide();
-    startSlideShow();
-  });
+  // ปุ่มลูกศรเลื่อน
   document.getElementById('prevBtn').addEventListener('click', () => {
     stopSlideShow();
     prevSlide();
     startSlideShow();
   });
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    stopSlideShow();
+    nextSlide();
+    startSlideShow();
+  });
 
-  // เริ่มต้นสไลด์โชว์
-  createSlides();
-  startSlideShow();
+  // เริ่มสไลด์เมื่อหน้า 1 ถูกแสดง
+  const observerPage1 = new MutationObserver(() => {
+    if (!document.getElementById('page1').classList.contains('hidden')) {
+      startSlideShow();
+    } else {
+      stopSlideShow();
+    }
+  });
+  observerPage1.observe(document.getElementById('page1'), { attributes: true, attributeFilter: ['class'] });
 
-  // ฟังก์ชันสลับหน้า
-  function showPage(pageId) {
-    const pages = document.querySelectorAll('.container > div');
-    pages.forEach(p => p.classList.add('hidden'));
-    document.getElementById(pageId).classList.remove('hidden');
+  // --- เมนูหมวดรูป ---
+  // ตัวอย่างข้อมูลรูปสำหรับแต่ละหมวด (แก้ได้)
+  const photos = {
+    best: [
+      { src: "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=600&q=80", alt: "มกราคม" },
+      { src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", alt: "กุมภาพันธ์" },
+      { src: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80", alt: "มีนาคม" },
+      { src: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80", alt: "เมษายน" }
+    ],
+    funny: [
+      { src: "https://via.placeholder.com/150/ffb6c1/fff?text=ฮา1", alt: "ฮา1" },
+      { src: "https://via.placeholder.com/150/ffb6c1/fff?text=ฮา2", alt: "ฮา2" }
+    ],
+    secret: [
+      { src: "https://via.placeholder.com/150/f48fb1/fff?text=แอบ1", alt: "แอบ1" },
+      { src: "https://via.placeholder.com/150/f48fb1/fff?text=แอบ2", alt: "แอบ2" }
+    ],
+    love: [
+      { src: "https://via.placeholder.com/150/d43f6f/fff?text=รัก1", alt: "รัก1" },
+      { src: "https://via.placeholder.com/150/d43f6f/fff?text=รัก2", alt: "รัก2" }
+    ]
+  };
+
+  // ฟังก์ชันโหลดรูปลงในหมวด
+  function loadPhotos(category) {
+    const containerId = category + "Grid";
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = "";
+    photos[category].forEach(({src, alt}, i) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = alt;
+      img.style.borderRadius = "15px";
+      img.style.cursor = "pointer";
+      img.addEventListener('click', () => openLightbox(src, alt));
+      container.appendChild(img);
+    });
   }
 
-  // ฟังก์ชันตรวจสอบรหัสผ่าน
-  function checkPassword() {
-    const pwd = document.getElementById('password').value.trim();
-    const error = document.getElementById('error');
-    if (pwd === "0000") {
-      error.textContent = "";
-      showPage('page1');
-    } else {
-      error.textContent = "รหัสผ่านไม่ถูกต้อง ลองใหม่อีกครั้งนะครับ!";
+  // เปิด lightbox รูปขยาย
+  function openLightbox(src, alt) {
+    const overlay = document.getElementById('lightboxOverlay');
+    const lightboxImg = document.getElementById('lightboxImg');
+    lightboxImg.src = src;
+    lightboxImg.alt = alt;
+    overlay.style.display = "flex";
+  }
+  document.getElementById('lightboxOverlay').addEventListener('click', () => {
+    document.getElementById('lightboxOverlay').style.display = 'none';
+  });
+
+  // กดเมนูหมวดปลดล็อคได้
+  document.getElementById('categoryMenu').addEventListener('click', e => {
+    let card = e.target.closest('.menu-card');
+    if (!card || card.classList.contains('locked')) return;
+    let category = card.dataset.category;
+    if (!category) return;
+    loadPhotos(category);
+    showPage('page' + (["best","funny","secret","love"].indexOf(category)+3));
+  });
+
+  // --- เมนูเกม ---
+  const gameCards = document.querySelectorAll('#gameMenuGrid .menu-card');
+  gameCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const gameId = card.dataset.game;
+      if (!gameId) return;
+      showPage(gameId);
+      initGame(gameId);
+    });
+  });
+
+  // --- เกมทายเลข ---
+  let secretNumber;
+  function initGame(gameId) {
+    if (gameId === "game1") {
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      document.getElementById('gameMessage').textContent = "";
+      document.getElementById('guessInput').value = "";
+    }
+    else if(gameId === "game2"){
+      initPuzzleGame();
     }
   }
 
-  // ตัวอย่างโค้ดเล่นเกมและเมนูอื่นๆ ใส่ได้ตามต้องการ
+  function checkGuess() {
+    const guessInput = document.getElementById('guessInput');
+    const guess = parseInt(guessInput.value);
+    const message = document.getElementById('gameMessage');
+    if (isNaN(guess) || guess < 1 || guess > 100) {
+      message.textContent = "กรุณาใส่เลข 1-100 เท่านั้นนะ";
+      return;
+    }
+    if (guess === secretNumber) {
+      message.textContent = "🎉 ถูกต้อง! คุณปลดล็อคหมวด The Best แล้ว!";
+      unlockCategory('best');
+    } else if (guess < secretNumber) {
+      message.textContent = "เลขน้อยไป ลองใหม่!";
+    } else {
+      message.textContent = "เลขมากไป ลองใหม่!";
+    }
+  }
 
+  // ฟังก์ชันปลดล็อคหมวด
+  function unlockCategory(cat) {
+    const card = [...document.querySelectorAll('.menu-card')].find(c => c.dataset.category === cat);
+    if (card) {
+      card.classList.remove('locked');
+      card.querySelector('small').textContent = "🔓 ปลดล็อคแล้ว";
+    }
+  }
+
+  // --- เกมจับคู่คำง่ายๆ (Puzzle) ---
+  // ตัวอย่างคำจับคู่แบบง่าย
+  let puzzlePairs = [
+    { id: 1, word: "รัก", pair: "love" },
+    { id: 2, word: "เพื่อน", pair: "friend" },
+    { id: 3, word: "สุข", pair: "happy" },
+  ];
+  let selectedPiece = null;
+  let puzzlePieces = [];
+
+  function initPuzzleGame() {
+    const puzzle = document.getElementById('puzzle');
+    const puzzleMessage = document.getElementById('puzzleMessage');
+    puzzleMessage.textContent = "";
+    puzzle.innerHTML = "";
+    selectedPiece = null;
+
+    // สร้างชิ้นส่วนคำแบบสุ่มตำแหน่ง
+    puzzlePieces = [];
+    puzzlePairs.forEach(pair => {
+      puzzlePieces.push({id: pair.id, text: pair.word, pair: pair.pair});
+      puzzlePieces.push({id: pair.id, text: pair.pair, pair: pair.word});
+    });
+    puzzlePieces.sort(() => Math.random() - 0.5);
+
+    puzzlePieces.forEach((piece, i) => {
+      const div = document.createElement('div');
+      div.className = 'piece';
+      div.textContent = piece.text;
+      div.dataset.id = piece.id;
+      div.dataset.pair = piece.pair;
+      div.draggable = true;
+      div.addEventListener('dragstart', dragStart);
+      div.addEventListener('dragover', dragOver);
+      div.addEventListener('drop', dropPiece);
+      puzzle.appendChild(div);
+    });
+  }
+
+  function dragStart(e) {
+    selectedPiece = e.target;
+  }
+  function dragOver(e) {
+    e.preventDefault();
+  }
+  function dropPiece(e) {
+    e.preventDefault();
+    const target = e.target;
+    if (selectedPiece && target !== selectedPiece && target.classList.contains('piece')) {
+      // สลับตำแหน่ง
+      const puzzle = document.getElementById('puzzle');
+      const children = [...puzzle.children];
+      let selectedIndex = children.indexOf(selectedPiece);
+      let targetIndex = children.indexOf(target);
+      if (selectedIndex >= 0 && targetIndex >= 0) {
+        puzzle.insertBefore(selectedPiece, target);
+        if (targetIndex < selectedIndex) {
+          puzzle.insertBefore(target, children[selectedIndex]);
+        } else {
+          puzzle.insertBefore(target, children[selectedIndex + 1]);
+        }
+      }
+      checkPuzzleSolved();
+    }
+  }
+
+  function checkPuzzleSolved() {
+    const puzzle = document.getElementById('puzzle');
+    const pieces = [...puzzle.children];
+    // เช็คคู่จับคู่ติดกัน (ง่าย ๆ คือ ทุกคู่ต้องอยู่ติดกัน 2 ชิ้น)
+    let solved = true;
+    for (let i=0; i < pieces.length; i+=2) {
+      const first = pieces[i];
+      const second = pieces[i+1];
+      if (!first || !second) {
+        solved = false;
+        break;
+      }
+      if (first.dataset.id !== second.dataset.id) {
+        solved = false;
+        break;
+      }
+    }
+    const puzzleMessage = document.getElementById('puzzleMessage');
+    if (solved) {
+      puzzleMessage.textContent = "🎉 ถูกต้อง! คุณปลดล็อคหมวด รูปที่ฮาที่สุด แล้ว!";
+      unlockCategory('funny');
+    } else {
+      puzzleMessage.textContent = "จับคู่คำให้ถูกต้องทุกคู่เพื่อปลดล็อค";
+    }
+  }
+
+  // --- โหลดรูปเมื่อเปิดหน้า ---
+
+  // ปุ่มเมนูปลดล็อค คลิกเปลี่ยนสถานะได้ (ทดสอบ)
+  const categoryCards = document.querySelectorAll('#categoryMenu .menu-card');
+  categoryCards.forEach(card => {
+    card.addEventListener('click', () => {
+      if (!card.classList.contains('locked')) {
+        // โหลดรูปถ้าไม่ล็อค
+        const cat = card.dataset.category;
+        loadPhotos(cat);
+        showPage('page' + (["best","funny","secret","love"].indexOf(cat)+3));
+      }
+    });
+  });
+
+  // โหลดรูปทุกหมวดตอนเริ่ม เพื่อโหลดไว้ (ถ้าต้องการ)
+  // photos keys: best, funny, secret, love
+  Object.keys(photos).forEach(cat => loadPhotos(cat));
+
+  // ปุ่มย้อนกลับกดแล้วปิด lightbox ถ้ามี
+  document.querySelectorAll('.buttons button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('lightboxOverlay').style.display = 'none';
+    });
+  });
+
+  // แสดงหน้าเริ่มต้น
+  showPage('page0');
 </script>
+
 </body>
 </html>
