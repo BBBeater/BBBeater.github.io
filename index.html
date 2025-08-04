@@ -503,21 +503,20 @@
   </div>
 
   
-  <!-- หน้าเกม 4: ยิงหัวใจลงห่วง -->
-  <div id="gameShootHearts" class="hidden">
-    <h2>ยิงหัวใจลงห่วง 💘</h2>
-    <p>กดปุ่มยิงหัวใจให้ลงห่วงให้ได้นะ!</p>
-    <div style="position: relative; margin: 30px auto; width: 320px; height: 280px; background: #ffe4ef; border-radius: 25px; box-shadow: 0 0 15px #ffb6c1;">
-      <div id="hoop" style="position: absolute; width: 100px; height: 20px; background: #ff69b4; border-radius: 10px; top: 80px; left: 50%; transform: translateX(-50%);"></div>
-      <div id="heart" style="position: absolute; width: 40px; height: 40px; background: red; top: 220px; left: 50%; transform: translateX(-50%); border-radius: 50%; box-shadow: 0 0 10px #ff8ab8;"></div>
-    </div>
-    <button onclick="shootHeart()">ยิงเลย!</button>
-    <p id="shootMessage" style="margin-top: 18px; font-weight: bold; color: #d43f6f; min-height: 28px;"></p>
-    <div class="buttons">
-      <button onclick="resetShootGame()">ลองใหม่</button>
-      <button onclick="backToGameMenu('gameShootHearts')">กลับไปเมนูเกม</button>
-    </div>
+<!-- หน้าเกม 4: ยิงหัวใจลงห่วง แบบลากยิง -->
+<div id="gameShootHearts" class="hidden">
+  <h2>ยิงหัวใจลงห่วง 💘</h2>
+  <p>ลากหัวใจไปยังห่วงให้ลงเป๊ะ ๆ! ยิงครบ 5 ครั้งถึงจะปลดล็อค</p>
+  <div style="position: relative; margin: 30px auto; width: 320px; height: 280px; background: #ffe4ef; border-radius: 25px; box-shadow: 0 0 15px #ffb6c1;">
+    <div id="hoop" style="position: absolute; width: 100px; height: 20px; background: #ff69b4; border-radius: 10px; top: 80px; left: 50%; transform: translateX(-50%);"></div>
+    <div id="heart" style="position: absolute; width: 40px; height: 40px; background: red; top: 220px; left: 50%; transform: translateX(-50%); border-radius: 50%; box-shadow: 0 0 10px #ff8ab8; cursor: grab;"></div>
   </div>
+  <p id="shootMessage" style="margin-top: 18px; font-weight: bold; color: #d43f6f; min-height: 28px;"></p>
+  <div class="buttons">
+    <button onclick="resetShootGame()">ลองใหม่</button>
+    <button onclick="backToGameMenu('gameShootHearts')">กลับไปเมนูเกม</button>
+  </div>
+</div>
 
   <!-- Lightbox สำหรับขยายภาพ -->
   <div id="lightboxOverlay">
@@ -788,71 +787,74 @@
   }
 
   
-<!-- ✅ ส่วนที่เปลี่ยน: หน้าเกมยิงหัวใจ + สคริปต์ใหม่ -->
-<div id="gameShootHearts" class="hidden">
-  <h2>ยิงหัวใจลงห่วง 💘</h2>
-  <p>ลากหัวใจให้ลงห่วงเพื่อทำคะแนน (ยิงให้ได้ 5 แต้มจะชนะ!)</p>
-  <div style="position: relative; margin: 30px auto; width: 320px; height: 280px; background: #ffe4ef; border-radius: 25px; box-shadow: 0 0 15px #ffb6c1;">
-    <div id="hoop" style="position: absolute; width: 100px; height: 20px; background: #ff69b4; border-radius: 10px; top: 80px; left: 50%; transform: translateX(-50%);"></div>
-    <div id="heart" draggable="true" style="position: absolute; width: 40px; height: 40px; background: red; top: 220px; left: 50%; transform: translateX(-50%); border-radius: 50%; box-shadow: 0 0 10px #ff8ab8; cursor: grab;"></div>
-  </div>
-  <p id="shootMessage" style="margin-top: 18px; font-weight: bold; color: #d43f6f; min-height: 28px;"></p>
-  <div class="buttons">
-    <button onclick="resetShootGame()">ลองใหม่</button>
-    <button onclick="backToGameMenu('gameShootHearts')">กลับไปเมนูเกม</button>
-  </div>
-</div>
+  // --- เกมยิงหัวใจ ---
+  let score = 0;
+let dragging = false;
+let offsetY = 0;
 
-<!-- ✅ สคริปต์เกมยิงหัวใจแบบลาก -->
-<script>
-let heart = document.getElementById("heart");
-let hoop = document.getElementById("hoop");
-let shootMessage = document.getElementById("shootMessage");
-let score = 0;
+const heart = document.getElementById("heart");
+const hoop = document.getElementById("hoop");
+const shootMessage = document.getElementById("shootMessage");
 
-// ห่วงขยับซ้ายขวา
-let direction = 1;
-setInterval(() => {
-  let left = parseFloat(hoop.style.left);
-  left += direction * 1.5;
-  if (left > 80 || left < 20) direction *= -1;
-  hoop.style.left = `${left}%`;
-}, 60);
+// เริ่มลากหัวใจ
+heart.onmousedown = (e) => {
+  dragging = true;
+  offsetY = e.clientY - heart.getBoundingClientRect().top;
+  heart.style.transition = "none";
+};
 
-// จัดการลากยิงหัวใจ
-heart.addEventListener("dragstart", e => {
-  e.dataTransfer.setData("text/plain", null);
-});
-heart.addEventListener("dragend", e => {
-  const heartBox = heart.getBoundingClientRect();
+// ขณะลาก
+document.onmousemove = (e) => {
+  if (!dragging) return;
+  const newY = e.clientY - offsetY;
+  heart.style.top = `${Math.min(newY, 220)}px`; // กันไม่ให้หลุดขอบบน
+};
+
+// ปล่อยหัวใจเพื่อตรวจจับ
+document.onmouseup = () => {
+  if (!dragging) return;
+  dragging = false;
+  heart.style.transition = "top 0.4s";
+  checkCollision();
+};
+
+// ตรวจสอบว่าหัวใจลงห่วงหรือไม่
+function checkCollision() {
   const hoopBox = hoop.getBoundingClientRect();
+  const heartBox = heart.getBoundingClientRect();
   const dx = (heartBox.left + heartBox.width / 2) - (hoopBox.left + hoopBox.width / 2);
   const dy = (heartBox.top + heartBox.height / 2) - (hoopBox.top + hoopBox.height / 2);
   const dist = Math.sqrt(dx * dx + dy * dy);
 
   if (dist < 40) {
     score++;
-    shootMessage.textContent = `🎯 ยิงลงห่วงสำเร็จ! ได้ ${score} แต้ม`;
+    shootMessage.textContent = `✅ ลงห่วงแล้ว! (${score}/5)`;
     if (score >= 5) {
-      shootMessage.textContent = `🎉 ครบ 5 แต้มแล้ว! ปลดล็อคหมวดรูปที่ชอบกันทั้งคู่ 💞`;
       unlockCategory("love");
+      shootMessage.textContent += " ❤️ ปลดล็อคเรียบร้อย!";
     }
   } else {
-    shootMessage.textContent = "พลาด! ลองใหม่อีกครั้ง!";
+    shootMessage.textContent = "❌ พลาด! ลองใหม่นะ";
   }
-  resetHeart();
-});
-
-function resetHeart() {
-  heart.style.top = "220px";
-  heart.style.left = "50%";
+  heart.style.top = "220px"; // รีเซ็ตหัวใจกลับล่าง
 }
 
+// ห่วงเคลื่อนที่ซ้าย–ขวา
+let hoopDirection = 1;
+setInterval(() => {
+  let left = parseFloat(hoop.style.left);
+  left += hoopDirection * 1.5;
+  if (left > 65 || left < 35) hoopDirection *= -1;
+  hoop.style.left = `${left}%`;
+}, 30);
+
+// รีเซ็ตเกม
 function resetShootGame() {
   shootMessage.textContent = "";
   score = 0;
-  resetHeart();
+  heart.style.top = "220px";
 }
+
 
   // --- ฟังก์ชันปลดล็อคหมวด ---
   function unlockCategory(cat) {
