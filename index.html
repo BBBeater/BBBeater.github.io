@@ -788,23 +788,16 @@
 
   
   // --- เกมยิงหัวใจ ---
-window.onload = () => {
-  // เรียกอัปเดตหมวดปลดล็อค + สไลด์
-  updateCategoryLocks();
-  updateSlideShow();
-
-  // เริ่มต้นเกมทั้งหมด
-  startGuessNumberGame();
-  startCardGame();
-  resetShootGame();
-
-  // ระบบลากยิงหัวใจ
+function resetShootGame() {
   const heart = document.getElementById("heart");
   const hoop = document.getElementById("hoop");
   const shootMessage = document.getElementById("shootMessage");
   let dragging = false;
   let offsetY = 0;
   let score = 0;
+
+  heart.style.top = "220px";
+  shootMessage.textContent = "";
 
   heart.onmousedown = (e) => {
     dragging = true;
@@ -845,15 +838,17 @@ window.onload = () => {
     heart.style.top = "220px";
   }
 
-  // ห่วงเคลื่อนที่
+  // ขยับห่วง
+  hoop.style.left = "160px"; // ตำแหน่งเริ่มต้น
   let hoopDirection = 1;
   setInterval(() => {
     let left = parseFloat(hoop.style.left);
-    left += hoopDirection * 1.5;
-    if (left > 65 || left < 35) hoopDirection *= -1;
-    hoop.style.left = `${left}%`;
+    if (isNaN(left)) left = 160;
+    left += hoopDirection * 2;
+    if (left > 220 || left < 100) hoopDirection *= -1;
+    hoop.style.left = `${left}px`;
   }, 30);
-};
+}
 
 
 
@@ -908,6 +903,7 @@ window.onload = () => {
 </script>
 </body>
 </html>
+
 
 
 
