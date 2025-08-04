@@ -1,4 +1,469 @@
- <!-- หน้าเกม 1: เกมทายเลข -->
+<!DOCTYPE html>  
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Happy Anniversary - หน้าแยก + เกม</title>
+<link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
+<style>
+  /* --- สไตล์เดิมที่คุณชอบ (เป๊ะ ๆ) --- */
+  body {
+    font-family: 'Itim', cursive;
+    background: linear-gradient(135deg, #ffd6e8, #fff0f5);
+    color: #5e2b45;
+    margin: 0; padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .container {
+    width: 95vw;
+    max-width: 600px;
+    background: white;
+    border-radius: 25px;
+    box-shadow: 0 0 25px #ffb6c1;
+    padding: 35px 25px 40px;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+  }
+  h1, h2 {
+    color: #d43f6f;
+    margin-bottom: 15px;
+  }
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    line-height: 1.4;
+  }
+  input[type="password"], input[type="number"] {
+    font-family: 'Itim', cursive;
+    font-size: 20px;
+    padding: 10px 14px;
+    width: 130px;
+    border: 2px solid #ffb6c1;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  button {
+    background-color: #f48fb1;
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 12px 28px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 10px rgba(244,143,177,0.5);
+  }
+  button:hover {
+    background-color: #d43f6f;
+  }
+  .buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    gap: 15px;
+  }
+  .hidden {
+    display: none;
+  }
+  .photo-placeholder {
+    width: 100%;
+    max-width: 420px;
+    height: 320px;
+    background: #fff0f8;
+    border: 3px dashed #ff8ab8;
+    border-radius: 25px;
+    margin: 0 auto 40px;
+    box-shadow: 0 0 15px #ffb6c1;
+    line-height: 320px;
+    color: #ff8ab8;
+    font-size: 1.3rem;
+  }
+  #error {
+    color: #d43f6f;
+    font-weight: bold;
+    margin-top: 8px;
+  }
+  /* Menu grid */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+    gap: 20px;
+    justify-items: center;
+  }
+  .menu-card {
+    background: #fff0f8;
+    border-radius: 20px;
+    box-shadow: 0 0 12px #ffb6c1;
+    cursor: pointer;
+    padding: 15px;
+    width: 140px;
+    transition: transform 0.3s ease;
+    user-select: none;
+  }
+  .menu-card.locked {
+    cursor: default;
+    opacity: 0.5;
+  }
+  .menu-card:hover:not(.locked) {
+    transform: scale(1.07);
+    box-shadow: 0 0 20px #d43f6f;
+  }
+  .menu-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    object-fit: cover;
+    user-select: none;
+  }
+  .menu-card .title {
+    font-weight: bold;
+    color: #d43f6f;
+  }
+  #gameMessage, #puzzleMessage {
+    font-weight: bold;
+    color: #d43f6f;
+    min-height: 28px;
+    margin-top: 15px;
+    transition: color 0.3s ease;
+  }
+  /* Game input */
+  #guessInput {
+    max-width: 130px;
+    margin-bottom: 10px;
+  }
+  /* Back to game menu button */
+  .back-game-menu-btn {
+    background: #f8bbd0;
+    color: #a6265a;
+    border-radius: 25px;
+    border: none;
+    padding: 8px 22px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 8px rgba(248,187,208,0.6);
+    transition: background-color 0.3s ease;
+  }
+  .back-game-menu-btn:hover {
+    background: #d43f6f;
+    color: white;
+  }
+  /* Puzzle styles */
+  #puzzle {
+    width: 100%;
+    max-width: 420px;
+    height: 420px;
+    margin: 0 auto 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 6px;
+    user-select: none;
+  }
+  .piece {
+    background-color: #fff0f8;
+    border: 2px solid #ff8ab8;
+    border-radius: 18px;
+    box-shadow: 0 0 8px #ffb6c1;
+    cursor: grab;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #d43f6f;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+  }
+  .piece.dragging {
+    opacity: 0.7;
+    cursor: grabbing;
+  }
+  .piece img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 18px;
+    pointer-events: none;
+    user-select: none;
+  }
+  /* Responsive */
+  @media (max-width: 480px) {
+    .container {
+      padding: 25px 15px 30px;
+    }
+    .photo-placeholder {
+      height: 280px;
+    }
+    #puzzle {
+      height: 300px;
+      max-width: 300px;
+      gap: 4px;
+    }
+    .menu-card {
+      width: 120px;
+    }
+    .menu-card img {
+      width: 70px;
+      height: 70px;
+    }
+    input[type="password"], input[type="number"] {
+      width: 100px;
+      font-size: 18px;
+      padding: 8px 12px;
+    }
+  }
+  
+  /* Lightbox overlay */
+  #lightboxOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(95, 35, 70, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  #lightboxOverlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 20px;
+    box-shadow: 0 0 25px #ffb6c1;
+    cursor: zoom-out;
+    user-select: none;
+  }
+
+  /* --- สไลด์โชว์หน้า page1 --- */
+  #slideShow {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    height: 320px;
+    margin: 0 auto 20px;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 0 15px #ffb6c1;
+  }
+  #slideShow img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    position: absolute;
+    top: 0; left: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    border-radius: 25px;
+    user-select: none;
+  }
+  #slideShow img.active {
+    opacity: 1;
+    position: relative;
+  }
+  /* ปุ่มลูกศรเลื่อนสไลด์ */
+  .slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(244,143,177,0.9);
+    border: none;
+    color: white;
+    font-size: 36px;
+    padding: 8px 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+  }
+  .slide-btn:hover {
+    background: #d43f6f;
+  }
+  #prevBtn {
+    left: 10px;
+  }
+  #nextBtn {
+    right: 10px;
+  }
+
+  /* --- progress bar & counter for slideshow --- */
+  #slideCounter {
+    margin: 0 auto 10px;
+    font-weight: bold;
+    color: #d43f6f;
+  }
+  #progressBar {
+    width: 100%;
+    max-width: 420px;
+    height: 6px;
+    background: #ffe4ef;
+    border-radius: 6px;
+    margin: 0 auto 30px;
+    overflow: hidden;
+  }
+  #progressBarInner {
+    height: 100%;
+    width: 0%;
+    background: #d43f6f;
+    border-radius: 6px;
+    transition: width 0.4s ease;
+  }
+
+  /* --- Animation สำหรับ shake (เวลาแพ้เกม) --- */
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+    100% { transform: translateX(0); }
+  }
+  .shake {
+    animation: shake 0.4s ease;
+  }
+
+  /* เปลี่ยนสีข้อความเกมเวลาแพ้เป็นแดงสลับ */
+  @keyframes flashRed {
+    0%, 100% { color: #d43f6f; }
+    50% { color: #ff4d6d; }
+  }
+  .flashRed {
+    animation: flashRed 0.6s ease;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- หน้า 0: ใส่รหัส -->
+  <div id="page0">
+    <h1>🌸 ยินดีต้อนรับ 🌸</h1>
+    <p>กรอกรหัสผ่านเพื่อเข้าเว็บลับของเรา 💖</p>
+    <input type="password" id="password" placeholder="ใส่รหัสรัก..." />
+    <br />
+    <button onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
+    <p id="error"></p>
+  </div>
+
+  <!-- หน้า 1: วันครบรอบ (สไลด์โชว์รูป) -->
+  <div id="page1" class="hidden">
+    <h1>วันนี้วันครบรอบของเรานะะ 💕</h1>
+    <div id="slideShow">
+      <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=600&q=80" alt="มกราคม" class="active" />
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="กุมภาพันธ์" />
+      <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80" alt="มีนาคม" />
+      <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80" alt="เมษายน" />
+    </div>
+    <div id="slideCounter">รูปที่ 1 / 4</div>
+    <div id="progressBar"><div id="progressBarInner"></div></div>
+    <button id="prevBtn" class="slide-btn" aria-label="Previous Slide">&#10094;</button>
+    <button id="nextBtn" class="slide-btn" aria-label="Next Slide">&#10095;</button>
+    <div class="buttons">
+      <button onclick="showPage('page0')">ย้อนกลับ</button>
+      <button onclick="showPage('page2')">ถัดไป</button>
+    </div>
+  </div>
+
+  <!-- หน้า 2: เมนูเลือกหมวด -->
+  <div id="page2" class="hidden">
+    <h2>เลือกหมวดที่อยากดู 💌</h2>
+    <div class="menu-grid" id="categoryMenu">
+      <div class="menu-card locked" data-category="best">
+        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Best" alt="Best of Month" />
+        <div class="title">The Best ของทุกเดือน</div>
+        <small>🔒 ต้องปลดล็อคก่อน</small>
+      </div>
+      <div class="menu-card locked" data-category="funny">
+        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Funny" alt="Funny" />
+        <div class="title">รูปที่ฮาที่สุดของเรา</div>
+        <small>🔒 ต้องปลดล็อคก่อน</small>
+      </div>
+      <div class="menu-card locked" data-category="secret">
+        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Secret" alt="Secret" />
+        <div class="title">รูปแอบถ่าย</div>
+        <small>🔒 ต้องปลดล็อคก่อน</small>
+      </div>
+      <div class="menu-card locked" data-category="love">
+        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Love" alt="Love" />
+        <div class="title">รูปที่ชอบกันทั้งคู่</div>
+        <small>🔒 ต้องปลดล็อคก่อน</small>
+      </div>
+    </div>
+    <div class="buttons">
+      <button onclick="showPage('page1')">ย้อนกลับ</button>
+      <button onclick="showPage('page7')">ไปเล่นเกมปลดล็อค 🔓</button>
+    </div>
+  </div>
+
+  <!-- หน้า 3: The Best ของทุกเดือน (ปฏิทิน) -->
+  <div id="page3" class="hidden">
+    <h2>The Best ของทุกเดือน</h2>
+    <p>นี่คือรูปที่ดีที่สุดของแต่ละเดือน 💖</p>
+    <div class="menu-grid" id="bestGrid"></div>
+    <div class="buttons">
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <!-- หน้า 4: รูปที่ฮาที่สุด -->
+  <div id="page4" class="hidden">
+    <h2>รูปที่ฮาที่สุดของเรา 😂</h2>
+    <div class="menu-grid" id="funnyGrid"></div>
+    <div class="buttons">
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <!-- หน้า 5: รูปแอบถ่าย -->
+  <div id="page5" class="hidden">
+    <h2>รูปแอบถ่าย 📸</h2>
+    <div class="menu-grid" id="secretGrid"></div>
+    <div class="buttons">
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <!-- หน้า 6: รูปที่ชอบกันทั้งคู่ -->
+  <div id="page6" class="hidden">
+    <h2>รูปที่ชอบกันทั้งคู่ 💞</h2>
+    <div class="menu-grid" id="loveGrid"></div>
+    <div class="buttons">
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <!-- หน้า 7: เมนูเกมปลดล็อค -->
+  <div id="page7" class="hidden">
+    <h2>🎮 เลือกเกมเล่นเพื่อปลดล็อคหมวด! 🎮</h2>
+    <div class="menu-grid" id="gameMenuGrid">
+      <div class="menu-card" data-game="guessNumber">
+        <div class="title">เกมทายเลข 🎲</div>
+      </div>
+      <div class="menu-card" data-game="cardShuffle">
+        <div class="title">เกมหาไพ่หัวใจ 🃏</div>
+      </div>
+      <div class="menu-card" data-game="gachaPull">
+        <div class="title">กาชาดาว 5 ⭐</div>
+      </div>
+      <div class="menu-card" data-game="shootHearts">
+        <div class="title">ยิงหัวใจลงห่วง 💘</div>
+      </div>
+    </div>
+    <div class="buttons">
+      <button onclick="showPage('page2')">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <!-- หน้าเกม 1: เกมทายเลข -->
   <div id="gameGuessNumber" class="hidden">
     <h2>เกมทายเลข (1-10)</h2>
     <p>ลองทายเลขที่ฉันคิดอยู่สิ! 🎲</p>
@@ -37,14 +502,16 @@
     </div>
   </div>
 
+  
   <!-- หน้าเกม 4: ยิงหัวใจลงห่วง -->
   <div id="gameShootHearts" class="hidden">
     <h2>ยิงหัวใจลงห่วง 💘</h2>
-    <p>คลิกที่ห่วงเพื่อยิงหัวใจให้ลงห่วงให้ได้!</p>
-    <div id="shootArea" style="position: relative; margin: 30px auto; width: 320px; height: 280px; background: #ffe4ef; border-radius: 25px; box-shadow: 0 0 15px #ffb6c1;">
-      <div id="heart" style="position: absolute; width: 36px; height: 36px; background: #d43f6f; border-radius: 50%; box-shadow: 0 0 10px #ff8ab8; cursor: pointer;"></div>
-      <div id="hoop" style="position: absolute; width: 60px; height: 60px; border: 4px solid #d43f6f; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+    <p>กดปุ่มยิงหัวใจให้ลงห่วงให้ได้นะ!</p>
+    <div style="position: relative; margin: 30px auto; width: 320px; height: 280px; background: #ffe4ef; border-radius: 25px; box-shadow: 0 0 15px #ffb6c1;">
+      <div id="hoop" style="position: absolute; width: 100px; height: 20px; background: #ff69b4; border-radius: 10px; top: 80px; left: 50%; transform: translateX(-50%);"></div>
+      <div id="heart" style="position: absolute; width: 40px; height: 40px; background: red; top: 220px; left: 50%; transform: translateX(-50%); border-radius: 50%; box-shadow: 0 0 10px #ff8ab8;"></div>
     </div>
+    <button onclick="shootHeart()">ยิงเลย!</button>
     <p id="shootMessage" style="margin-top: 18px; font-weight: bold; color: #d43f6f; min-height: 28px;"></p>
     <div class="buttons">
       <button onclick="resetShootGame()">ลองใหม่</button>
@@ -320,69 +787,43 @@
     document.getElementById("gachaResult").textContent = msg;
   }
 
-  <!-- หน้าเกม 4: ยิงหัวใจลงห่วง -->
-<div id="gameShootHeart" class="hidden">
-  <h2>💘 ลากหัวใจใส่ห่วงให้ตรงนะ!</h2>
-  <div id="shootGameArea" style="position: relative; width: 90vw; max-width: 500px; height: 400px; background: #fff5fa; border: 2px dashed pink; border-radius: 20px; margin: 20px auto; overflow: hidden;">
-    <div id="hoopTarget" style="position: absolute; top: 20%; left: 50%; transform: translateX(-50%); width: 100px; height: 100px; border: 5px dashed #ff80b3; border-radius: 50%;"></div>
-    <div id="dragHeart" draggable="true" style="width: 60px; height: 60px; background: red; border-radius: 50%; position: absolute; top: 80%; left: 50%; transform: translate(-50%, -50%); cursor: grab; transition: transform 0.3s ease;"></div>
-  </div>
-  <div id="shootMessage" style="font-size: 1.2em; margin-top: 20px;"></div>
-</div>
+  
+  // --- เกมยิงหัวใจ ---
+  let heart = document.getElementById("heart");
+  let shootMessage = document.getElementById("shootMessage");
+  let isShooting = false;
 
-<style>
-  #dragHeart.shake {
-    animation: shake 0.3s;
+  function shootHeart() {
+    if (isShooting) return;
+    isShooting = true;
+    heart.style.transition = "top 0.4s";
+    heart.style.top = "90px";
+
+    setTimeout(() => {
+      const hoop = document.getElementById("hoop").getBoundingClientRect();
+      const heartBox = heart.getBoundingClientRect();
+      const dx = (heartBox.left + heartBox.width/2) - (hoop.left + hoop.width/2);
+      const dy = (heartBox.top + heartBox.height/2) - (hoop.top + hoop.height/2);
+      const dist = Math.sqrt(dx*dx + dy*dy);
+
+      if (dist < 50) {
+        shootMessage.textContent = "🎉 ยิงลงห่วงสำเร็จ! ปลดล็อคหมวดรูปที่ชอบกันแล้ว!";
+        unlockCategory("love");
+      } else {
+        shootMessage.textContent = "พลาด! ลองอีกครั้งนะ!";
+        heart.style.top = "220px";
+      }
+
+      setTimeout(() => { isShooting = false; }, 400);
+    }, 450);
   }
-  @keyframes shake {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    25% { transform: translate(-52%, -48%) rotate(-10deg); }
-    50% { transform: translate(-50%, -50%) rotate(10deg); }
-    75% { transform: translate(-48%, -52%) rotate(-10deg); }
-    100% { transform: translate(-50%, -50%) rotate(0deg); }
+
+  function resetShootGame() {
+    shootMessage.textContent = "";
+    heart.style.top = "220px";
+    isShooting = false;
   }
-</style>
 
-<script>
-  const dragHeart = document.getElementById("dragHeart");
-  const hoopTarget = document.getElementById("hoopTarget");
-  const shootMessage = document.getElementById("shootMessage");
-
-  dragHeart.addEventListener("dragstart", (e) => {
-    e.dataTransfer.setData("text/plain", null);
-  });
-
-  document.getElementById("shootGameArea").addEventListener("dragover", (e) => {
-    e.preventDefault();
-  });
-
-  document.getElementById("shootGameArea").addEventListener("drop", (e) => {
-    e.preventDefault();
-    const dropX = e.clientX;
-    const dropY = e.clientY;
-
-    const hoopRect = hoopTarget.getBoundingClientRect();
-    const heartCenterX = dropX;
-    const heartCenterY = dropY;
-
-    const hoopCenterX = hoopRect.left + hoopRect.width / 2;
-    const hoopCenterY = hoopRect.top + hoopRect.height / 2;
-    const dx = heartCenterX - hoopCenterX;
-    const dy = heartCenterY - hoopCenterY;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    if (dist < 50) {
-      shootMessage.textContent = "🎯 เยี่ยม! ลงห่วงแล้ว! ปลดล็อคหมวดรูปที่ชอบกัน!";
-      dragHeart.style.display = "none";
-      unlockCategory("love");
-    } else {
-      shootMessage.textContent = "พลาด! ลองใหม่อีกทีนะ~";
-      dragHeart.classList.add("shake");
-      setTimeout(() => {
-        dragHeart.classList.remove("shake");
-      }, 400);
-    }
-  });
 
   // --- ฟังก์ชันปลดล็อคหมวด ---
   function unlockCategory(cat) {
