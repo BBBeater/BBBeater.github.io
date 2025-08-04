@@ -788,42 +788,71 @@
   }
 
   
-  // --- เกมยิงหัวใจ ---
-  let heart = document.getElementById("heart");
-  let shootMessage = document.getElementById("shootMessage");
-  let isShooting = false;
+<!-- ✅ ส่วนที่เปลี่ยน: หน้าเกมยิงหัวใจ + สคริปต์ใหม่ -->
+<div id="gameShootHearts" class="hidden">
+  <h2>ยิงหัวใจลงห่วง 💘</h2>
+  <p>ลากหัวใจให้ลงห่วงเพื่อทำคะแนน (ยิงให้ได้ 5 แต้มจะชนะ!)</p>
+  <div style="position: relative; margin: 30px auto; width: 320px; height: 280px; background: #ffe4ef; border-radius: 25px; box-shadow: 0 0 15px #ffb6c1;">
+    <div id="hoop" style="position: absolute; width: 100px; height: 20px; background: #ff69b4; border-radius: 10px; top: 80px; left: 50%; transform: translateX(-50%);"></div>
+    <div id="heart" draggable="true" style="position: absolute; width: 40px; height: 40px; background: red; top: 220px; left: 50%; transform: translateX(-50%); border-radius: 50%; box-shadow: 0 0 10px #ff8ab8; cursor: grab;"></div>
+  </div>
+  <p id="shootMessage" style="margin-top: 18px; font-weight: bold; color: #d43f6f; min-height: 28px;"></p>
+  <div class="buttons">
+    <button onclick="resetShootGame()">ลองใหม่</button>
+    <button onclick="backToGameMenu('gameShootHearts')">กลับไปเมนูเกม</button>
+  </div>
+</div>
 
-  function shootHeart() {
-    if (isShooting) return;
-    isShooting = true;
-    heart.style.transition = "top 0.4s";
-    heart.style.top = "90px";
+<!-- ✅ สคริปต์เกมยิงหัวใจแบบลาก -->
+<script>
+let heart = document.getElementById("heart");
+let hoop = document.getElementById("hoop");
+let shootMessage = document.getElementById("shootMessage");
+let score = 0;
 
-    setTimeout(() => {
-      const hoop = document.getElementById("hoop").getBoundingClientRect();
-      const heartBox = heart.getBoundingClientRect();
-      const dx = (heartBox.left + heartBox.width/2) - (hoop.left + hoop.width/2);
-      const dy = (heartBox.top + heartBox.height/2) - (hoop.top + hoop.height/2);
-      const dist = Math.sqrt(dx*dx + dy*dy);
+// ห่วงขยับซ้ายขวา
+let direction = 1;
+setInterval(() => {
+  let left = parseFloat(hoop.style.left);
+  left += direction * 1.5;
+  if (left > 80 || left < 20) direction *= -1;
+  hoop.style.left = `${left}%`;
+}, 60);
 
-      if (dist < 50) {
-        shootMessage.textContent = "🎉 ยิงลงห่วงสำเร็จ! ปลดล็อคหมวดรูปที่ชอบกันแล้ว!";
-        unlockCategory("love");
-      } else {
-        shootMessage.textContent = "พลาด! ลองอีกครั้งนะ!";
-        heart.style.top = "220px";
-      }
+// จัดการลากยิงหัวใจ
+heart.addEventListener("dragstart", e => {
+  e.dataTransfer.setData("text/plain", null);
+});
+heart.addEventListener("dragend", e => {
+  const heartBox = heart.getBoundingClientRect();
+  const hoopBox = hoop.getBoundingClientRect();
+  const dx = (heartBox.left + heartBox.width / 2) - (hoopBox.left + hoopBox.width / 2);
+  const dy = (heartBox.top + heartBox.height / 2) - (hoopBox.top + hoopBox.height / 2);
+  const dist = Math.sqrt(dx * dx + dy * dy);
 
-      setTimeout(() => { isShooting = false; }, 400);
-    }, 450);
+  if (dist < 40) {
+    score++;
+    shootMessage.textContent = `🎯 ยิงลงห่วงสำเร็จ! ได้ ${score} แต้ม`;
+    if (score >= 5) {
+      shootMessage.textContent = `🎉 ครบ 5 แต้มแล้ว! ปลดล็อคหมวดรูปที่ชอบกันทั้งคู่ 💞`;
+      unlockCategory("love");
+    }
+  } else {
+    shootMessage.textContent = "พลาด! ลองใหม่อีกครั้ง!";
   }
+  resetHeart();
+});
 
-  function resetShootGame() {
-    shootMessage.textContent = "";
-    heart.style.top = "220px";
-    isShooting = false;
-  }
+function resetHeart() {
+  heart.style.top = "220px";
+  heart.style.left = "50%";
+}
 
+function resetShootGame() {
+  shootMessage.textContent = "";
+  score = 0;
+  resetHeart();
+}
 
   // --- ฟังก์ชันปลดล็อคหมวด ---
   function unlockCategory(cat) {
@@ -883,3 +912,4 @@
 </script>
 </body>
 </html>
+
