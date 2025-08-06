@@ -794,6 +794,8 @@ function resetShootGame() {
   const shootMessage = document.getElementById("shootMessage");
 
   let score = 0;
+  let isCharging = false;
+  let chargeStartTime = 0;
   let isShooting = false;
 
   heart.style.transition = "none";
@@ -801,27 +803,66 @@ function resetShootGame() {
   heart.style.left = "50%";
   shootMessage.textContent = "";
 
-  // ปุ่มยิง
-  if (!document.getElementById("shootBtn")) {
-    const shootBtn = document.createElement("button");
+  // ปุ่มยิง (ถ้ายังไม่มี)
+  let shootBtn = document.getElementById("shootBtn");
+  if (!shootBtn) {
+    shootBtn = document.createElement("button");
     shootBtn.id = "shootBtn";
-    shootBtn.textContent = "ยิง! ❤️";
+    shootBtn.textContent = "❤️ ยิง!";
     shootBtn.style.marginTop = "12px";
-    shootBtn.onclick = () => {
-      if (isShooting) return;
-      shootHeart();
-    };
+    shootBtn.style.fontWeight = "bold";
+    shootBtn.style.background = "#ff8ab8";
+    shootBtn.style.boxShadow = "0 4px 10px rgba(255,182,193,0.5)";
+    shootBtn.style.transition = "transform 0.2s ease";
     shootMessage.parentElement.insertBefore(shootBtn, shootMessage.nextSibling);
   }
 
-  function shootHeart() {
+  // Event: เริ่มกดค้างเพื่อชาร์จ
+  shootBtn.onmousedown = () => {
+    if (isShooting) return;
+    isCharging = true;
+    chargeStartTime = Date.now();
+    shootBtn.style.transform = "scale(1.2)";
+  };
+
+  // Event: ปล่อยเพื่อยิง
+  shootBtn.onmouseup = () => {
+    if (!isCharging || isShooting) return;
+    isCharging = false;
+    shootBtn.style.transform = "scale(1)";
+
+    const holdTime = Date.now() - chargeStartTime;
+    const power = Math.min(holdTime / 100, 12); // แรงสูงสุด
+    shootHeart(power);
+  };
+
+  // มือถือรองรับ touch ด้วย
+  shootBtn.ontouchstart = (e) => {
+    e.preventDefault();
+    if (isShooting) return;
+    isCharging = true;
+    chargeStartTime = Date.now();
+    shootBtn.style.transform = "scale(1.2)";
+  };
+  shootBtn.ontouchend = (e) => {
+    e.preventDefault();
+    if (!isCharging || isShooting) return;
+    isCharging = false;
+    shootBtn.style.transform = "scale(1)";
+
+    const holdTime = Date.now() - chargeStartTime;
+    const power = Math.min(holdTime / 100, 12);
+    shootHeart(power);
+  };
+
+  function shootHeart(power) {
     isShooting = true;
-    let velocityY = -6;
+    let velocityY = -power;
     let posY = parseFloat(heart.style.top);
 
     function animate() {
       posY += velocityY;
-      velocityY += 0.25; // gravity
+      velocityY += 0.3; // gravity
 
       heart.style.top = `${posY}px`;
 
@@ -860,7 +901,7 @@ function resetShootGame() {
     heart.style.top = "220px";
   }
 
-  // ขยับห่วงซ้าย-ขวา
+  // ขยับห่วงซ้ายขวา
   hoop.style.left = "160px";
   let hoopDirection = 1;
   if (!resetShootGame.hoopInterval) {
@@ -927,6 +968,7 @@ function resetShootGame() {
 </script>
 </body>
 </html>
+
 
 
 
