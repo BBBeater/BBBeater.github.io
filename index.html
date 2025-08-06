@@ -717,50 +717,47 @@
   }
 
   // --- เกมหาไพ่หัวใจ ---
- function startCardGame() {
-  const container = document.getElementById("cardContainer");
-  const cards = container.querySelectorAll(".card");
-  const emojis = ["♥️", "🍀", "⭐"];
-  let shuffled = shuffle(emojis);
+let heartIndex = -1;
+let cardsPicked = false;
 
-  // แสดงหน้าไพ่ (โชว์ไพ่) ให้จำ 2 วินาที
-  shuffled.forEach((emoji, i) => {
-    cards[i].textContent = emoji;
-    cards[i].style.background = "#fff2f7";
-    cards[i].style.color = "#5e2b45";
-    cards[i].style.pointerEvents = "none"; // ปิดคลิกช่วงโชว์หน้าไพ่
+// เมื่อผู้เล่นเลือกไพ่
+function pickCard(index) {
+  if (cardsPicked) return; // ยังไม่พร้อมให้เลือก
+  const cards = document.querySelectorAll("#cardContainer .card");
+  const message = document.getElementById("puzzleMessage");
+
+  cardsPicked = true; // ป้องกันคลิกซ้ำ
+
+  if (index === heartIndex) {
+    cards[index].textContent = "♥️";
+    cards[index].style.background = "#d1ffd6";
+    message.textContent = "🎉 เจอหัวใจแล้ว! ปลดล็อคหมวดรูปฮา!";
+    unlockCategory("funny");
+  } else {
+    cards[index].textContent = "❌";
+    cards[index].style.background = "#ffd1d1";
+    message.textContent = "ไม่ใช่หัวใจนะ ลองใหม่อีกครั้ง!";
+  }
+
+  // ปิดคลิกทุกใบหลังเลือก
+  cards.forEach(card => {
+    card.style.pointerEvents = "none";
   });
+}
 
-  // จำตำแหน่งไพ่หัวใจใน shuffled
-  heartIndex = shuffled.findIndex(e => e === "♥️");
-  cardsPicked = true;
-
-  // หลัง 2 วิ ให้กลับไพ่เป็น "?" แล้วสลับไพ่ใหม่
-  setTimeout(() => {
-    cards.forEach(card => card.textContent = "?");
-
-    // สลับไพ่ใหม่อีกครั้ง
-    setTimeout(() => {
-      shuffled = shuffle(shuffled);
-      shuffled.forEach((emoji, i) => {
-        cards[i].textContent = "?";
-        cards[i].style.background = "#ffe1e9";
-        cards[i].style.color = "#5e2b45";
-        cards[i].style.pointerEvents = "auto"; // เปิดคลิกได้
-      });
-      heartIndex = shuffled.findIndex(e => e === "♥️");
-      cardsPicked = false;
-    }, 500);
-
-  }, 2000);
-
+// รีเซ็ตเกมไพ่
+function resetCardGame() {
+  const cards = document.querySelectorAll("#cardContainer .card");
+  cards.forEach(card => {
+    card.textContent = "?";
+    card.style.background = "#ffe1e9";
+    card.style.color = "#5e2b45";
+    card.style.pointerEvents = "auto";
+  });
   document.getElementById("puzzleMessage").textContent = "";
+  startCardGame();
 }
 
-// ฟังก์ชันช่วยสลับไพ่
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
 
 
   // --- เกมกาชา ---
@@ -965,6 +962,7 @@ function resetShootGame() {
 </script>
 </body>
 </html>
+
 
 
 
