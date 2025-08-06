@@ -718,15 +718,47 @@
 
   // --- เกมหาไพ่หัวใจ ---
 let heartIndex = -1;
-let cardsPicked = false;
+let cardsPicked = true; // ปิดคลิกช่วงโชว์ไพ่
+
+function startCardGame() {
+  const container = document.getElementById("cardContainer");
+  const cards = container.querySelectorAll(".card");
+  const emojis = ["♥️", "🍀", "⭐"];
+  let shuffled = shuffle([...emojis]);
+
+  // โชว์ไพ่ให้จำก่อน 2 วินาที
+  shuffled.forEach((emoji, i) => {
+    cards[i].textContent = emoji;
+    cards[i].style.background = "#fff2f7";
+    cards[i].style.color = "#5e2b45";
+    cards[i].style.pointerEvents = "none";
+  });
+
+  heartIndex = shuffled.findIndex(e => e === "♥️");
+
+  setTimeout(() => {
+    // กลับเป็น “?” แล้วสลับตำแหน่งใหม่
+    shuffled = shuffle([...shuffled]);
+    shuffled.forEach((emoji, i) => {
+      cards[i].textContent = "?";
+      cards[i].style.background = "#ffe1e9";
+      cards[i].style.color = "#5e2b45";
+      cards[i].style.pointerEvents = "auto";
+    });
+
+    heartIndex = shuffled.findIndex(e => e === "♥️");
+    cardsPicked = false;
+    document.getElementById("puzzleMessage").textContent = "";
+  }, 2000);
+}
 
 // เมื่อผู้เล่นเลือกไพ่
 function pickCard(index) {
-  if (cardsPicked) return; // ยังไม่พร้อมให้เลือก
+  if (cardsPicked) return;
   const cards = document.querySelectorAll("#cardContainer .card");
   const message = document.getElementById("puzzleMessage");
 
-  cardsPicked = true; // ป้องกันคลิกซ้ำ
+  cardsPicked = true;
 
   if (index === heartIndex) {
     cards[index].textContent = "♥️";
@@ -739,13 +771,12 @@ function pickCard(index) {
     message.textContent = "ไม่ใช่หัวใจนะ ลองใหม่อีกครั้ง!";
   }
 
-  // ปิดคลิกทุกใบหลังเลือก
   cards.forEach(card => {
     card.style.pointerEvents = "none";
   });
 }
 
-// รีเซ็ตเกมไพ่
+// รีเซ็ตเกม
 function resetCardGame() {
   const cards = document.querySelectorAll("#cardContainer .card");
   cards.forEach(card => {
@@ -756,6 +787,11 @@ function resetCardGame() {
   });
   document.getElementById("puzzleMessage").textContent = "";
   startCardGame();
+}
+
+// สลับไพ่
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
 }
 
 
@@ -962,6 +998,7 @@ function resetShootGame() {
 </script>
 </body>
 </html>
+
 
 
 
