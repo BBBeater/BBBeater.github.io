@@ -718,7 +718,7 @@
 
   // --- เกมหาไพ่หัวใจ ---
 let heartIndex = -1;
-let cardsPicked = true; // ปิดคลิกช่วงโชว์ไพ่
+let cardsPicked = true;
 
 function startCardGame() {
   const container = document.getElementById("cardContainer");
@@ -726,7 +726,7 @@ function startCardGame() {
   const emojis = ["♥️", "🍀", "⭐"];
   let shuffled = shuffle([...emojis]);
 
-  // โชว์ไพ่ให้จำก่อน 2 วินาที
+  // โชว์ไพ่ให้จำ
   shuffled.forEach((emoji, i) => {
     cards[i].textContent = emoji;
     cards[i].style.background = "#fff2f7";
@@ -736,20 +736,60 @@ function startCardGame() {
 
   heartIndex = shuffled.findIndex(e => e === "♥️");
 
+  // หลัง 2 วิ → สลับไพ่แบบเห็นการเคลื่อนไหว
   setTimeout(() => {
-    // กลับเป็น “?” แล้วสลับตำแหน่งใหม่
-    shuffled = shuffle([...shuffled]);
-    shuffled.forEach((emoji, i) => {
-      cards[i].textContent = "?";
-      cards[i].style.background = "#ffe1e9";
-      cards[i].style.color = "#5e2b45";
-      cards[i].style.pointerEvents = "auto";
+    animateCardShuffle(cards, shuffled, () => {
+      // หลังสลับเสร็จ → กลับเป็น “?” และเปิดให้เลือก
+      cards.forEach(card => {
+        card.textContent = "?";
+        card.style.background = "#ffe1e9";
+        card.style.color = "#5e2b45";
+        card.style.pointerEvents = "auto";
+      });
+      heartIndex = shuffled.findIndex(e => e === "♥️");
+      cardsPicked = false;
+      document.getElementById("puzzleMessage").textContent = "";
     });
-
-    heartIndex = shuffled.findIndex(e => e === "♥️");
-    cardsPicked = false;
-    document.getElementById("puzzleMessage").textContent = "";
   }, 2000);
+}
+
+// สลับไพ่แบบมี animation
+function animateCardShuffle(cards, emojis, callback) {
+  const positions = Array.from(cards).map(card => card.getBoundingClientRect());
+  const shuffled = shuffle([...emojis]);
+
+  // สร้าง clone เพื่อทำ animation
+  cards.forEach((card, i) => {
+    const clone = card.cloneNode(true);
+    clone.style.position = "absolute";
+    clone.style.left = `${card.offsetLeft}px`;
+    clone.style.top = `${card.offsetTop}px`;
+    clone.style.width = `${card.offsetWidth}px`;
+    clone.style.height = `${card.offsetHeight}px`;
+    clone.style.transition = "all 0.6s ease";
+    clone.style.zIndex = "10";
+    clone.textContent = emojis[i];
+    container.appendChild(clone);
+    card.style.visibility = "hidden";
+
+    // ย้าย clone ไปตำแหน่งใหม่
+    setTimeout(() => {
+      clone.style.left = `${cards[i].offsetLeft}px`;
+      clone.style.top = `${cards[i].offsetTop}px`;
+    }, 50);
+
+    // หลัง animation เสร็จ → อัปเดตไพ่จริง
+    setTimeout(() => {
+      card.textContent = shuffled[i];
+      card.style.visibility = "visible";
+      container.removeChild(clone);
+    }, 700);
+  });
+
+  // เรียก callback หลังสลับเสร็จ
+  setTimeout(() => {
+    callback();
+  }, 800);
 }
 
 // เมื่อผู้เล่นเลือกไพ่
@@ -789,10 +829,12 @@ function resetCardGame() {
   startCardGame();
 }
 
-// สลับไพ่
+// สลับ array
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
+
+
 
 
 
@@ -998,6 +1040,7 @@ function resetShootGame() {
 </script>
 </body>
 </html>
+
 
 
 
