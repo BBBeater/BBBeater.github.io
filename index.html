@@ -792,54 +792,105 @@ function resetShootGame() {
   const heart = document.getElementById("heart");
   const hoop = document.getElementById("hoop");
   const shootMessage = document.getElementById("shootMessage");
-  let dragging = false;
-  let offsetY = 0;
+
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let velocity = { x: 0, y: 0 };
+  let animationFrame;
   let score = 0;
 
   heart.style.top = "220px";
+  heart.style.left = "50%";
   shootMessage.textContent = "";
 
-  heart.onmousedown = (e) => {
-    dragging = true;
-    offsetY = e.clientY - heart.getBoundingClientRect().top;
+  function shoot() {
+    let heartRect = heart.getBoundingClientRect();
+    let containerRect = heart.parentElement.getBoundingClientRect();
+
+    function animate() {
+      const top = parseFloat(heart.style.top);
+      const left = parseFloat(heart.style.left);
+
+      heart.style.top = `${top + velocity.y}px`;
+      heart.style.left = `${left + velocity.x}px`;
+
+      velocity.y += 0.5; // gravity
+
+      // ตรวจ collision
+      const hoopBox = hoop.getBoundingClientRect();
+      const newHeartRect = heart.getBoundingClientRect();
+      const dx = (newHeartRect.left + newHeartRect.width / 2) - (hoopBox.left + hoopBox.width / 2);
+      const dy = (newHeartRect.top + newHeartRect.height / 2) - (hoopBox.top + hoopBox.height / 2);
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < 40) {
+        cancelAnimationFrame(animationFrame);
+        score++;
+        shootMessage.textContent = `✅ ลงห่วงแล้ว! (${score}/5)`;
+        if (score >= 5) {
+          unlockCategory("love");
+          shootMessage.textContent += " ❤️ ปลดล็อคเรียบร้อย!";
+        }
+        resetHeart();
+        return;
+      }
+
+      // ถ้าหลุดจอ
+      if (
+        newHeartRect.top > containerRect.bottom ||
+        newHeartRect.left < containerRect.left ||
+        newHeartRect.right > containerRect.right
+      ) {
+        cancelAnimationFrame(animationFrame);
+        shootMessage.textContent = "❌ พลาด! ลองใหม่นะ";
+        resetHeart();
+        return;
+      }
+
+      animationFrame = requestAnimationFrame(animate);
+    }
+
+    animationFrame = requestAnimationFrame(animate);
+  }
+
+  function resetHeart() {
     heart.style.transition = "none";
+    heart.style.top = "220px";
+    heart.style.left = "50%";
+  }
+
+  heart.onmousedown = (e) => {
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    heart.style.transition = "none";
+    cancelAnimationFrame(animationFrame);
   };
 
   document.onmousemove = (e) => {
-    if (!dragging) return;
-    const newY = e.clientY - offsetY;
-    heart.style.top = `${Math.min(newY, 220)}px`;
+    if (!isDragging) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    heart.style.left = `calc(50% + ${dx}px)`;
+    heart.style.top = `${220 + dy}px`;
   };
 
-  document.onmouseup = () => {
-    if (!dragging) return;
-    dragging = false;
-    heart.style.transition = "top 0.4s";
-    checkCollision();
+  document.onmouseup = (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+
+    velocity.x = -dx / 15;
+    velocity.y = -dy / 15;
+
+    shoot();
   };
 
-  function checkCollision() {
-    const hoopBox = hoop.getBoundingClientRect();
-    const heartBox = heart.getBoundingClientRect();
-    const dx = (heartBox.left + heartBox.width / 2) - (hoopBox.left + hoopBox.width / 2);
-    const dy = (heartBox.top + heartBox.height / 2) - (hoopBox.top + hoopBox.height / 2);
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    if (dist < 40) {
-      score++;
-      shootMessage.textContent = `✅ ลงห่วงแล้ว! (${score}/5)`;
-      if (score >= 5) {
-        unlockCategory("love");
-        shootMessage.textContent += " ❤️ ปลดล็อคเรียบร้อย!";
-      }
-    } else {
-      shootMessage.textContent = "❌ พลาด! ลองใหม่นะ";
-    }
-    heart.style.top = "220px";
-  }
-
-  // ขยับห่วง
-  hoop.style.left = "160px"; // ตำแหน่งเริ่มต้น
+  // ขยับห่วงซ้าย-ขวา
+  hoop.style.left = "160px"; // เริ่มกลาง
   let hoopDirection = 1;
   setInterval(() => {
     let left = parseFloat(hoop.style.left);
@@ -903,6 +954,7 @@ function resetShootGame() {
 </script>
 </body>
 </html>
+
 
 
 
