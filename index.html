@@ -339,6 +339,20 @@
   .flashRed {
     animation: flashRed 0.6s ease;
   }
+ /* --- Lightbox overlay --- */
+    #lightboxOverlay { ... }
+    #lightboxOverlay img { ... }
+
+    /* --- CSS หมุนไพ่ --- */
+    .card {
+      transition: transform 0.6s ease;
+      transform-style: preserve-3d;
+      perspective: 800px;
+    }
+
+    .card.flip {
+      transform: rotateY(180deg);
+    }
 </style>
 </head>
 <body>
@@ -717,9 +731,6 @@
   }
 
   // --- เกมหาไพ่หัวใจ ---
-let heartIndex = -1;
-let cardsPicked = true;
-
 function startCardGame() {
   const container = document.getElementById("cardContainer");
   const cards = container.querySelectorAll(".card");
@@ -732,107 +743,35 @@ function startCardGame() {
     cards[i].style.background = "#fff2f7";
     cards[i].style.color = "#5e2b45";
     cards[i].style.pointerEvents = "none";
+    cards[i].classList.remove("flip");
   });
 
   heartIndex = shuffled.findIndex(e => e === "♥️");
 
-  // หลัง 2 วิ → สลับไพ่แบบเห็นการเคลื่อนไหว
+  // หลัง 2 วิ → หมุนไพ่กลับด้าน
   setTimeout(() => {
-    animateCardShuffle(cards, shuffled, () => {
-      // หลังสลับเสร็จ → กลับเป็น “?” และเปิดให้เลือก
-      cards.forEach(card => {
-        card.textContent = "?";
-        card.style.background = "#ffe1e9";
-        card.style.color = "#5e2b45";
-        card.style.pointerEvents = "auto";
-      });
-      heartIndex = shuffled.findIndex(e => e === "♥️");
-      cardsPicked = false;
-      document.getElementById("puzzleMessage").textContent = "";
+    cards.forEach(card => {
+      card.classList.add("flip");
     });
+
+    // หลังหมุนเสร็จ → สลับตำแหน่ง
+    setTimeout(() => {
+      animateCardShuffle(cards, shuffled, () => {
+        cards.forEach(card => {
+          card.textContent = "?";
+          card.classList.remove("flip");
+          card.style.background = "#ffe1e9";
+          card.style.color = "#5e2b45";
+          card.style.pointerEvents = "auto";
+        });
+        heartIndex = shuffled.findIndex(e => e === "♥️");
+        cardsPicked = false;
+        document.getElementById("puzzleMessage").textContent = "";
+      });
+    }, 600); // รอให้หมุนเสร็จก่อน
   }, 2000);
 }
 
-// สลับไพ่แบบมี animation
-function animateCardShuffle(cards, emojis, callback) {
-  const positions = Array.from(cards).map(card => card.getBoundingClientRect());
-  const shuffled = shuffle([...emojis]);
-
-  // สร้าง clone เพื่อทำ animation
-  cards.forEach((card, i) => {
-    const clone = card.cloneNode(true);
-    clone.style.position = "absolute";
-    clone.style.left = `${card.offsetLeft}px`;
-    clone.style.top = `${card.offsetTop}px`;
-    clone.style.width = `${card.offsetWidth}px`;
-    clone.style.height = `${card.offsetHeight}px`;
-    clone.style.transition = "all 0.6s ease";
-    clone.style.zIndex = "10";
-    clone.textContent = emojis[i];
-    container.appendChild(clone);
-    card.style.visibility = "hidden";
-
-    // ย้าย clone ไปตำแหน่งใหม่
-    setTimeout(() => {
-      clone.style.left = `${cards[i].offsetLeft}px`;
-      clone.style.top = `${cards[i].offsetTop}px`;
-    }, 50);
-
-    // หลัง animation เสร็จ → อัปเดตไพ่จริง
-    setTimeout(() => {
-      card.textContent = shuffled[i];
-      card.style.visibility = "visible";
-      container.removeChild(clone);
-    }, 700);
-  });
-
-  // เรียก callback หลังสลับเสร็จ
-  setTimeout(() => {
-    callback();
-  }, 800);
-}
-
-// เมื่อผู้เล่นเลือกไพ่
-function pickCard(index) {
-  if (cardsPicked) return;
-  const cards = document.querySelectorAll("#cardContainer .card");
-  const message = document.getElementById("puzzleMessage");
-
-  cardsPicked = true;
-
-  if (index === heartIndex) {
-    cards[index].textContent = "♥️";
-    cards[index].style.background = "#d1ffd6";
-    message.textContent = "🎉 เจอหัวใจแล้ว! ปลดล็อคหมวดรูปฮา!";
-    unlockCategory("funny");
-  } else {
-    cards[index].textContent = "❌";
-    cards[index].style.background = "#ffd1d1";
-    message.textContent = "ไม่ใช่หัวใจนะ ลองใหม่อีกครั้ง!";
-  }
-
-  cards.forEach(card => {
-    card.style.pointerEvents = "none";
-  });
-}
-
-// รีเซ็ตเกม
-function resetCardGame() {
-  const cards = document.querySelectorAll("#cardContainer .card");
-  cards.forEach(card => {
-    card.textContent = "?";
-    card.style.background = "#ffe1e9";
-    card.style.color = "#5e2b45";
-    card.style.pointerEvents = "auto";
-  });
-  document.getElementById("puzzleMessage").textContent = "";
-  startCardGame();
-}
-
-// สลับ array
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
 
 
 
@@ -1040,6 +979,7 @@ function resetShootGame() {
 </script>
 </body>
 </html>
+
 
 
 
