@@ -717,54 +717,51 @@
   }
 
   // --- เกมหาไพ่หัวใจ ---
-  let heartIndex = null;
-  let cardsPicked = false;
-  function startCardGame() {
-    heartIndex = Math.floor(Math.random() * 3);
-    cardsPicked = false;
-    const container = document.getElementById("cardContainer");
-    container.querySelectorAll(".card").forEach(card => {
-      card.textContent = "?";
-      card.style.background = "#ffe1e9";
-      card.style.color = "#5e2b45";
-      card.style.pointerEvents = "auto";
-      card.classList.remove("shake");
-    });
-    document.getElementById("puzzleMessage").textContent = "";
-  }
-  function pickCard(i) {
-    if (cardsPicked) return;
-    cardsPicked = true;
-    const container = document.getElementById("cardContainer");
-    const message = document.getElementById("puzzleMessage");
-    const cards = container.querySelectorAll(".card");
-    if (i === heartIndex) {
-      cards[i].textContent = "♥️";
-      cards[i].style.background = "#d43f6f";
-      cards[i].style.color = "white";
-      message.textContent = "🎉 เจอไพ่หัวใจ! ปลดล็อคหมวดรูปฮาแล้ว!";
-      unlockCategory("funny");
-    } else {
-      cards[i].textContent = "❌";
-      cards[i].style.background = "#ff8ab8";
-      cards[i].classList.add("shake");
-      message.textContent = "ไม่เจอหัวใจ ลองใหม่อีกครั้ง!";
-      message.classList.add("flashRed");
-      setTimeout(() => {
-        message.classList.remove("flashRed");
-      }, 600);
-    }
-    // แสดงไพ่หัวใจใบที่ถูกต้อง
-    cards[heartIndex].textContent = "♥️";
-    cards[heartIndex].style.background = "#d43f6f";
-    cards[heartIndex].style.color = "white";
+ function startCardGame() {
+  const container = document.getElementById("cardContainer");
+  const cards = container.querySelectorAll(".card");
+  const emojis = ["♥️", "🍀", "⭐"];
+  let shuffled = shuffle(emojis);
 
-    // ปิดการคลิกหลังเลือก
-    cards.forEach(card => card.style.pointerEvents = "none");
-  }
-  function resetCardGame() {
-    startCardGame();
-  }
+  // แสดงหน้าไพ่ (โชว์ไพ่) ให้จำ 2 วินาที
+  shuffled.forEach((emoji, i) => {
+    cards[i].textContent = emoji;
+    cards[i].style.background = "#fff2f7";
+    cards[i].style.color = "#5e2b45";
+    cards[i].style.pointerEvents = "none"; // ปิดคลิกช่วงโชว์หน้าไพ่
+  });
+
+  // จำตำแหน่งไพ่หัวใจใน shuffled
+  heartIndex = shuffled.findIndex(e => e === "♥️");
+  cardsPicked = true;
+
+  // หลัง 2 วิ ให้กลับไพ่เป็น "?" แล้วสลับไพ่ใหม่
+  setTimeout(() => {
+    cards.forEach(card => card.textContent = "?");
+
+    // สลับไพ่ใหม่อีกครั้ง
+    setTimeout(() => {
+      shuffled = shuffle(shuffled);
+      shuffled.forEach((emoji, i) => {
+        cards[i].textContent = "?";
+        cards[i].style.background = "#ffe1e9";
+        cards[i].style.color = "#5e2b45";
+        cards[i].style.pointerEvents = "auto"; // เปิดคลิกได้
+      });
+      heartIndex = shuffled.findIndex(e => e === "♥️");
+      cardsPicked = false;
+    }, 500);
+
+  }, 2000);
+
+  document.getElementById("puzzleMessage").textContent = "";
+}
+
+// ฟังก์ชันช่วยสลับไพ่
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
 
   // --- เกมกาชา ---
   function gachaPull() {
@@ -968,6 +965,7 @@ function resetShootGame() {
 </script>
 </body>
 </html>
+
 
 
 
