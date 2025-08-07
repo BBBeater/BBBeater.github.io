@@ -850,14 +850,41 @@ function animateSlowShuffle(cards, callback) {
 
 // 🔄 สลับค่าระหว่างไพ่สองใบ (รวม data-emoji ด้วย)
 function swapCards(cardA, cardB) {
-  const tempEmoji = cardA.getAttribute("data-emoji");
-  cardA.setAttribute("data-emoji", cardB.getAttribute("data-emoji"));
-  cardB.setAttribute("data-emoji", tempEmoji);
+  const rectA = cardA.getBoundingClientRect();
+  const rectB = cardB.getBoundingClientRect();
 
-  const tempText = cardA.textContent;
-  cardA.textContent = cardB.textContent;
-  cardB.textContent = tempText;
+  const dx = rectB.left - rectA.left;
+  const dy = rectB.top - rectA.top;
+
+  // ใส่ style เตรียมขยับ
+  cardA.style.transition = "transform 0.5s ease";
+  cardB.style.transition = "transform 0.5s ease";
+  cardA.style.zIndex = "2";
+  cardB.style.zIndex = "2";
+
+  // ขยับทั้งสองใบ
+  cardA.style.transform = `translate(${dx}px, ${dy}px)`;
+  cardB.style.transform = `translate(${-dx}px, ${-dy}px)`;
+
+  // รอให้แอนิเมชันจบ แล้วสลับค่าจริง
+  setTimeout(() => {
+    // รีเซ็ต
+    cardA.style.transition = "";
+    cardB.style.transition = "";
+    cardA.style.transform = "";
+    cardB.style.transform = "";
+
+    // สลับค่าข้างใน
+    const tempEmoji = cardA.getAttribute("data-emoji");
+    cardA.setAttribute("data-emoji", cardB.getAttribute("data-emoji"));
+    cardB.setAttribute("data-emoji", tempEmoji);
+
+    const tempText = cardA.textContent;
+    cardA.textContent = cardB.textContent;
+    cardB.textContent = tempText;
+  }, 500);
 }
+
 
   // --- เกมกาชา ---
   function gachaPull() {
@@ -1061,6 +1088,7 @@ function resetShootGame() {
 </script>
 </body>
 </html>
+
 
 
 
