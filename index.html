@@ -353,6 +353,33 @@
   .card.flip {
     transform: rotateY(180deg);
   }
+// --- ฟังก์ชันสลับไพ่แบบน่ารัก (แก้ปัญหาเกมไพ่) ---
+function animateCardShuffle(cards, emojis, callback) {
+  const newOrder = shuffle(emojis);
+  const oldContents = [];
+
+  // บันทึกของเดิมไว้ก่อน
+  cards.forEach((card, i) => {
+    oldContents[i] = card.textContent;
+  });
+
+  // ใส่ animation เล็กน้อย
+  cards.forEach(card => {
+    card.style.transition = "transform 0.3s ease";
+    card.style.transform = "translateY(-10px)";
+  });
+
+  setTimeout(() => {
+    cards.forEach((card, i) => {
+      card.style.transform = "translateY(10px)";
+      card.setAttribute("data-emoji", newOrder[i]);
+    });
+
+    setTimeout(() => {
+      callback(); // เรียกกลับไปทำงานต่อ
+    }, 200);
+  }, 200);
+}
 </style>
 </head>
 <body>
@@ -979,6 +1006,7 @@ function resetShootGame() {
 </script>
 </body>
 </html>
+
 
 
 
