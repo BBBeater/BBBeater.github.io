@@ -506,15 +506,10 @@
   </div>
 
   <!-- หน้าเกม 3: เกมกาชา (สุ่ม) -->
-  <div id="gameGacha" class="hidden">
-    <h2>กาชาดาว 5 ⭐</h2>
-    <p>กดปุ่มเพื่อสุ่มดาว รับรางวัลพิเศษ!</p>
-    <button onclick="gachaPull()">กดสุ่มเลย!</button>
-    <div id="gachaResult" style="margin-top: 20px; font-weight: bold; color: #d43f6f;"></div>
-    <div class="buttons">
-      <button onclick="backToGameMenu('gameGacha')">กลับไปเมนูเกม</button>
-    </div>
-  </div>
+<div id="gachaGame">
+  <button onclick="startGacha()">กดสุ่ม 🎰</button>
+  <div id="gachaResult"></div>
+</div>
 
   
 <!-- หน้าเกม 4: ยิงหัวใจลงห่วง แบบลากยิง -->
@@ -1101,6 +1096,7 @@ function resetShootGame() {
 </script>
 </body>
 </html>
+
 
 
 
