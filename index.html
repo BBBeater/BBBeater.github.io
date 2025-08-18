@@ -888,24 +888,36 @@ function swapCards(cardA, cardB) {
 
 
   // --- เกมกาชา ---
-  function gachaPull() {
-    const results = [
-      "⭐ 5 ดาว! คุณโชคดีมาก! ปลดล็อคหมวดรูปแอบถ่ายแล้ว!",
-      "⭐ 4 ดาว! ยังไม่ได้ปลดล็อค รอโอกาสหน้าค่ะ",
-      "⭐ 3 ดาว! ยังไม่ได้ปลดล็อค ลองใหม่!",
-    ];
-    const pick = Math.random();
-    let msg;
-    if (pick < 0.3) {
-      msg = results[0];
-      unlockCategory("secret");
-    } else if (pick < 0.6) {
-      msg = results[1];
-    } else {
-      msg = results[2];
+// 🎰 เกมกาชาแบบ slot machine
+function startGacha() {
+  const resultDiv = document.getElementById("gachaResult");
+  resultDiv.textContent = "กำลังสุ่ม... 🎰";
+
+  const emojis = ["⭐", "🌟", "💫", "✨", "🌸", "❤️", "🍀"];
+  let spinCount = 0;
+  const maxSpin = 15; // จำนวนครั้งที่หมุน (ยิ่งเยอะยิ่งหมุนนาน)
+
+  const spinInterval = setInterval(() => {
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    resultDiv.textContent = randomEmoji;
+    spinCount++;
+
+    if (spinCount >= maxSpin) {
+      clearInterval(spinInterval);
+
+      // สุ่มผลจริงหลังหมุนเสร็จ
+      const stars = Math.floor(Math.random() * 5) + 1; // 1-5 ดาว
+      let starEmoji = "⭐".repeat(stars);
+      resultDiv.textContent = `ได้ ${stars} ดาว! ${starEmoji}`;
+
+      if (stars === 5) {
+        resultDiv.textContent += " 🎉 ปลดล็อคหมวดกาชาแล้ว!";
+        unlockCategory("gacha");
+      }
     }
-    document.getElementById("gachaResult").textContent = msg;
-  }
+  }, 120); // ความเร็วในการเปลี่ยนภาพ (ms)
+}
+
 
   
   // --- เกมยิงหัวใจ ---
@@ -1089,6 +1101,7 @@ function resetShootGame() {
 </script>
 </body>
 </html>
+
 
 
 
