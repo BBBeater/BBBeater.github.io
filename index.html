@@ -6,104 +6,353 @@
 <title>Happy Anniversary - หน้าแยก + เกม</title>
 <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
 <style>
-/* 🌸 UX/UI Enhancement for Anniversary Website 🌸 */
+  /* --- สไตล์เดิมที่คุณชอบ (เป๊ะ ๆ) --- */
+  body {
+    font-family: 'Itim', cursive;
+    background: linear-gradient(135deg, #ffd6e8, #fff0f5);
+    color: #5e2b45;
+    margin: 0; padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .container {
+    width: 95vw;
+    max-width: 600px;
+    background: white;
+    border-radius: 25px;
+    box-shadow: 0 0 25px #ffb6c1;
+    padding: 35px 25px 40px;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+  }
+  h1, h2 {
+    color: #d43f6f;
+    margin-bottom: 15px;
+  }
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    line-height: 1.4;
+  }
+  input[type="password"], input[type="number"] {
+    font-family: 'Itim', cursive;
+    font-size: 20px;
+    padding: 10px 14px;
+    width: 130px;
+    border: 2px solid #ffb6c1;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  button {
+    background-color: #f48fb1;
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 12px 28px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 10px rgba(244,143,177,0.5);
+  }
+  button:hover {
+    background-color: #d43f6f;
+  }
+  .buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    gap: 15px;
+  }
+  .hidden {
+    display: none;
+  }
+  .photo-placeholder {
+    width: 100%;
+    max-width: 420px;
+    height: 320px;
+    background: #fff0f8;
+    border: 3px dashed #ff8ab8;
+    border-radius: 25px;
+    margin: 0 auto 40px;
+    box-shadow: 0 0 15px #ffb6c1;
+    line-height: 320px;
+    color: #ff8ab8;
+    font-size: 1.3rem;
+  }
+  #error {
+    color: #d43f6f;
+    font-weight: bold;
+    margin-top: 8px;
+  }
+  /* Menu grid */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+    gap: 20px;
+    justify-items: center;
+  }
+  .menu-card {
+    background: #fff0f8;
+    border-radius: 20px;
+    box-shadow: 0 0 12px #ffb6c1;
+    cursor: pointer;
+    padding: 15px;
+    width: 140px;
+    transition: transform 0.3s ease;
+    user-select: none;
+  }
+  .menu-card.locked {
+    cursor: default;
+    opacity: 0.5;
+  }
+  .menu-card:hover:not(.locked) {
+    transform: scale(1.07);
+    box-shadow: 0 0 20px #d43f6f;
+  }
+  .menu-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    object-fit: cover;
+    user-select: none;
+  }
+  .menu-card .title {
+    font-weight: bold;
+    color: #d43f6f;
+  }
+  #gameMessage, #puzzleMessage {
+    font-weight: bold;
+    color: #d43f6f;
+    min-height: 28px;
+    margin-top: 15px;
+    transition: color 0.3s ease;
+  }
+  /* Game input */
+  #guessInput {
+    max-width: 130px;
+    margin-bottom: 10px;
+  }
+  /* Back to game menu button */
+  .back-game-menu-btn {
+    background: #f8bbd0;
+    color: #a6265a;
+    border-radius: 25px;
+    border: none;
+    padding: 8px 22px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 8px rgba(248,187,208,0.6);
+    transition: background-color 0.3s ease;
+  }
+  .back-game-menu-btn:hover {
+    background: #d43f6f;
+    color: white;
+  }
+  /* Puzzle styles */
+  #puzzle {
+    width: 100%;
+    max-width: 420px;
+    height: 420px;
+    margin: 0 auto 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 6px;
+    user-select: none;
+  }
+  .piece {
+    background-color: #fff0f8;
+    border: 2px solid #ff8ab8;
+    border-radius: 18px;
+    box-shadow: 0 0 8px #ffb6c1;
+    cursor: grab;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #d43f6f;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+  }
+  .piece.dragging {
+    opacity: 0.7;
+    cursor: grabbing;
+  }
+  .piece img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 18px;
+    pointer-events: none;
+    user-select: none;
+  }
+  /* Responsive */
+  @media (max-width: 480px) {
+    .container {
+      padding: 25px 15px 30px;
+    }
+    .photo-placeholder {
+      height: 280px;
+    }
+    #puzzle {
+      height: 300px;
+      max-width: 300px;
+      gap: 4px;
+    }
+    .menu-card {
+      width: 120px;
+    }
+    .menu-card img {
+      width: 70px;
+      height: 70px;
+    }
+    input[type="password"], input[type="number"] {
+      width: 100px;
+      font-size: 18px;
+      padding: 8px 12px;
+    }
+  }
+  
+  /* Lightbox overlay */
+  #lightboxOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(95, 35, 70, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  #lightboxOverlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 20px;
+    box-shadow: 0 0 25px #ffb6c1;
+    cursor: zoom-out;
+    user-select: none;
+  }
 
-/* ใช้โทนสีพาสเทลหลัก */
-body {
-  font-family: 'Itim', cursive;
-  background: linear-gradient(135deg, #ffe6f0, #fff8e6);
-  margin: 0;
-  padding: 0;
-  color: #5e2b45;
-  text-align: center;
-  transition: background 0.5s ease-in-out;
-}
+  /* --- สไลด์โชว์หน้า page1 --- */
+  #slideShow {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    height: 320px;
+    margin: 0 auto 20px;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 0 15px #ffb6c1;
+  }
+  #slideShow img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    position: absolute;
+    top: 0; left: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    border-radius: 25px;
+    user-select: none;
+  }
+  #slideShow img.active {
+    opacity: 1;
+    position: relative;
+  }
+  /* ปุ่มลูกศรเลื่อนสไลด์ */
+  .slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(244,143,177,0.9);
+    border: none;
+    color: white;
+    font-size: 36px;
+    padding: 8px 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+  }
+  .slide-btn:hover {
+    background: #d43f6f;
+  }
+  #prevBtn {
+    left: 10px;
+  }
+  #nextBtn {
+    right: 10px;
+  }
 
-/* Header */
-h1, h2, h3 {
-  color: #d43f6f;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-}
+  /* --- progress bar & counter for slideshow --- */
+  #slideCounter {
+    margin: 0 auto 10px;
+    font-weight: bold;
+    color: #d43f6f;
+  }
+  #progressBar {
+    width: 100%;
+    max-width: 420px;
+    height: 6px;
+    background: #ffe4ef;
+    border-radius: 6px;
+    margin: 0 auto 30px;
+    overflow: hidden;
+  }
+  #progressBarInner {
+    height: 100%;
+    width: 0%;
+    background: #d43f6f;
+    border-radius: 6px;
+    transition: width 0.4s ease;
+  }
 
-/* ปุ่มน่ารัก */
-button {
-  background: #ffb6c1;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  margin: 8px;
-  font-size: 1.1em;
-  color: white;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s, background 0.3s;
-}
-button:hover {
-  background: #ff92ad;
-  transform: translateY(-3px);
-}
-button:active {
-  transform: translateY(1px);
-}
+  /* --- Animation สำหรับ shake (เวลาแพ้เกม) --- */
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+    100% { transform: translateX(0); }
+  }
+  .shake {
+    animation: shake 0.4s ease;
+  }
 
-/* การ์ดเกม (เช่น เกมไพ่) */
-.card {
-  width: 80px;
-  height: 120px;
-  margin: 10px;
-  background: #ffe1e9;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2em;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transition: transform 0.4s;
-}
-.card:hover {
-  transform: rotateY(10deg) scale(1.05);
-}
+  /* เปลี่ยนสีข้อความเกมเวลาแพ้เป็นแดงสลับ */
+  @keyframes flashRed {
+    0%, 100% { color: #d43f6f; }
+    50% { color: #ff4d6d; }
+  }
+  .flashRed {
+    animation: flashRed 0.6s ease;
+  }
+ /* --- Lightbox overlay --- */
+    #lightboxOverlay { ... }
+    #lightboxOverlay img { ... }
 
-/* กรอบเกมแต่ละหน้า */
-.game-section {
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 600px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.9);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-  animation: fadeIn 0.8s ease-in-out;
-}
+ /* --- CSS หมุนไพ่ --- */
+  .card {
+    transition: transform 0.6s ease;
+    transform-style: preserve-3d;
+    perspective: 800px;
+  }
 
-/* แอนิเมชันเปิดหน้า */
-@keyframes fadeIn {
-  from {opacity:0; transform: translateY(20px);}
-  to {opacity:1; transform: translateY(0);}
-}
-
-/* เอฟเฟกต์ข้อความประกาศ */
-#puzzleMessage, #gachaResult {
-  font-size: 1.2em;
-  margin-top: 12px;
-  animation: popIn 0.6s ease;
-}
-@keyframes popIn {
-  0% { transform: scale(0.5); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-/* เพิ่ม background decoration */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-image: url('https://i.ibb.co/sQptL3H/heart-bg.png');
-  background-size: 150px 150px;
-  opacity: 0.05;
-  z-index: -1;
-}
+  .card.flip {
+    transform: rotateY(180deg);
+  }
 </style>
 </head>
 <body>
