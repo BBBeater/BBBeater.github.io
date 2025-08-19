@@ -3,356 +3,103 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Happy Anniversary Bright&Jeans</title>
+<title>Happy Anniversary - หน้าแยก + เกม</title>
 <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
 <style>
-  /* --- สไตล์เดิมที่คุณชอบ (เป๊ะ ๆ) --- */
-  body {
-    font-family: 'Itim', cursive;
-    background: linear-gradient(135deg, #ffd6e8, #fff0f5);
-    color: #5e2b45;
-    margin: 0; padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
-  .container {
-    width: 95vw;
-    max-width: 600px;
-    background: white;
-    border-radius: 25px;
-    box-shadow: 0 0 25px #ffb6c1;
-    padding: 35px 25px 40px;
-    text-align: center;
-    box-sizing: border-box;
-    position: relative;
-  }
-  h1, h2 {
-    color: #d43f6f;
-    margin-bottom: 15px;
-  }
-  p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    line-height: 1.4;
-  }
-  input[type="password"], input[type="number"] {
-    font-family: 'Itim', cursive;
-    font-size: 20px;
-    padding: 10px 14px;
-    width: 130px;
-    border: 2px solid #ffb6c1;
-    border-radius: 12px;
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  button {
-    background-color: #f48fb1;
-    border: none;
-    color: white;
-    font-size: 18px;
-    padding: 12px 28px;
-    border-radius: 20px;
-    cursor: pointer;
-    margin: 0 10px;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 10px rgba(244,143,177,0.5);
-  }
-  button:hover {
-    background-color: #d43f6f;
-  }
-  .buttons {
-    display: flex;
-    justify-content: center;
-    margin-top: 25px;
-    gap: 15px;
-  }
-  .hidden {
-    display: none;
-  }
-  .photo-placeholder {
-    width: 100%;
-    max-width: 420px;
-    height: 320px;
-    background: #fff0f8;
-    border: 3px dashed #ff8ab8;
-    border-radius: 25px;
-    margin: 0 auto 40px;
-    box-shadow: 0 0 15px #ffb6c1;
-    line-height: 320px;
-    color: #ff8ab8;
-    font-size: 1.3rem;
-  }
-  #error {
-    color: #d43f6f;
-    font-weight: bold;
-    margin-top: 8px;
-  }
-  /* Menu grid */
-  .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
-    gap: 20px;
-    justify-items: center;
-  }
-  .menu-card {
-    background: #fff0f8;
-    border-radius: 20px;
-    box-shadow: 0 0 12px #ffb6c1;
-    cursor: pointer;
-    padding: 15px;
-    width: 140px;
-    transition: transform 0.3s ease;
-    user-select: none;
-  }
-  .menu-card.locked {
-    cursor: default;
-    opacity: 0.5;
-  }
-  .menu-card:hover:not(.locked) {
-    transform: scale(1.07);
-    box-shadow: 0 0 20px #d43f6f;
-  }
-  .menu-card img {
-    width: 80px;
-    height: 80px;
-    border-radius: 15px;
-    margin-bottom: 10px;
-    object-fit: cover;
-    user-select: none;
-  }
-  .menu-card .title {
-    font-weight: bold;
-    color: #d43f6f;
-  }
-  #gameMessage, #puzzleMessage {
-    font-weight: bold;
-    color: #d43f6f;
-    min-height: 28px;
-    margin-top: 15px;
-    transition: color 0.3s ease;
-  }
-  /* Game input */
-  #guessInput {
-    max-width: 130px;
-    margin-bottom: 10px;
-  }
-  /* Back to game menu button */
-  .back-game-menu-btn {
-    background: #f8bbd0;
-    color: #a6265a;
-    border-radius: 25px;
-    border: none;
-    padding: 8px 22px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-bottom: 15px;
-    box-shadow: 0 3px 8px rgba(248,187,208,0.6);
-    transition: background-color 0.3s ease;
-  }
-  .back-game-menu-btn:hover {
-    background: #d43f6f;
-    color: white;
-  }
-  /* Puzzle styles */
-  #puzzle {
-    width: 100%;
-    max-width: 420px;
-    height: 420px;
-    margin: 0 auto 20px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 6px;
-    user-select: none;
-  }
-  .piece {
-    background-color: #fff0f8;
-    border: 2px solid #ff8ab8;
-    border-radius: 18px;
-    box-shadow: 0 0 8px #ffb6c1;
-    cursor: grab;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    color: #d43f6f;
-    font-weight: bold;
-    position: relative;
-    overflow: hidden;
-  }
-  .piece.dragging {
-    opacity: 0.7;
-    cursor: grabbing;
-  }
-  .piece img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 18px;
-    pointer-events: none;
-    user-select: none;
-  }
-  /* Responsive */
-  @media (max-width: 480px) {
-    .container {
-      padding: 25px 15px 30px;
-    }
-    .photo-placeholder {
-      height: 280px;
-    }
-    #puzzle {
-      height: 300px;
-      max-width: 300px;
-      gap: 4px;
-    }
-    .menu-card {
-      width: 120px;
-    }
-    .menu-card img {
-      width: 70px;
-      height: 70px;
-    }
-    input[type="password"], input[type="number"] {
-      width: 100px;
-      font-size: 18px;
-      padding: 8px 12px;
-    }
-  }
-  
-  /* Lightbox overlay */
-  #lightboxOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(95, 35, 70, 0.9);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  #lightboxOverlay img {
-    max-width: 90vw;
-    max-height: 90vh;
-    border-radius: 20px;
-    box-shadow: 0 0 25px #ffb6c1;
-    cursor: zoom-out;
-    user-select: none;
-  }
+/* 🌸 UX/UI Enhancement for Anniversary Website 🌸 */
+body {
+  font-family: 'Itim', cursive;
+  background: linear-gradient(135deg, #ffe6f0, #fff8e6);
+  margin: 0;
+  padding: 0;
+  color: #5e2b45;
+  text-align: center;
+  transition: background 0.5s ease-in-out;
+}
+h1, h2, h3 {
+  color: #d43f6f;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+button {
+  background: #ffb6c1;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin: 8px;
+  font-size: 1.1em;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s, background 0.3s;
+}
+button:hover {
+  background: #ff92ad;
+  transform: translateY(-3px);
+}
+button:active {
+  transform: translateY(1px);
+}
+.card {
+  width: 80px;
+  height: 120px;
+  margin: 10px;
+  background: #ffe1e9;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.4s;
+}
+.card:hover {
+  transform: rotateY(10deg) scale(1.05);
+}
+.game-section {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  animation: fadeIn 0.8s ease-in-out;
+}
+@keyframes fadeIn {
+  from {opacity:0; transform: translateY(20px);}
+  to {opacity:1; transform: translateY(0);}
+}
+#puzzleMessage, #gachaResult {
+  font-size: 1.2em;
+  margin-top: 12px;
+  animation: popIn 0.6s ease;
+}
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url('https://i.ibb.co/sQptL3H/heart-bg.png');
+  background-size: 150px 150px;
+  opacity: 0.05;
+  z-index: -1;
+}
 
-  /* --- สไลด์โชว์หน้า page1 --- */
-  #slideShow {
-    position: relative;
-    width: 100%;
-    max-width: 420px;
-    height: 320px;
-    margin: 0 auto 20px;
-    border-radius: 25px;
-    overflow: hidden;
-    box-shadow: 0 0 15px #ffb6c1;
-  }
-  #slideShow img {
-    width: 100%;
-    height: 320px;
-    object-fit: cover;
-    position: absolute;
-    top: 0; left: 0;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    border-radius: 25px;
-    user-select: none;
-  }
-  #slideShow img.active {
-    opacity: 1;
-    position: relative;
-  }
-  /* ปุ่มลูกศรเลื่อนสไลด์ */
-  .slide-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(244,143,177,0.9);
-    border: none;
-    color: white;
-    font-size: 36px;
-    padding: 8px 16px;
-    border-radius: 50%;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.3s ease;
-    z-index: 10;
-  }
-  .slide-btn:hover {
-    background: #d43f6f;
-  }
-  #prevBtn {
-    left: 10px;
-  }
-  #nextBtn {
-    right: 10px;
-  }
 
-  /* --- progress bar & counter for slideshow --- */
-  #slideCounter {
-    margin: 0 auto 10px;
-    font-weight: bold;
-    color: #d43f6f;
-  }
-  #progressBar {
-    width: 100%;
-    max-width: 420px;
-    height: 6px;
-    background: #ffe4ef;
-    border-radius: 6px;
-    margin: 0 auto 30px;
-    overflow: hidden;
-  }
-  #progressBarInner {
-    height: 100%;
-    width: 0%;
-    background: #d43f6f;
-    border-radius: 6px;
-    transition: width 0.4s ease;
-  }
-
-  /* --- Animation สำหรับ shake (เวลาแพ้เกม) --- */
-  @keyframes shake {
-    0% { transform: translateX(0); }
-    20% { transform: translateX(-8px); }
-    40% { transform: translateX(8px); }
-    60% { transform: translateX(-6px); }
-    80% { transform: translateX(6px); }
-    100% { transform: translateX(0); }
-  }
-  .shake {
-    animation: shake 0.4s ease;
-  }
-
-  /* เปลี่ยนสีข้อความเกมเวลาแพ้เป็นแดงสลับ */
-  @keyframes flashRed {
-    0%, 100% { color: #d43f6f; }
-    50% { color: #ff4d6d; }
-  }
-  .flashRed {
-    animation: flashRed 0.6s ease;
-  }
- /* --- Lightbox overlay --- */
-    #lightboxOverlay { ... }
-    #lightboxOverlay img { ... }
-
- /* --- CSS หมุนไพ่ --- */
-  .card {
-    transition: transform 0.6s ease;
-    transform-style: preserve-3d;
-    perspective: 800px;
-  }
-
-  .card.flip {
-    transform: rotateY(180deg);
-  }
+/* ✨ Page Transition Effect ✨ */
+.page-transition {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.page-transition.show {
+  opacity: 1;
+  transform: scale(1);
+}
 </style>
 </head>
 <body>
@@ -392,7 +139,7 @@
     <h2>เลือกหมวดที่อยากดู 💌</h2>
     <div class="menu-grid" id="categoryMenu">
       <div class="menu-card locked" data-category="best">
-        <img src="https://drive.google.com/file/d/1IYWzmOD6dO6ihJPkqaK8GnzKr1hzKyT5/view?usp=drive_link" alt="Best of Month" />
+        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Best" alt="Best of Month" />
         <div class="title">The Best ของทุกเดือน</div>
         <small>🔒 ต้องปลดล็อคก่อน</small>
       </div>
@@ -505,19 +252,16 @@
     </div>
   </div>
 
-<!-- หน้าเกม 3: เกมกาชา (สุ่ม) -->
-<div id="gameGacha" class="hidden">
-  <h2>กาชาดาว 5 ⭐</h2>
-  <p>กดปุ่มเพื่อสุ่มดาว รับรางวัลพิเศษ!</p>
-
-  <!-- ปุ่มและผลลัพธ์ของกาชา -->
-  <button onclick="startGacha()">กดสุ่ม 🎰</button>
-  <div id="gachaResult" style="margin-top: 20px; font-weight: bold; color: #d43f6f;"></div>
-
-  <div class="buttons">
-    <button onclick="backToGameMenu('gameGacha')">กลับไปเมนูเกม</button>
+  <!-- หน้าเกม 3: เกมกาชา (สุ่ม) -->
+  <div id="gameGacha" class="hidden">
+    <h2>กาชาดาว 5 ⭐</h2>
+    <p>กดปุ่มเพื่อสุ่มดาว รับรางวัลพิเศษ!</p>
+    <button onclick="gachaPull()">กดสุ่มเลย!</button>
+    <div id="gachaResult" style="margin-top: 20px; font-weight: bold; color: #d43f6f;"></div>
+    <div class="buttons">
+      <button onclick="backToGameMenu('gameGacha')">กลับไปเมนูเกม</button>
+    </div>
   </div>
-</div>
 
   
 <!-- หน้าเกม 4: ยิงหัวใจลงห่วง แบบลากยิง -->
@@ -891,36 +635,24 @@ function swapCards(cardA, cardB) {
 
 
   // --- เกมกาชา ---
-// 🎰 เกมกาชาแบบ slot machine
-function startGacha() {
-  const resultDiv = document.getElementById("gachaResult");
-  resultDiv.textContent = "กำลังสุ่ม... 🎰";
-
-  const emojis = ["⭐", "🌟", "💫", "✨", "🌸", "❤️", "🍀"];
-  let spinCount = 0;
-  const maxSpin = 15; // จำนวนครั้งที่หมุน (ยิ่งเยอะยิ่งหมุนนาน)
-
-  const spinInterval = setInterval(() => {
-    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-    resultDiv.textContent = randomEmoji;
-    spinCount++;
-
-    if (spinCount >= maxSpin) {
-      clearInterval(spinInterval);
-
-      // สุ่มผลจริงหลังหมุนเสร็จ
-      const stars = Math.floor(Math.random() * 5) + 1; // 1-5 ดาว
-      let starEmoji = "⭐".repeat(stars);
-      resultDiv.textContent = `ได้ ${stars} ดาว! ${starEmoji}`;
-
-      if (stars === 5) {
-        resultDiv.textContent += " 🎉 ปลดล็อคหมวดรูปแอบถ่ายแล้ว!";
-        unlockCategory("secret");
-      }
+  function gachaPull() {
+    const results = [
+      "⭐ 5 ดาว! คุณโชคดีมาก! ปลดล็อคหมวดรูปแอบถ่ายแล้ว!",
+      "⭐ 4 ดาว! ยังไม่ได้ปลดล็อค รอโอกาสหน้าค่ะ",
+      "⭐ 3 ดาว! ยังไม่ได้ปลดล็อค ลองใหม่!",
+    ];
+    const pick = Math.random();
+    let msg;
+    if (pick < 0.3) {
+      msg = results[0];
+      unlockCategory("secret");
+    } else if (pick < 0.6) {
+      msg = results[1];
+    } else {
+      msg = results[2];
     }
-  }, 120); // ความเร็วในการเปลี่ยนภาพ (ms)
-}
-
+    document.getElementById("gachaResult").textContent = msg;
+  }
 
   
   // --- เกมยิงหัวใจ ---
@@ -1101,13 +833,42 @@ function resetShootGame() {
   });
 
 
+
+// 🎶 Sound Effects
+const clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
+const successSound = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
+clickSound.volume = 0.3;
+successSound.volume = 0.3;
+
+// ✅ Override showPage เพื่อให้มี page transition + เสียง
+function showPage(id) {
+  document.querySelectorAll(".page-transition").forEach(div => {
+    div.classList.remove("show");
+    div.style.display = "none";
+  });
+  const page = document.getElementById(id);
+  if (page) {
+    page.style.display = "block";
+    setTimeout(() => page.classList.add("show"), 50);
+    clickSound.play();
+  }
+}
+
+// ✅ เล่นเสียงเวลาได้รางวัลหรือชนะเกม
+function playSuccessSound() {
+  successSound.play();
+}
+
+// ✨ Hook ไปยัง unlockCategory ให้เล่นเสียงเวลาปลดล็อก
+const oldUnlock = unlockCategory;
+unlockCategory = function(cat) {
+  oldUnlock(cat);
+  playSuccessSound();
+};
+
 </script>
 </body>
 </html>
-
-
-
-
 
 
 
