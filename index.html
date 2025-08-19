@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Happy Anniversary - Corrected Version</title>
+<title>Happy Anniversary - Final Version</title>
 <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -94,6 +94,8 @@
   .buttons {
     display: flex;
     justify-content: center;
+    align-items: center; /* Added for vertical alignment */
+    flex-wrap: wrap; /* Added for responsiveness */
     margin-top: 25px;
     gap: 15px;
   }
@@ -104,11 +106,12 @@
     margin-top: 8px;
   }
 
+  /* --- ADJUSTMENT 2: Menu Grid Balance --- */
   .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    display: flex; /* Changed from grid to flex */
+    flex-wrap: wrap; /* Allows items to wrap to the next line */
+    justify-content: center; /* This centers the last row */
     gap: 20px;
-    justify-items: center;
   }
   .menu-card {
     background: var(--card-bg);
@@ -157,7 +160,7 @@
     padding: 8px 22px;
     cursor: pointer;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin: 0; /* Removed margin-bottom */
     box-shadow: 0 3px 8px rgba(248,187,208,0.6);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
@@ -204,21 +207,35 @@
     opacity: 1;
     position: relative;
   }
+  
+  /* --- ADJUSTMENT 1: Slideshow Buttons --- */
   .slide-btn {
-    position: absolute; top: 50%;
+    position: absolute;
+    top: 50%;
     transform: translateY(-50%);
-    background: rgba(244,143,177,0.9);
-    border: none; color: white;
-    font-size: 36px;
-    padding: 8px 16px;
-    border-radius: 50%;
-    cursor: pointer; user-select: none;
-    transition: background-color 0.3s ease;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--primary-color);
+    font-size: 24px;
+    width: 48px;  /* Fixed width */
+    height: 48px; /* Fixed height */
+    padding: 0;   /* Removed padding */
+    display: flex; /* For centering the icon */
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%; /* Perfect circle */
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
     z-index: 10;
   }
-  .slide-btn:hover { background: var(--primary-color); }
-  #prevBtn { left: 10px; }
-  #nextBtn { right: 10px; }
+  .slide-btn:hover { 
+    background: var(--primary-color); 
+    color: white;
+  }
+  #prevBtn { left: 15px; }
+  #nextBtn { right: 15px; }
 
   #slideCounter {
     margin: 0 auto 10px;
@@ -279,6 +296,9 @@
     .menu-card { width: 120px; }
     .menu-card img { width: 70px; height: 70px; }
     input[type="password"], input[type="number"] { width: 100px; font-size: 18px; padding: 8px 12px; }
+    .slide-btn { width: 40px; height: 40px; font-size: 20px; }
+    #prevBtn { left: 10px; }
+    #nextBtn { right: 10px; }
   }
 </style>
 </head>
@@ -290,8 +310,9 @@
     <h1>🌸 ยินดีต้อนรับ 🌸</h1>
     <p>กรอกรหัสผ่านเพื่อเข้าเว็บลับของเรา 💖</p>
     <input type="password" id="password" placeholder="ใส่รหัสรัก..." />
-    <br />
-    <button onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
+    <div class="buttons">
+      <button onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
+    </div>
     <p id="error"></p>
   </div>
 
@@ -415,9 +436,9 @@
   <div id="gameGacha" class="page hidden">
     <h2>กาชาดาว 5 ⭐</h2>
     <p>กดปุ่มเพื่อสุ่มดาว รับรางวัลพิเศษ!</p>
-    <button onclick="startGacha()">กดสุ่ม 🎰</button>
-    <div id="gachaResult" style="margin-top: 20px; font-weight: bold; color: var(--primary-color);"></div>
+    <div id="gachaResult" style="margin-top: 20px; font-weight: bold; color: var(--primary-color); min-height: 28px;"></div>
     <div class="buttons">
+      <button onclick="startGacha()">กดสุ่ม 🎰</button>
       <button class="back-game-menu-btn" onclick="backToGameMenu('gameGacha')">กลับไปเมนูเกม</button>
     </div>
   </div>
@@ -618,7 +639,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSlideShow();
   };
   
-  // --- UNLOCK FUNCTION ---
   function unlockCategory(cat) {
     if (!state.unlocked[cat]) {
       state.unlocked[cat] = true;
@@ -628,9 +648,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- GAME LOGIC (RESTORED FROM YOUR ORIGINAL CODE) ---
-
-  // --- เกมทายเลข ---
   let targetNumber = null;
   function startGuessNumberGame() {
     targetNumber = Math.floor(Math.random() * 10) + 1;
@@ -659,13 +676,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- เกมหาไพ่หัวใจ ---
-  function shuffle(array) {
-    return array.sort(() => Math.random() - 0.5);
-  }
-  window.resetCardGame = () => {
-    startCardGame();
-  }
+  function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
+  window.resetCardGame = () => { startCardGame(); }
   let heartIndex = null;
   let cardsPicked = false;
   function startCardGame() {
@@ -736,10 +748,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const steps = shuffle([...swaps, ...swaps]);
     let stepIndex = 0;
     function doSwap() {
-      if (stepIndex >= steps.length) {
-        callback();
-        return;
-      }
+      if (stepIndex >= steps.length) { callback(); return; }
       const [a, b] = steps[stepIndex];
       swapCards(cards[a], cards[b]);
       stepIndex++;
@@ -755,8 +764,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const dy = rectB.top - rectA.top;
     cardA.style.transition = "transform 0.5s ease";
     cardB.style.transition = "transform 0.5s ease";
-    cardA.style.zIndex = "2";
-    cardB.style.zIndex = "2";
     cardA.style.transform = `translate(${dx}px, ${dy}px)`;
     cardB.style.transform = `translate(${-dx}px, ${-dy}px)`;
     setTimeout(() => {
@@ -773,7 +780,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500);
   }
 
-  // --- เกมกาชา ---
   window.startGacha = () => {
     const resultDiv = document.getElementById("gachaResult");
     resultDiv.textContent = "กำลังสุ่ม... 🎰";
@@ -781,8 +787,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let spinCount = 0;
     const maxSpin = 15;
     const spinInterval = setInterval(() => {
-      const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-      resultDiv.textContent = randomEmoji;
+      resultDiv.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       spinCount++;
       if (spinCount >= maxSpin) {
         clearInterval(spinInterval);
@@ -797,43 +802,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 120);
   }
   
-  // --- เกมยิงหัวใจ ---
   window.resetShootGame = () => {
     const heart = document.getElementById("heart");
     const hoop = document.getElementById("hoop");
     const shootMessage = document.getElementById("shootMessage");
     let score = 0;
-    let isCharging = false;
-    let chargeStartTime = 0;
     let isShooting = false;
     heart.style.transition = "none";
     heart.style.top = "220px";
     heart.style.left = "50%";
     shootMessage.textContent = "";
-    let shootBtn = document.getElementById("shootBtn");
-    if (!shootBtn) {
-      shootBtn = document.createElement("button");
-      shootBtn.id = "shootBtn";
-      shootBtn.textContent = "❤️ ยิง!";
-      Object.assign(shootBtn.style, { marginTop: '12px', fontWeight: 'bold', background: '#ff8ab8', boxShadow: '0 4px 10px rgba(255,182,193,0.5)', transition: 'transform 0.2s ease' });
-      shootMessage.parentElement.insertBefore(shootBtn, shootMessage.nextSibling);
-    }
-    shootBtn.onmousedown = () => {
-      if (isShooting) return;
-      isCharging = true;
-      chargeStartTime = Date.now();
-      shootBtn.style.transform = "scale(1.2)";
-    };
-    shootBtn.onmouseup = () => {
-      if (!isCharging || isShooting) return;
-      isCharging = false;
-      shootBtn.style.transform = "scale(1)";
-      const holdTime = Date.now() - chargeStartTime;
-      const power = Math.min(holdTime / 100, 12);
-      shootHeart(power);
-    };
-    shootBtn.ontouchstart = (e) => { e.preventDefault(); if (isShooting) return; isCharging = true; chargeStartTime = Date.now(); shootBtn.style.transform = "scale(1.2)"; };
-    shootBtn.ontouchend = (e) => { e.preventDefault(); if (!isCharging || isShooting) return; isCharging = false; shootBtn.style.transform = "scale(1)"; const holdTime = Date.now() - chargeStartTime; const power = Math.min(holdTime / 100, 12); shootHeart(power); };
     
     function shootHeart(power) {
       isShooting = true;
@@ -883,7 +861,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- Game Menu & Navigation ---
   window.backToGameMenu = (currentGameId) => {
     if (currentGameId === "gameShootHearts" && window.resetShootGame.hoopInterval) {
         clearInterval(window.resetShootGame.hoopInterval);
@@ -894,7 +871,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll("#gameMenuGrid .menu-card").forEach(card => {
     card.onclick = () => {
-      const game = card.getAttribute("data-game");
+      const game = card.dataset.game;
       if (game === "guessNumber") { showPage("gameGuessNumber"); startGuessNumberGame(); } 
       else if (game === "cardShuffle") { showPage("gameCardShuffle"); resetCardGame(); } 
       else if (game === "gachaPull") { showPage("gameGacha"); } 
@@ -902,7 +879,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   });
   
-  // --- INITIALIZATION ---
   function init() {
     loadState();
     setupSlideshow();
