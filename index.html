@@ -30,9 +30,8 @@
     min-height: 100vh;
   }
 
-  /* --- ADJUSTMENT 5: Font Consistency --- */
   button, input, select, textarea {
-    font-family: inherit; /* Make form elements inherit the body's font */
+    font-family: inherit;
   }
 
   .container {
@@ -93,16 +92,15 @@
 
   #error { color: var(--primary-color); font-weight: bold; margin-top: 8px; }
 
-  /* --- ADJUSTMENT 2: Menu Grid Balance --- */
   .menu-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Create a 2-column grid */
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     justify-items: center;
   }
-  /* Target the 3rd card (Letter) to span both columns */
-  .menu-grid .menu-card:nth-child(3) {
-    grid-column: 1 / -1; /* Span from the first to the last column line */
+  /* --- ADJUSTMENT 2: Made selector specific to #categoryMenu --- */
+  #categoryMenu .menu-card:nth-child(3) {
+    grid-column: 1 / -1;
   }
   .menu-card {
     background: var(--card-bg);
@@ -143,7 +141,8 @@
   #slideShow img.active { opacity: 1; position: relative; }
   
   .slide-btn {
-    position: absolute; top: 50%; transform: translateY(-50%);
+    position: absolute; top: 50%;
+    transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(2px);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -153,10 +152,15 @@
     display: flex; justify-content: center; align-items: center;
     border-radius: 50%;
     cursor: pointer; user-select: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
     z-index: 10;
   }
-  .slide-btn:hover { background: var(--primary-color); color: white; }
+  /* --- ADJUSTMENT 1: Prevent slide button from moving on hover --- */
+  .slide-btn:hover { 
+    background: var(--primary-color); 
+    color: white;
+    transform: translateY(-50%); /* Override general button hover */
+  }
   #prevBtn { left: 15px; }
   #nextBtn { right: 15px; }
 
@@ -173,20 +177,11 @@
   @keyframes flashRed { 0%, 100% { color: var(--primary-color); } 50% { color: #ff4d6d; } }
   .flashRed { animation: flashRed 0.6s ease; }
   
-  /* --- ADJUSTMENT 3: Gacha Game Style --- */
   #gacha-display {
-    width: 100%;
-    max-width: 200px;
-    height: 100px;
-    background: #fff9fb;
-    border: 3px solid var(--border-color);
-    border-radius: 20px;
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 4rem;
-    color: var(--primary-color);
+    width: 100%; max-width: 200px; height: 100px;
+    background: #fff9fb; border: 3px solid var(--border-color); border-radius: 20px;
+    margin: 20px auto; display: flex; justify-content: center; align-items: center;
+    font-size: 4rem; color: var(--primary-color);
     box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
   }
 
@@ -232,31 +227,11 @@
   <div id="page2" class="page hidden">
     <h2>เลือกหมวดที่อยากดู 💌</h2>
     <div class="menu-grid" id="categoryMenu">
-      <div class="menu-card" data-category="best">
-         <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Best" alt="Best of Month" />
-        <div class="title">The Best ของทุกเดือน</div>
-        <small>🔒 ต้องปลดล็อคก่อน</small>
-      </div>
-      <div class="menu-card" data-category="funny">
-        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Funny" alt="Funny" />
-        <div class="title">รูปที่ฮาที่สุดของเรา</div>
-        <small>🔒 ต้องปลดล็อคก่อน</small>
-      </div>
-      <div class="menu-card" data-category="letter">
-        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=📜" alt="Letter" />
-        <div class="title">จดหมายลับ</div>
-        <small>🔒 ปลดล็อคทั้งหมดก่อน</small>
-      </div>
-      <div class="menu-card" data-category="secret">
-        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Secret" alt="Secret" />
-        <div class="title">รูปแอบถ่าย</div>
-        <small>🔒 ต้องปลดล็อคก่อน</small>
-      </div>
-      <div class="menu-card" data-category="love">
-        <img src="https://via.placeholder.com/80/f7b6cc/fff?text=Love" alt="Love" />
-        <div class="title">รูปที่ชอบกันทั้งคู่</div>
-        <small>🔒 ต้องปลดล็อคก่อน</small>
-      </div>
+      <div class="menu-card" data-category="best"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Best" alt="Best of Month" /><div class="title">The Best ของทุกเดือน</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="funny"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Funny" alt="Funny" /><div class="title">รูปที่ฮาที่สุดของเรา</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="letter"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=📜" alt="Letter" /><div class="title">จดหมายลับ</div><small>🔒 ปลดล็อคทั้งหมดก่อน</small></div>
+      <div class="menu-card" data-category="secret"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Secret" alt="Secret" /><div class="title">รูปแอบถ่าย</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="love"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Love" alt="Love" /><div class="title">รูปที่ชอบกันทั้งคู่</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
     </div>
     <div class="buttons">
       <button type="button" onclick="showPage('page1')">ย้อนกลับ</button>
@@ -364,10 +339,12 @@ document.addEventListener('DOMContentLoaded', () => {
   window.pickCard = (i) => { if (cardsPicked) return; const container = document.getElementById("cardContainer"); const message = document.getElementById("puzzleMessage"); const cards = container.querySelectorAll(".card"); const card = cards[i]; const val = card.getAttribute("data-emoji"); cardsPicked = true; if (val === "♥️") { card.textContent = val; card.style.background = "#d43f6f"; card.style.color = "white"; message.textContent = "🎉 เก่งมาก! เจอหัวใจแล้ว~ ปลดล็อคหมวดฮาเลย!"; unlockCategory("funny"); } else { card.textContent = val; card.style.background = "#ff8ab8"; card.classList.add("shake"); message.textContent = "ไม่ใช่น้า~ ลองใหม่นะ 💦"; message.classList.add("flashRed"); setTimeout(() => message.classList.remove("flashRed"), 600); } cards.forEach((c, idx) => { const trueVal = c.getAttribute("data-emoji"); if (trueVal === "♥️") { c.textContent = trueVal; c.style.background = "#d43f6f"; c.style.color = "white"; } c.style.pointerEvents = "none"; }); }
   function animateSlowShuffle(cards, callback) { const swaps = [[0, 1], [1, 2], [0, 2]]; const steps = shuffle([...swaps, ...swaps]); let stepIndex = 0; function doSwap() { if (stepIndex >= steps.length) { callback(); return; } const [a, b] = steps[stepIndex]; swapCards(cards[a], cards[b]); stepIndex++; setTimeout(doSwap, 700); } doSwap(); }
   function swapCards(cardA, cardB) { const rectA = cardA.getBoundingClientRect(); const rectB = cardB.getBoundingClientRect(); const dx = rectB.left - rectA.left; const dy = rectB.top - rectA.top; cardA.style.transition = "transform 0.5s ease"; cardB.style.transition = "transform 0.5s ease"; cardA.style.transform = `translate(${dx}px, ${dy}px)`; cardB.style.transform = `translate(${-dx}px, ${-dy}px)`; setTimeout(() => { cardA.style.transition = ""; cardB.style.transition = ""; cardA.style.transform = ""; cardB.style.transform = ""; const tempEmoji = cardA.getAttribute("data-emoji"); cardA.setAttribute("data-emoji", cardB.getAttribute("data-emoji")); cardB.setAttribute("data-emoji", tempEmoji); const tempText = cardA.textContent; cardA.textContent = cardB.textContent; cardB.textContent = tempText; }, 500); }
-  window.startGacha = () => { const display = document.getElementById("gacha-display"); const resultDiv = document.getElementById("gachaResult"); resultDiv.textContent = ""; display.textContent = "🎰"; let spinCount = 0; const maxSpin = 15; const spinInterval = setInterval(() => { const emojis = ["⭐", "🌟", "💫", "✨", "🌸", "❤️", "🍀"]; display.textContent = emojis[Math.floor(Math.random() * emojis.length)]; spinCount++; if (spinCount >= maxSpin) { clearInterval(spinInterval); const stars = Math.floor(Math.random() * 5) + 1; let starEmoji = "⭐".repeat(stars); display.textContent = starEmoji; resultDiv.textContent = `ยินดีด้วย! คุณได้ ${stars} ดาว!`; if (stars === 5) { resultDiv.textContent += " 🎉 ปลดล็อคหมวดรูปแอบถ่ายแล้ว!"; unlockCategory("secret"); } } }, 120); }
+  // --- ADJUSTMENT 3: Gacha Game Logic ---
+  window.startGacha = () => { const display = document.getElementById("gacha-display"); const resultDiv = document.getElementById("gachaResult"); resultDiv.textContent = ""; display.textContent = "🎰"; let spinCount = 0; const maxSpin = 15; const spinInterval = setInterval(() => { const emojis = ["⭐", "🌟", "💫", "✨", "🌸", "❤️", "🍀"]; display.textContent = emojis[Math.floor(Math.random() * emojis.length)]; spinCount++; if (spinCount >= maxSpin) { clearInterval(spinInterval); const stars = Math.floor(Math.random() * 5) + 1; let starEmoji = "⭐".repeat(stars); display.textContent = '🎉'; resultDiv.textContent = `ยินดีด้วย! คุณได้ ${stars} ดาว! ${starEmoji}`; if (stars === 5) { resultDiv.textContent += " 💖 ปลดล็อคหมวดรูปแอบถ่ายแล้ว!"; unlockCategory("secret"); } } }, 120); }
   let hoopInterval = null; let shootGameScore = 0; let isShooting = false;
-  function startShootHeartGame() { shootGameScore = 0; isShooting = false; document.getElementById('heart').style.top = "220px"; document.getElementById('shootMessage').textContent = `ยิงให้ลง 3 ครั้ง! (0/3)`; let hoopDirection = 1; if (hoopInterval) clearInterval(hoopInterval); const hoop = document.getElementById("hoop"); hoop.style.left = "160px"; hoopInterval = setInterval(() => { let left = parseFloat(hoop.style.left); left += hoopDirection * 2; if (left > 220 || left < 100) hoopDirection *= -1; hoop.style.left = `${left}px`; }, 30); }
-  function shootHeart(power) { if(isShooting) return; isShooting = true; let velocityY = -power; const heart = document.getElementById("heart"); let posY = parseFloat(heart.style.top); function animate() { posY += velocityY; velocityY += 0.3; heart.style.top = `${posY}px`; const heartBox = heart.getBoundingClientRect(); const hoopBox = document.getElementById("hoop").getBoundingClientRect(); if (heartBox.top > hoopBox.top && heartBox.bottom < hoopBox.bottom + 20 && heartBox.left > hoopBox.left && heartBox.right < hoopBox.right) { shootGameScore++; document.getElementById('shootMessage').textContent = `✅ ลงห่วงแล้ว! (${shootGameScore}/3)`; if (shootGameScore >= 3) { unlockCategory("love"); document.getElementById('shootMessage').textContent += " ❤️ ปลดล็อคเรียบร้อย!"; } resetHeart(); return; } if (posY > 300) { document.getElementById('shootMessage').textContent = "❌ พลาด! ลองใหม่นะ"; resetHeart(); return; } requestAnimationFrame(animate); } requestAnimationFrame(animate); }
+  // --- ADJUSTMENT 4: Shooting Game Logic ---
+  function startShootHeartGame() { shootGameScore = 0; isShooting = false; const shootMessage = document.getElementById('shootMessage'); const heart = document.getElementById('heart'); heart.style.top = "220px"; shootMessage.textContent = `ยิงให้ลง 5 ครั้ง! (${shootGameScore}/5)`; let hoopDirection = 1; if (hoopInterval) clearInterval(hoopInterval); const hoop = document.getElementById("hoop"); hoop.style.left = "160px"; hoopInterval = setInterval(() => { let left = parseFloat(hoop.style.left); left += hoopDirection * 2; if (left > 220 || left < 100) hoopDirection *= -1; hoop.style.left = `${left}px`; }, 30); }
+  function shootHeart(power) { if(isShooting) return; isShooting = true; let velocityY = -power; const heart = document.getElementById("heart"); const hoop = document.getElementById("hoop"); const shootMessage = document.getElementById("shootMessage"); let posY = parseFloat(heart.style.top); function animate() { posY += velocityY; velocityY += 0.3; heart.style.top = `${posY}px`; const heartBox = heart.getBoundingClientRect(); const hoopBox = hoop.getBoundingClientRect(); if (heartBox.top > hoopBox.top && heartBox.bottom < hoopBox.bottom + 20 && heartBox.left > hoopBox.left && heartBox.right < hoopBox.right) { shootGameScore++; shootMessage.textContent = `✅ ลงห่วงแล้ว! (${shootGameScore}/5)`; if (shootGameScore >= 5) { unlockCategory("love"); shootMessage.textContent += " ❤️ ปลดล็อคเรียบร้อย!"; } resetHeart(); return; } if (posY > 300) { shootMessage.textContent = "❌ พลาด! ลองใหม่นะ"; resetHeart(); return; } requestAnimationFrame(animate); } requestAnimationFrame(animate); }
   function resetHeart() { setTimeout(() => { document.getElementById("heart").style.top = "220px"; isShooting = false; }, 500); }
   window.backToGameMenu = (currentGameId) => { if (currentGameId === "gameShootHearts" && hoopInterval) { clearInterval(hoopInterval); hoopInterval = null; } showPage("page7"); }
   document.querySelectorAll("#gameMenuGrid .menu-card").forEach(card => { card.onclick = () => { const game = card.dataset.game; if (game === "guessNumber") { showPage("gameGuessNumber"); startGuessNumberGame(); } else if (game === "cardShuffle") { showPage("gameCardShuffle"); resetCardGame(); } else if (game === "gachaPull") { showPage("gameGacha"); } else if (game === "shootHearts") { showPage("gameShootHearts"); startShootHeartGame(); } }; });
