@@ -50,7 +50,8 @@
   .page { transition: opacity 0.4s ease-in-out; }
   .page.hidden { display: none; opacity: 0; }
 
-  h1, h2 { color: var(--primary-color); margin-bottom: 15px; }
+  /* --- ADJUSTMENT: Increased margin-bottom --- */
+  h1, h2 { color: var(--primary-color); margin-bottom: 25px; }
   p { font-size: 1.2rem; margin-bottom: 30px; line-height: 1.4; }
 
   input[type="password"], input[type="number"] {
@@ -94,10 +95,9 @@
 
   #error { color: var(--primary-color); font-weight: bold; margin-top: 8px; }
 
-  .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; justify-items: center; }
-  #categoryMenu .menu-card:nth-child(3) { grid-column: 1 / -1; }
+  /* --- ADJUSTMENT: Increased gap and removed specific rule --- */
+  .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; justify-items: center; }
   
-  /* --- ADJUSTMENT: Menu Card Style --- */
   .menu-card { 
     background: var(--card-bg); 
     border-radius: 20px; 
@@ -155,12 +155,10 @@
   
   #gacha-display { width: 100%; max-width: 200px; height: 100px; background: #fff9fb; border: 3px solid var(--border-color); border-radius: 20px; margin: 20px auto; display: flex; justify-content: center; align-items: center; font-size: 4rem; color: var(--primary-color); box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
 
-  /* --- ADJUSTMENT 1: Numpad for Password --- */
   .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 240px; margin: 20px auto 0; }
   .numpad-btn { padding: 0; width: 60px; height: 60px; border-radius: 50%; font-size: 1.5rem; margin: 0; }
   .numpad-btn.special { background-color: #f8bbd0; color: #a6265a; }
 
-  /* --- ADJUSTMENT 2: Number Tracker for Guessing Game --- */
   #number-tracker { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 320px; margin: 20px auto; }
   .tracker-num { width: 40px; height: 40px; background: #fff2f7; border: 2px solid var(--border-color); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; transition: background-color 0.3s, opacity 0.3s; }
   .tracker-num.guessed { background-color: #e0e0e0; color: #9e9e9e; border-color: #ccc; }
@@ -226,9 +224,9 @@
     <div class="menu-grid" id="categoryMenu">
       <div class="menu-card" data-category="best"><div class="title">ไอเทมแทนใจ 🎁</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
       <div class="menu-card" data-category="funny"><div class="title">รูปตอนกิน 🍕</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-      <div class="menu-card" data-category="letter"><div class="title">จดหมายลับ</div><small>🔒 ปลดล็อคทั้งหมดก่อน</small></div>
       <div class="menu-card" data-category="secret"><div class="title">รูปคู่ของเรา 👩‍❤️‍👨</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
       <div class="menu-card" data-category="love"><div class="title">มีมตลกๆ 😂</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="letter"><div class="title">จดหมายลับ</div><small>🔒 ปลดล็อคทั้งหมดก่อน</small></div>
     </div>
     <div class="buttons">
       <button type="button" onclick="showPage('page1')">ย้อนกลับ</button>
@@ -369,7 +367,6 @@ function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringi
     saveState();
   }
 
-  // --- ADJUSTMENT 1: Numpad Logic ---
   window.handleNumpad = (value) => {
     const pwInput = elements.passwordInput;
     if (value === 'C') {
@@ -399,7 +396,6 @@ function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringi
   document.getElementById("prevBtn").onclick = () => { state.currentSlideIndex = (state.currentSlideIndex - 1 + elements.slideImages.length) % elements.slideImages.length; updateSlideShow(); };
   document.getElementById("nextBtn").onclick = () => { state.currentSlideIndex = (state.currentSlideIndex + 1) % elements.slideImages.length; updateSlideShow(); };
   function unlockCategory(cat) { if (!state.unlocked[cat]) { state.unlocked[cat] = true; saveState(); showToast(`🎉 หมวด '${cat}' ถูกปลดล็อคแล้ว!`); setTimeout(() => showPage("page2"), 500); } }
-  // --- ADJUSTMENT 2: Number Guessing Game Logic ---
   let targetNumber = null;
   function startGuessNumberGame() { targetNumber = Math.floor(Math.random() * 10) + 1; const tracker = document.getElementById('number-tracker'); tracker.innerHTML = ''; for (let i = 1; i <= 10; i++) { tracker.innerHTML += `<div class="tracker-num" data-num="${i}">${i}</div>`; } document.getElementById("gameMessage").textContent = ""; document.getElementById("guessInput").value = ""; }
   window.checkGuess = () => { const input = document.getElementById("guessInput"); const message = document.getElementById("gameMessage"); const val = parseInt(input.value); if (!val || val < 1 || val > 10) { message.textContent = "กรุณากรอกเลข 1-10 เท่านั้นนะ!"; return; } const guessedNumEl = document.querySelector(`.tracker-num[data-num="${val}"]`); if (val === targetNumber) { message.textContent = "🎉 ถูกต้อง! ปลดล็อคหมวด The Best แล้ว!"; if(guessedNumEl) guessedNumEl.classList.add('correct'); unlockCategory("best"); } else { message.textContent = "ผิดนะ ลองใหม่อีกครั้ง!"; if(guessedNumEl) guessedNumEl.classList.add('guessed'); input.classList.add("shake"); message.classList.add("flashRed"); setTimeout(() => { input.classList.remove("shake"); message.classList.remove("flashRed"); }, 700); } }
