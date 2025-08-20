@@ -96,11 +96,33 @@
 
   .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; justify-items: center; }
   #categoryMenu .menu-card:nth-child(3) { grid-column: 1 / -1; }
-  .menu-card { background: var(--card-bg); border-radius: 20px; box-shadow: 0 0 12px var(--shadow-color-dark); cursor: pointer; padding: 15px; width: 140px; transition: transform 0.3s ease, box-shadow 0.3s ease; user-select: none; }
+  
+  /* --- ADJUSTMENT: Menu Card Style --- */
+  .menu-card { 
+    background: var(--card-bg); 
+    border-radius: 20px; 
+    box-shadow: 0 0 12px var(--shadow-color-dark); 
+    cursor: pointer; 
+    padding: 15px; 
+    width: 140px; 
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    user-select: none; 
+  }
+
   .menu-card.locked { cursor: default; opacity: 0.6; }
   .menu-card:hover:not(.locked) { transform: scale(1.07); box-shadow: 0 0 20px var(--primary-color); }
-  .menu-card img { width: 80px; height: 80px; border-radius: 15px; margin-bottom: 10px; object-fit: cover; user-select: none; background-color: #eee; }
-  .menu-card .title { font-weight: bold; color: var(--primary-color); }
+
+  .menu-card .title { 
+    font-weight: bold; 
+    color: var(--primary-color); 
+    font-size: 1.25rem; 
+    margin-bottom: 8px;
+  }
 
   #gameMessage, #puzzleMessage { font-weight: bold; color: var(--primary-color); min-height: 28px; margin-top: 15px; transition: color 0.3s ease; }
   .back-game-menu-btn { background: #f8bbd0; color: #a6265a; border-radius: 25px; border: none; padding: 8px 22px; cursor: pointer; font-weight: bold; margin: 0; box-shadow: 0 3px 8px rgba(248,187,208,0.6); transition: background-color 0.3s ease, color 0.3s ease; }
@@ -147,8 +169,8 @@
   @media (max-width: 480px) {
     .container { padding: 25px 15px 30px; }
     #slideShow, #slideShow img { height: 280px; }
-    .menu-card { width: 120px; }
-    .menu-card img { width: 70px; height: 70px; }
+    .menu-card { width: 120px; height: 100px; }
+    .menu-card .title { font-size: 1.1rem; }
     input[type="password"], input[type="number"] { width: 120px; font-size: 18px; }
     .slide-btn { width: 40px; height: 40px; font-size: 20px; }
     #prevBtn { left: 10px; }
@@ -202,11 +224,11 @@
   <div id="page2" class="page hidden">
     <h2>เลือกหมวดที่อยากดู 💌</h2>
     <div class="menu-grid" id="categoryMenu">
-      <div class="menu-card" data-category="best"><img src="" alt="Item" /><div class="title">ไอเทมแทนใจ 🎁</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-      <div class="menu-card" data-category="funny"><img src="" alt="Eat" /><div class="title">รูปตอนกิน 🍕</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-      <div class="menu-card" data-category="letter"><img src="" alt="Letter" /><div class="title">จดหมายลับ</div><small>🔒 ปลดล็อคทั้งหมดก่อน</small></div>
-      <div class="menu-card" data-category="secret"><img src="" alt="Love" /><div class="title">รูปคู่ของเรา 👩‍❤️‍👨</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-      <div class="menu-card" data-category="love"><img src="" alt="Meme" /><div class="title">มีมตลกๆ 😂</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="best"><div class="title">ไอเทมแทนใจ 🎁</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="funny"><div class="title">รูปตอนกิน 🍕</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="letter"><div class="title">จดหมายลับ</div><small>🔒 ปลดล็อคทั้งหมดก่อน</small></div>
+      <div class="menu-card" data-category="secret"><div class="title">รูปคู่ของเรา 👩‍❤️‍👨</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="love"><div class="title">มีมตลกๆ 😂</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
     </div>
     <div class="buttons">
       <button type="button" onclick="showPage('page1')">ย้อนกลับ</button>
