@@ -288,7 +288,16 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  const CONFIG = { password: "0000", slides: [ { src: "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=600&q=80", alt: "มกราคม" }, { src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", alt: "กุมภาพันธ์" }, { src: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80", alt: "มีนาคม" }, { src: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80", alt: "เมษายน" }, ], photos: { best: ["https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?auto=format&fit=crop&w=400&q=80", "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80"], funny: ["https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80"], secret: ["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80"], love: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80"], }, };
+  const CONFIG = { password: "0000", slides: [ { src: "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=600&q=80", alt: "มกราคม" }, { src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", alt: "กุมภาพันธ์" }, { src: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80", alt: "มีนาคม" }, { src: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80", alt: "เมษายน" }, ], photos: {
+    best: document.getElementById("bestPhotos").value.trim().split("
+"),
+    funny: document.getElementById("funnyPhotos").value.trim().split("
+"),
+    secret: document.getElementById("secretPhotos").value.trim().split("
+"),
+    love: document.getElementById("lovePhotos").value.trim().split("
+"),
+  }, };
   let state = { currentSlideIndex: 0, unlocked: { best: false, funny: false, secret: false, love: false, letter: false }, };
   function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringify(state.unlocked)); }
   function loadState() { const savedState = localStorage.getItem('anniversaryGameState'); if (savedState) { state.unlocked = JSON.parse(savedState); } }
@@ -330,5 +339,23 @@ document.addEventListener('DOMContentLoaded', () => {
   init();
 });
 </script>
+
+<textarea id="bestPhotos" style="display:none;">
+https://example.com/best1.jpg
+https://example.com/best2.jpg
+</textarea>
+
+<textarea id="funnyPhotos" style="display:none;">
+https://example.com/funny1.jpg
+</textarea>
+
+<textarea id="secretPhotos" style="display:none;">
+https://example.com/secret1.jpg
+</textarea>
+
+<textarea id="lovePhotos" style="display:none;">
+https://example.com/love1.jpg
+</textarea>
+
 </body>
 </html>
