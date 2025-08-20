@@ -61,7 +61,8 @@
     border-radius: 12px;
     text-align: center;
     margin-bottom: 15px;
-    letter-spacing: 0.2em; /* Spacing for password dots */
+    letter-spacing: 0.2em;
+    /* Spacing for password dots */
   }
 
   button {
@@ -201,11 +202,11 @@
   <div id="page2" class="page hidden">
     <h2>เลือกหมวดที่อยากดู 💌</h2>
     <div class="menu-grid" id="categoryMenu">
-      <div class="menu-card" data-category="best"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Best" alt="Best of Month" /><div class="title">The Best ของทุกเดือน</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-      <div class="menu-card" data-category="funny"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Funny" alt="Funny" /><div class="title">รูปที่ฮาที่สุดของเรา</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="best"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Item" alt="Best of Month" /><div class="title">ไอเทมแทนใจ 🎁</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="funny"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Eat" alt="Funny" /><div class="title">รูปตอนกิน 🍕</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
       <div class="menu-card" data-category="letter"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=📜" alt="Letter" /><div class="title">จดหมายลับ</div><small>🔒 ปลดล็อคทั้งหมดก่อน</small></div>
-      <div class="menu-card" data-category="secret"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Secret" alt="Secret" /><div class="title">รูปแอบถ่าย</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-      <div class="menu-card" data-category="love"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Love" alt="Love" /><div class="title">รูปที่ชอบกันทั้งคู่</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="secret"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Love" alt="Secret" /><div class="title">รูปคู่ของเรา 👩‍❤️‍👨</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="love"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Meme" alt="Love" /><div class="title">มีมตลกๆ 😂</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
     </div>
     <div class="buttons">
       <button type="button" onclick="showPage('page1')">ย้อนกลับ</button>
@@ -328,9 +329,8 @@ const CONFIG = {
     ],
   },
 };
-
-  let state = { currentSlideIndex: 0, unlocked: { best: false, funny: false, secret: false, love: false, letter: false }, };
-  function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringify(state.unlocked)); }
+let state = { currentSlideIndex: 0, unlocked: { best: false, funny: false, secret: false, love: false, letter: false }, };
+function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringify(state.unlocked)); }
   function loadState() { const savedState = localStorage.getItem('anniversaryGameState'); if (savedState) { state.unlocked = JSON.parse(savedState); } }
   const elements = { passwordInput: document.getElementById('password'), errorMsg: document.getElementById('error'), slideShowContainer: document.getElementById('slideShow'), slideCounter: document.getElementById('slideCounter'), progressBarInner: document.getElementById('progressBarInner'), lightboxOverlay: document.getElementById('lightboxOverlay'), lightboxImage: document.getElementById('lightboxImage'), toast: document.getElementById('toast'), };
   let currentPageId = null;
@@ -372,5 +372,3 @@ const CONFIG = {
 </script>
 </body>
 </html>
-
-
