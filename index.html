@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="th">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   Happy Anniversary - Final Version
-  </title>
-  <link href="https://fonts.googleapis.com/css2?family=Itim&amp;display=swap" rel="stylesheet"/>
-  <style>
-   :root {
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Happy Anniversary - Final Version</title>
+<link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet" />
+<style>
+  :root {
     --primary-color: #d43f6f;
     --secondary-color: #f48fb1;
     --light-pink-bg: #fff0f5;
@@ -157,355 +155,180 @@
     .numpad-btn { width: 50px; height: 50px; font-size: 1.2rem; }
     .tracker-num { width: 35px; height: 35px; }
   }
-  </style>
- </head>
- <body>
-  <div class="container">
-   <div class="page" id="page0">
-    <h1>
-     🌸 ยินดีต้อนรับ 🌸
-    </h1>
-    <p>
-     กรุณากดรหัสผ่าน 💖
-    </p>
-    <input id="password" placeholder="****" readonly="" type="password"/>
-    <div class="numpad">
-     <button class="numpad-btn" onclick="handleNumpad('1')" type="button">
-      1
-     </button>
-     <button class="numpad-btn" onclick="handleNumpad('2')" type="button">
-      2
-     </button>
-     <button class="numpad-btn" onclick="handleNumpad('3')" type="button">
-      3
-     </button>
-     <button class="numpad-btn" onclick="handleNumpad('4')" type="button">
-      4
-     </button>
-     <button class="numpad-btn" onclick="handleNumpad('5')" type="button">
-      5
-     </button>
-     <button class="numpad-btn" onclick="handleNumpad('6')" type="button">
-      6
-     </button>
-     <button class="numpad-btn" onclick="handleNumpad('7')" type="button">
-      7
-     </button>
-     <button class="numpad-btn" onclick="handleNumpad('8')" type="button">
-      8
-     </button>
-     <button class="numpad-btn" onclick="handleNumpad('9')" type="button">
-      9
-     </button>
-     <button class="numpad-btn special" onclick="handleNumpad('C')" type="button">
-      C
-     </button>
-     <button class="numpad-btn" onclick="handleNumpad('0')" type="button">
-      0
-     </button>
-     <button class="numpad-btn special" onclick="handleNumpad('&larr;')" type="button">
-      &larr;
-     </button>
-    </div>
-    <div class="buttons">
-     <button onclick="checkPassword()" type="button">
-      เข้าสู่เว็บไซต์
-     </button>
-    </div>
-    <p id="error">
-    </p>
-   </div>
-   <div class="page hidden" id="page1">
-    <h1>
-     วันนี้วันครบรอบของเรานะะ 💕
-    </h1>
-    <div id="slideShow">
-    </div>
-    <div id="slideCounter">
-    </div>
-    <div id="progressBar">
-     <div id="progressBarInner">
-     </div>
-    </div>
-    <button class="slide-btn" id="prevBtn" type="button">
-     ❮
-    </button>
-    <button class="slide-btn" id="nextBtn" type="button">
-     ❯
-    </button>
-    <div class="buttons">
-     <button onclick="showPage('page0')" type="button">
-      ย้อนกลับ
-     </button>
-     <button onclick="showPage('page2')" type="button">
-      ถัดไป
-     </button>
-    </div>
-   </div>
-   <div class="page hidden" id="page2">
-    <h2>
-     เลือกหมวดที่อยากดู 💌
-    </h2>
-    <div class="menu-grid" id="categoryMenu">
-     <div class="menu-card" data-category="best">
-      <img alt="Best of Month" src="https://via.placeholder.com/80/f7b6cc/fff?text=Best"/>
-      <div class="title">
-       The Best ของทุกเดือน
-      </div>
-      <small>
-       🔒 ต้องปลดล็อคก่อน
-      </small>
-     </div>
-     <div class="menu-card" data-category="funny">
-      <img alt="Funny" src="https://via.placeholder.com/80/f7b6cc/fff?text=Funny"/>
-      <div class="title">
-       รูปที่ฮาที่สุดของเรา
-      </div>
-      <small>
-       🔒 ต้องปลดล็อคก่อน
-      </small>
-     </div>
-     <div class="menu-card" data-category="letter">
-      <img alt="Letter" src="https://via.placeholder.com/80/f7b6cc/fff?text=📜"/>
-      <div class="title">
-       จดหมายลับ
-      </div>
-      <small>
-       🔒 ปลดล็อคทั้งหมดก่อน
-      </small>
-     </div>
-     <div class="menu-card" data-category="secret">
-      <img alt="Secret" src="https://via.placeholder.com/80/f7b6cc/fff?text=Secret"/>
-      <div class="title">
-       รูปแอบถ่าย
-      </div>
-      <small>
-       🔒 ต้องปลดล็อคก่อน
-      </small>
-     </div>
-     <div class="menu-card" data-category="love">
-      <img alt="Love" src="https://via.placeholder.com/80/f7b6cc/fff?text=Love"/>
-      <div class="title">
-       รูปที่ชอบกันทั้งคู่
-      </div>
-      <small>
-       🔒 ต้องปลดล็อคก่อน
-      </small>
-     </div>
-    </div>
-    <div class="buttons">
-     <button onclick="showPage('page1')" type="button">
-      ย้อนกลับ
-     </button>
-     <button onclick="showPage('page7')" type="button">
-      ไปเล่นเกมปลดล็อค 🔓
-     </button>
-    </div>
-   </div>
-   <div class="page hidden" id="page3">
-    <h2>
-     The Best ของทุกเดือน 💖
-    </h2>
-    <div class="menu-grid" id="bestGrid">
-    </div>
-    <div class="buttons">
-     <button onclick="showPage('page2')">
-      ย้อนกลับ
-     </button>
-    </div>
-   </div>
-   <div class="page hidden" id="page4">
-    <h2>
-     รูปที่ฮาที่สุดของเรา 😂
-    </h2>
-    <div class="menu-grid" id="funnyGrid">
-    </div>
-    <div class="buttons">
-     <button onclick="showPage('page2')">
-      ย้อนกลับ
-     </button>
-    </div>
-   </div>
-   <div class="page hidden" id="page5">
-    <h2>
-     รูปแอบถ่าย 📸
-    </h2>
-    <div class="menu-grid" id="secretGrid">
-    </div>
-    <div class="buttons">
-     <button onclick="showPage('page2')">
-      ย้อนกลับ
-     </button>
-    </div>
-   </div>
-   <div class="page hidden" id="page6">
-    <h2>
-     รูปที่ชอบกันทั้งคู่ 💞
-    </h2>
-    <div class="menu-grid" id="loveGrid">
-    </div>
-    <div class="buttons">
-     <button onclick="showPage('page2')">
-      ย้อนกลับ
-     </button>
-    </div>
-   </div>
-   <div class="page hidden" id="page8">
-    <h2>
-     ถึงคนดีของเค้า 💌
-    </h2>
-    <p style="text-align: left; background: #fff9fb; padding: 20px; border-radius: 15px; border: 1px solid var(--border-color);">
-     สุขสันต์วันครบรอบนะ! ไม่น่าเชื่อเลยว่าเราจะผ่านอะไรด้วยกันมาเยอะขนาดนี้...
-     <br/>
-     <br/>
-     ทุกวันที่มีเธออยู่ข้างๆ คือวันที่ดีที่สุดเลย ขอบคุณสำหรับทุกอย่างนะ รักมากๆเลยค้าบ 💖
-     <br/>
-     <br/>
-     จาก... คนที่รักเธอที่สุดในโลก
-    </p>
-    <div class="buttons">
-     <button onclick="showPage('page2')">
-      กลับไปเมนู
-     </button>
-    </div>
-   </div>
-   <div class="page hidden" id="page7">
-    <h2>
-     🎮 เลือกเกมเล่นเพื่อปลดล็อค! 🎮
-    </h2>
-    <div class="menu-grid" id="gameMenuGrid">
-     <div class="menu-card" data-game="guessNumber">
-      <div class="title">
-       เกมทายเลข 🎲
-      </div>
-     </div>
-     <div class="menu-card" data-game="cardShuffle">
-      <div class="title">
-       เกมหาไพ่หัวใจ 🃏
-      </div>
-     </div>
-     <div class="menu-card" data-game="gachaPull">
-      <div class="title">
-       กาชาดาว 5 ⭐
-      </div>
-     </div>
-     <div class="menu-card" data-game="shootHearts">
-      <div class="title">
-       ยิงหัวใจลงห่วง 💘
-      </div>
-     </div>
-    </div>
-    <div class="buttons">
-     <button onclick="showPage('page2')">
-      ย้อนกลับ
-     </button>
-    </div>
-   </div>
-   <div class="page hidden" id="gameGuessNumber">
-    <h2>
-     เกมทายเลข (1-10)
-    </h2>
-    <p>
-     ลองทายเลขที่ฉันคิดอยู่สิ! 🎲
-    </p>
-    <div id="number-tracker">
-    </div>
-    <input id="guessInput" max="10" min="1" type="number"/>
-    <div id="gameMessage">
-    </div>
-    <div class="buttons">
-     <button onclick="checkGuess()" type="button">
-      ทาย!
-     </button>
-     <button class="back-game-menu-btn" onclick="backToGameMenu('gameGuessNumber')" type="button">
-      กลับไปเมนูเกม
-     </button>
-    </div>
-   </div>
-   <div class="page hidden" id="gameCardShuffle">
-    <h2>
-     เกมหาไพ่หัวใจ 🃏
-    </h2>
-    <p>
-     คลิกไพ่หาหัวใจใน 3 ใบนี้ให้เจอ! &hearts;️
-    </p>
-    <div id="cardContainer" style="display:flex; justify-content:center; gap:20px; margin: 25px 0;">
-     <div class="card" onclick="pickCard(0)" style="width:90px; height:120px; background:#ffe1e9; border-radius:16px; cursor:pointer; box-shadow: 0 0 15px #ffb6c1; display:flex; justify-content:center; align-items:center; font-size: 2rem;">
-      ?
-     </div>
-     <div class="card" onclick="pickCard(1)" style="width:90px; height:120px; background:#ffe1e9; border-radius:16px; cursor:pointer; box-shadow: 0 0 15px #ffb6c1; display:flex; justify-content:center; align-items:center; font-size: 2rem;">
-      ?
-     </div>
-     <div class="card" onclick="pickCard(2)" style="width:90px; height:120px; background:#ffe1e9; border-radius:16px; cursor:pointer; box-shadow: 0 0 15px #ffb6c1; display:flex; justify-content:center; align-items:center; font-size: 2rem;">
-      ?
-     </div>
-    </div>
-    <div id="puzzleMessage">
-    </div>
-    <div class="buttons">
-     <button onclick="resetCardGame()" type="button">
-      ลองใหม่
-     </button>
-     <button class="back-game-menu-btn" onclick="backToGameMenu('gameCardShuffle')" type="button">
-      กลับไปเมนูเกม
-     </button>
-    </div>
-   </div>
-   <div class="page hidden" id="gameGacha">
-    <h2>
-     กาชาดาว 5 ⭐
-    </h2>
-    <p>
-     กดปุ่มเพื่อสุ่มดาว รับรางวัลพิเศษ!
-    </p>
-    <div id="gacha-display">
-     🎰
-    </div>
-    <div id="gachaResult" style="margin-top: 10px; font-weight: bold; color: var(--primary-color); min-height: 28px;">
-    </div>
-    <div class="buttons">
-     <button onclick="startGacha()" type="button">
-      กดสุ่ม
-     </button>
-     <button class="back-game-menu-btn" onclick="backToGameMenu('gameGacha')" type="button">
-      กลับไปเมนูเกม
-     </button>
-    </div>
-   </div>
-   <div class="page hidden" id="gameShootHearts">
-    <h2>
-     ยิงหัวใจลงห่วง 💘
-    </h2>
-    <p>
-     กดปุ่ม 'ยิง' ค้างเพื่อชาร์จพลังแล้วปล่อย!
-    </p>
-    <div style="position: relative; margin: 20px auto; width: 320px; height: 280px; background: #ffe4ef; border-radius: 25px; box-shadow: 0 0 15px #ffb6c1;">
-     <div id="hoop" style="position: absolute; width: 100px; height: 20px; background: #ff69b4; border-radius: 10px; top: 80px; left: 50%; transform: translateX(-50%);">
-     </div>
-     <div id="heart" style="position: absolute; width: 40px; height: 40px; background: red; top: 220px; left: 50%; transform: translateX(-50%); border-radius: 50%; box-shadow: 0 0 10px #ff8ab8;">
-     </div>
-    </div>
-    <p id="shootMessage" style="margin-top: 18px; font-weight: bold; color: var(--primary-color); min-height: 28px;">
-    </p>
-    <div class="buttons">
-     <button id="shootBtn" type="button">
-      ❤️ ยิง!
-     </button>
-     <button class="back-game-menu-btn" onclick="backToGameMenu('gameShootHearts')" type="button">
-      กลับไปเมนูเกม
-     </button>
-    </div>
-   </div>
-   <div id="lightboxOverlay">
-    <img alt="ขยายรูป" id="lightboxImage" src=""/>
-   </div>
-   <div id="toast">
-   </div>
-  </div>
-  <script>
-   document.addEventListener('DOMContentLoaded', () => {
+</style>
+</head>
+<body>
 
-  const CONFIG = { password: "0000", slides: [ { src: "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=600&q=80", alt: "มกราคม" }, { src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", alt: "กุมภาพันธ์" }, { src: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80", alt: "มีนาคม" }, { src: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80", alt: "เมษายน" }, ], photos: { best: ["https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?auto=format&fit=crop&w=400&q=80", "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80"], funny: ["https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80"], secret: ["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80"], love: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80"], }, };
+<div class="container">
+
+  <div id="page0" class="page">
+    <h1>🌸 ยินดีต้อนรับ 🌸</h1>
+    <p>กรุณากดรหัสผ่าน 💖</p>
+    <input type="password" id="password" readonly placeholder="****" />
+    <div class="numpad">
+        <button type="button" class="numpad-btn" onclick="handleNumpad('1')">1</button>
+        <button type="button" class="numpad-btn" onclick="handleNumpad('2')">2</button>
+        <button type="button" class="numpad-btn" onclick="handleNumpad('3')">3</button>
+        <button type="button" class="numpad-btn" onclick="handleNumpad('4')">4</button>
+        <button type="button" class="numpad-btn" onclick="handleNumpad('5')">5</button>
+        <button type="button" class="numpad-btn" onclick="handleNumpad('6')">6</button>
+        <button type="button" class="numpad-btn" onclick="handleNumpad('7')">7</button>
+        <button type="button" class="numpad-btn" onclick="handleNumpad('8')">8</button>
+        <button type="button" class="numpad-btn" onclick="handleNumpad('9')">9</button>
+        <button type="button" class="numpad-btn special" onclick="handleNumpad('C')">C</button>
+        <button type="button" class="numpad-btn" onclick="handleNumpad('0')">0</button>
+        <button type="button" class="numpad-btn special" onclick="handleNumpad('←')">←</button>
+    </div>
+    <div class="buttons">
+      <button type="button" onclick="checkPassword()">เข้าสู่เว็บไซต์</button>
+    </div>
+    <p id="error"></p>
+  </div>
+
+  <div id="page1" class="page hidden">
+    <h1>วันนี้วันครบรอบของเรานะะ 💕</h1>
+    <div id="slideShow"></div>
+    <div id="slideCounter"></div>
+    <div id="progressBar"><div id="progressBarInner"></div></div>
+    <button id="prevBtn" class="slide-btn" type="button">&#10094;</button>
+    <button id="nextBtn" class="slide-btn" type="button">&#10095;</button>
+    <div class="buttons">
+      <button type="button" onclick="showPage('page0')">ย้อนกลับ</button>
+      <button type="button" onclick="showPage('page2')">ถัดไป</button>
+    </div>
+  </div>
+
+  <div id="page2" class="page hidden">
+    <h2>เลือกหมวดที่อยากดู 💌</h2>
+    <div class="menu-grid" id="categoryMenu">
+      <div class="menu-card" data-category="best"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Best" alt="Best of Month" /><div class="title">The Best ของทุกเดือน</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="funny"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Funny" alt="Funny" /><div class="title">รูปที่ฮาที่สุดของเรา</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="letter"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=📜" alt="Letter" /><div class="title">จดหมายลับ</div><small>🔒 ปลดล็อคทั้งหมดก่อน</small></div>
+      <div class="menu-card" data-category="secret"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Secret" alt="Secret" /><div class="title">รูปแอบถ่าย</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="love"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Love" alt="Love" /><div class="title">รูปที่ชอบกันทั้งคู่</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+    </div>
+    <div class="buttons">
+      <button type="button" onclick="showPage('page1')">ย้อนกลับ</button>
+      <button type="button" onclick="showPage('page7')">ไปเล่นเกมปลดล็อค 🔓</button>
+    </div>
+  </div>
+
+  <div id="page3" class="page hidden"><h2>The Best ของทุกเดือน 💖</h2><div class="menu-grid" id="bestGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
+  <div id="page4" class="page hidden"><h2>รูปที่ฮาที่สุดของเรา 😂</h2><div class="menu-grid" id="funnyGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
+  <div id="page5" class="page hidden"><h2>รูปแอบถ่าย 📸</h2><div class="menu-grid" id="secretGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
+  <div id="page6" class="page hidden"><h2>รูปที่ชอบกันทั้งคู่ 💞</h2><div class="menu-grid" id="loveGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
+  
+  <div id="page8" class="page hidden">
+      <h2>ถึงคนดีของเค้า 💌</h2>
+      <p style="text-align: left; background: #fff9fb; padding: 20px; border-radius: 15px; border: 1px solid var(--border-color);">
+        สุขสันต์วันครบรอบนะ! ไม่น่าเชื่อเลยว่าเราจะผ่านอะไรด้วยกันมาเยอะขนาดนี้...<br><br>
+        ทุกวันที่มีเธออยู่ข้างๆ คือวันที่ดีที่สุดเลย ขอบคุณสำหรับทุกอย่างนะ รักมากๆเลยค้าบ 💖
+        <br><br>
+        จาก... คนที่รักเธอที่สุดในโลก
+      </p>
+      <div class="buttons"><button onclick="showPage('page2')">กลับไปเมนู</button></div>
+  </div>
+
+  <div id="page7" class="page hidden">
+    <h2>🎮 เลือกเกมเล่นเพื่อปลดล็อค! 🎮</h2>
+    <div class="menu-grid" id="gameMenuGrid">
+      <div class="menu-card" data-game="guessNumber"><div class="title">เกมทายเลข 🎲</div></div>
+      <div class="menu-card" data-game="cardShuffle"><div class="title">เกมหาไพ่หัวใจ 🃏</div></div>
+      <div class="menu-card" data-game="gachaPull"><div class="title">กาชาดาว 5 ⭐</div></div>
+      <div class="menu-card" data-game="shootHearts"><div class="title">ยิงหัวใจลงห่วง 💘</div></div>
+    </div>
+    <div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div>
+  </div>
+
+  <div id="gameGuessNumber" class="page hidden">
+    <h2>เกมทายเลข (1-10)</h2><p>ลองทายเลขที่ฉันคิดอยู่สิ! 🎲</p>
+    <div id="number-tracker"></div>
+    <input type="number" id="guessInput" min="1" max="10" />
+    <div id="gameMessage"></div>
+    <div class="buttons"><button type="button" onclick="checkGuess()">ทาย!</button><button type="button" class="back-game-menu-btn" onclick="backToGameMenu('gameGuessNumber')">กลับไปเมนูเกม</button></div>
+  </div>
+
+  <div id="gameCardShuffle" class="page hidden">
+    <h2>เกมหาไพ่หัวใจ 🃏</h2><p>คลิกไพ่หาหัวใจใน 3 ใบนี้ให้เจอ! ♥️</p>
+    <div id="cardContainer" style="display:flex; justify-content:center; gap:20px; margin: 25px 0;">
+      <div class="card" style="width:90px; height:120px; background:#ffe1e9; border-radius:16px; cursor:pointer; box-shadow: 0 0 15px #ffb6c1; display:flex; justify-content:center; align-items:center; font-size: 2rem;" onclick="pickCard(0)">?</div>
+      <div class="card" style="width:90px; height:120px; background:#ffe1e9; border-radius:16px; cursor:pointer; box-shadow: 0 0 15px #ffb6c1; display:flex; justify-content:center; align-items:center; font-size: 2rem;" onclick="pickCard(1)">?</div>
+      <div class="card" style="width:90px; height:120px; background:#ffe1e9; border-radius:16px; cursor:pointer; box-shadow: 0 0 15px #ffb6c1; display:flex; justify-content:center; align-items:center; font-size: 2rem;" onclick="pickCard(2)">?</div>
+    </div>
+    <div id="puzzleMessage"></div>
+    <div class="buttons"><button type="button" onclick="resetCardGame()">ลองใหม่</button><button type="button" class="back-game-menu-btn" onclick="backToGameMenu('gameCardShuffle')">กลับไปเมนูเกม</button></div>
+  </div>
+
+  <div id="gameGacha" class="page hidden">
+    <h2>กาชาดาว 5 ⭐</h2><p>กดปุ่มเพื่อสุ่มดาว รับรางวัลพิเศษ!</p>
+    <div id="gacha-display">🎰</div>
+    <div id="gachaResult" style="margin-top: 10px; font-weight: bold; color: var(--primary-color); min-height: 28px;"></div>
+    <div class="buttons"><button type="button" onclick="startGacha()">กดสุ่ม</button><button type="button" class="back-game-menu-btn" onclick="backToGameMenu('gameGacha')">กลับไปเมนูเกม</button></div>
+  </div>
+  
+  <div id="gameShootHearts" class="page hidden">
+    <h2>ยิงหัวใจลงห่วง 💘</h2>
+    <p>กดปุ่ม 'ยิง' ค้างเพื่อชาร์จพลังแล้วปล่อย!</p>
+    <div style="position: relative; margin: 20px auto; width: 320px; height: 280px; background: #ffe4ef; border-radius: 25px; box-shadow: 0 0 15px #ffb6c1;">
+      <div id="hoop" style="position: absolute; width: 100px; height: 20px; background: #ff69b4; border-radius: 10px; top: 80px; left: 50%; transform: translateX(-50%);"></div>
+      <div id="heart" style="position: absolute; width: 40px; height: 40px; background: red; top: 220px; left: 50%; transform: translateX(-50%); border-radius: 50%; box-shadow: 0 0 10px #ff8ab8;"></div>
+    </div>
+    <p id="shootMessage" style="margin-top: 18px; font-weight: bold; color: var(--primary-color); min-height: 28px;"></p>
+    <div class="buttons">
+      <button type="button" id="shootBtn">❤️ ยิง!</button>
+      <button type="button" class="back-game-menu-btn" onclick="backToGameMenu('gameShootHearts')">กลับไปเมนูเกม</button>
+    </div>
+  </div>
+
+  <div id="lightboxOverlay"><img id="lightboxImage" src="" alt="ขยายรูป" /></div>
+  <div id="toast"></div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  
+const CONFIG = {
+  password: "0000",
+
+  // --- สไลด์โชว์ (รูปตามเดือน) ---
+  slides: [
+    // แค่ก๊อปลิงก์มาใส่แทน URL ได้เลย
+    { src: "URL_มกราคม", alt: "มกราคม" },
+    { src: "URL_กุมภาพันธ์", alt: "กุมภาพันธ์" },
+    { src: "URL_มีนาคม", alt: "มีนาคม" },
+    { src: "URL_เมษายน", alt: "เมษายน" },
+    // 👉 เพิ่มได้ไม่จำกัด เช่น:
+    // { src: "URL_พฤษภาคม", alt: "พฤษภาคม" },
+  ],
+
+  // --- หมวดหมู่รูปภาพ ---
+  photos: {
+    best: [
+      // The Best ของทุกเดือน
+      "URL_รูปที่1",
+      "URL_รูปที่2",
+      // 👉 ใส่เพิ่มได้เรื่อยๆ
+    ],
+    funny: [
+      // รูปตลก
+      "URL_รูปที่ฮา1",
+      "URL_รูปที่ฮา2",
+    ],
+    secret: [
+      // รูปแอบถ่าย
+      "URL_แอบถ่าย1",
+      "URL_แอบถ่าย2",
+    ],
+    love: [
+      // รูปที่ชอบกันทั้งคู่
+      "URL_คู่รัก1",
+      "URL_คู่รัก2",
+    ],
+  },
+};
+
   let state = { currentSlideIndex: 0, unlocked: { best: false, funny: false, secret: false, love: false, letter: false }, };
   function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringify(state.unlocked)); }
   function loadState() { const savedState = localStorage.getItem('anniversaryGameState'); if (savedState) { state.unlocked = JSON.parse(savedState); } }
@@ -546,6 +369,6 @@
   function init() { loadState(); setupSlideshow(); elements.lightboxOverlay.onclick = () => elements.lightboxOverlay.style.display = "none"; let chargeStartTime = 0; const shootBtn = document.getElementById('shootBtn'); shootBtn.onmousedown = shootBtn.ontouchstart = (e) => { e.preventDefault(); if(isShooting) return; chargeStartTime = Date.now(); shootBtn.style.transform = 'scale(1.1)'; }; shootBtn.onmouseup = shootBtn.ontouchend = (e) => { e.preventDefault(); if(chargeStartTime === 0) return; const holdTime = Date.now() - chargeStartTime; const power = Math.min(Math.max(holdTime / 80, 5), 12); shootHeart(power); chargeStartTime = 0; shootBtn.style.transform = 'scale(1)'; }; showPage('page0'); }
   init();
 });
-  </script>
- </body>
+</script>
+</body>
 </html>
