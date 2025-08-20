@@ -144,7 +144,6 @@
   #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background-color: var(--primary-color); color: white; padding: 16px 24px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 2000; font-size: 1.1rem; font-weight: bold; transition: top 0.5s ease-in-out; }
   #toast.show { top: 20px; }
   
-  /* --- NEW: Time Counter Style --- */
   .time-display { background: var(--card-bg); border-radius: 20px; padding: 25px; margin: 20px auto; max-width: 400px; }
   .time-segment { margin: 10px 0; }
   .time-value { font-size: 2.5rem; font-weight: bold; color: var(--primary-color); }
@@ -314,7 +313,7 @@
     <p>กดปุ่ม 'ยิง' ค้างเพื่อชาร์จพลังแล้วปล่อย!</p>
     <div style="position: relative; margin: 20px auto; width: 320px; height: 280px; background: #ffe4ef; border-radius: 25px; box-shadow: 0 0 15px #ffb6c1;">
       <div id="hoop" style="position: absolute; width: 100px; height: 20px; background: #ff69b4; border-radius: 10px; top: 80px; left: 50%; transform: translateX(-50%);"></div>
-      <div id="heart" style="position: absolute; width: 40px; height: 40px; background: red; top: 220px; left: 50%; transform: translateX(-50%); border-radius: 50%; box-shadow: 0 0 10px #ff8ab8;"></div>
+      <div id="heart" style="position: absolute; font-size: 40px; color: red; top: 220px; left: 50%; transform: translateX(-50%); line-height: 1;">❤️</div>
     </div>
     <p id="shootMessage" style="margin-top: 18px; font-weight: bold; color: var(--primary-color); min-height: 28px;"></p>
     <div class="buttons">
@@ -331,10 +330,16 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
+const CATEGORY_NAMES = {
+    best: "ไอเทมแทนใจ",
+    funny: "รูปตอนกิน",
+    secret: "รูปคู่ของเรา",
+    love: "มีมตลกๆ"
+};
   
 const CONFIG = {
   password: "0000",
-  anniversaryDate: "2024-09-09T00:00:00", // NEW: Anniversary start date
+  anniversaryDate: "2024-09-09T00:00:00",
 
   slides: [
     { src: "https://i.postimg.cc/0N49WgJF/LINE-ALBUM-250819-8.jpg", alt: "มกราคม" },
@@ -350,17 +355,28 @@ const CONFIG = {
     love: ["https://i.postimg.cc/BQFXL5w2/1.jpg","https://i.postimg.cc/Z5FnjbmR/2.jpg","https://i.postimg.cc/htqh9JH6/3.jpg","https://i.postimg.cc/YSr9s52x/4.jpg","https://i.postimg.cc/nL3zb3Cf/5.jpg","https://i.postimg.cc/fLkbwY9t/6.jpg","https://i.postimg.cc/RF8Zqq7P/7.jpg","https://i.postimg.cc/x8zTmYg9/8.jpg"],
   },
 };
-let state = { currentSlideIndex: 0, unlocked: { best: false, funny: false, secret: false, love: false, letter: false }, };
+let state = { 
+  currentSlideIndex: 0, 
+  unlocked: { best: false, funny: false, secret: false, love: false, letter: false },
+  gachaPullCount: 0 
+};
 let cPressCount = 0;
 
-function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringify(state.unlocked)); }
-  function loadState() { const savedState = localStorage.getItem('anniversaryGameState'); if (savedState) { state.unlocked = JSON.parse(savedState); } }
+function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringify(state)); }
+function loadState() { 
+  const savedState = JSON.parse(localStorage.getItem('anniversaryGameState')); 
+  if (savedState) { 
+    // Merge saved state with default state to prevent errors if new properties are added
+    state = { ...state, ...savedState }; 
+    // Ensure nested objects are also merged correctly
+    state.unlocked = { ...state.unlocked, ...savedState.unlocked };
+  } 
+}
   const elements = { 
     passwordInput: document.getElementById('password'), errorMsg: document.getElementById('error'), 
     slideShowContainer: document.getElementById('slideShow'), slideCounter: document.getElementById('slideCounter'), 
     progressBarInner: document.getElementById('progressBarInner'), lightboxOverlay: document.getElementById('lightboxOverlay'), 
     lightboxImage: document.getElementById('lightboxImage'), toast: document.getElementById('toast'),
-    // NEW: Time counter elements
     years: document.getElementById('years'), months: document.getElementById('months'), days: document.getElementById('days'),
     hours: document.getElementById('hours'), minutes: document.getElementById('minutes'), seconds: document.getElementById('seconds')
   };
@@ -371,10 +387,10 @@ function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringi
   
   function resetAllProgress() {
     Object.keys(state.unlocked).forEach(key => { state.unlocked[key] = false; });
+    state.gachaPullCount = 0;
     saveState();
   }
 
-  // --- NEW: Real-time counter function ---
   function updateAnniversaryCounter() {
     const startDate = new Date(CONFIG.anniversaryDate);
     const now = new Date();
@@ -417,7 +433,7 @@ function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringi
     } else {
       cPressCount = 0;
       if (value === '←') {
-        pwInput.value = pw.value.slice(0, -1);
+        pwInput.value = pwInput.value.slice(0, -1);
       } else if (pwInput.value.length < 4) {
         pwInput.value += value;
       }
@@ -425,25 +441,128 @@ function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringi
   }
 
   window.checkPassword = () => { if (elements.passwordInput.value === CONFIG.password) { showPage("page1"); elements.errorMsg.textContent = ""; elements.passwordInput.value = ""; } else { elements.errorMsg.textContent = "รหัสไม่ถูกต้อง ลองใหม่อีกครั้งนะ!"; } };
-  function loadPhotos(category, containerId) { const container = document.getElementById(containerId); container.innerHTML = ""; if (!state.unlocked[category]) { container.innerHTML = "<p>🔒 หมวดนี้ยังล็อคอยู่ ลองเล่นเกมปลดล็อคก่อนนะ!</p>"; return; } CONFIG.photos[category].forEach((url, i) => { const img = document.createElement("img"); img.src = url; img.alt = `${category} photo ${i+1}`; Object.assign(img.style, { borderRadius: "18px", cursor: "pointer", width: "120px", height: "120px", objectFit: "cover", boxShadow: "0 0 15px var(--shadow-color-dark)"}); img.onclick = () => openLightbox(url); container.appendChild(img); }); }
-  function updateCategoryLocks() { const allUnlocked = state.unlocked.best && state.unlocked.funny && state.unlocked.secret && state.unlocked.love; if(allUnlocked && !state.unlocked.letter) { state.unlocked.letter = true; saveState(); } document.querySelectorAll("#categoryMenu .menu-card").forEach(card => { const cat = card.dataset.category; if (cat && state.unlocked[cat]) { card.classList.remove("locked"); card.querySelector("small").textContent = "🔓 ปลดล็อคแล้ว"; card.style.opacity = "1"; card.onclick = () => { if (cat === "best") showPage("page3"); else if (cat === "funny") showPage("page4"); else if (cat === "secret") showPage("page5"); else if (cat === "love") showPage("page6"); else if (cat === "letter") showPage("page8"); }; } else if (cat) { card.classList.add("locked"); card.style.opacity = "0.6"; card.onclick = null; } }); }
+  
+  function loadPhotos(category, containerId) { 
+      const container = document.getElementById(containerId); 
+      container.innerHTML = ""; 
+      if (!state.unlocked[category]) { 
+          container.innerHTML = "<p>🔒 หมวดนี้ยังล็อคอยู่ ลองเล่นเกมปลดล็อคก่อนนะ!</p>"; 
+          return; 
+      } 
+      CONFIG.photos[category].forEach((url, i) => { 
+          const img = document.createElement("img"); 
+          img.src = url; 
+          img.alt = `${category} photo ${i+1}`; 
+          // ADJUSTMENT: Increased image size
+          Object.assign(img.style, { 
+              borderRadius: "18px", 
+              cursor: "pointer", 
+              width: "140px", 
+              height: "140px", 
+              objectFit: "cover", 
+              boxShadow: "0 0 15px var(--shadow-color-dark)"
+          }); 
+          img.onclick = () => openLightbox(url); 
+          container.appendChild(img); 
+      }); 
+  }
+  
+  function updateCategoryLocks() { 
+      const allUnlocked = state.unlocked.best && state.unlocked.funny && state.unlocked.secret && state.unlocked.love; 
+      if(allUnlocked && !state.unlocked.letter) { 
+          state.unlocked.letter = true; 
+          saveState(); 
+      } 
+      document.querySelectorAll("#categoryMenu .menu-card").forEach(card => { 
+          const cat = card.dataset.category; 
+          if (cat && state.unlocked[cat]) { 
+              card.classList.remove("locked"); 
+              card.querySelector("small").textContent = "🔓 ปลดล็อคแล้ว"; 
+              card.style.opacity = "1"; 
+              card.onclick = () => { 
+                  if (cat === "best") showPage("page3"); 
+                  else if (cat === "funny") showPage("page4"); 
+                  else if (cat === "secret") showPage("page5"); 
+                  else if (cat === "love") showPage("page6"); 
+                  else if (cat === "letter") showPage("page8"); 
+              }; 
+          } else if (cat) { 
+              card.classList.add("locked"); 
+              card.style.opacity = "0.6"; 
+              card.onclick = null; 
+              // ADJUSTMENT: Reset text when locked
+              if (cat === 'letter') {
+                  card.querySelector("small").textContent = "🔒 ปลดล็อคทั้งหมดก่อน";
+              } else {
+                  card.querySelector("small").textContent = "🔒 ต้องปลดล็อคก่อน";
+              }
+          } 
+      }); 
+  }
+
   window.openLightbox = (src) => { elements.lightboxImage.src = src; elements.lightboxOverlay.style.display = "flex"; }
   function setupSlideshow() { elements.slideShowContainer.innerHTML = CONFIG.slides.map((slide, index) => `<img src="${slide.src}" alt="${slide.alt}" class="${index === 0 ? 'active' : ''}" />` ).join(''); elements.slideImages = elements.slideShowContainer.querySelectorAll('img'); }
   function updateSlideShow() { elements.slideImages.forEach((img, i) => { img.classList.toggle("active", i === state.currentSlideIndex); }); const totalSlides = elements.slideImages.length; elements.slideCounter.textContent = `รูปที่ ${state.currentSlideIndex + 1} / ${totalSlides}`; elements.progressBarInner.style.width = `${((state.currentSlideIndex + 1) / totalSlides) * 100}%`; }
   document.getElementById("prevBtn").onclick = () => { state.currentSlideIndex = (state.currentSlideIndex - 1 + elements.slideImages.length) % elements.slideImages.length; updateSlideShow(); };
   document.getElementById("nextBtn").onclick = () => { state.currentSlideIndex = (state.currentSlideIndex + 1) % elements.slideImages.length; updateSlideShow(); };
-  function unlockCategory(cat) { if (!state.unlocked[cat]) { state.unlocked[cat] = true; saveState(); showToast(`🎉 หมวด '${cat}' ถูกปลดล็อคแล้ว!`); setTimeout(() => showPage("page2"), 500); } }
+  
+  function unlockCategory(cat) { 
+      if (!state.unlocked[cat]) { 
+          state.unlocked[cat] = true; 
+          saveState(); 
+          // ADJUSTMENT: Use display name for toast
+          const displayName = CATEGORY_NAMES[cat] || cat;
+          showToast(`🎉 หมวด '${displayName}' ถูกปลดล็อคแล้ว!`); 
+          setTimeout(() => showPage("page2"), 500); 
+      } 
+  }
+
   let targetNumber = null;
   function startGuessNumberGame() { targetNumber = Math.floor(Math.random() * 10) + 1; const tracker = document.getElementById('number-tracker'); tracker.innerHTML = ''; for (let i = 1; i <= 10; i++) { tracker.innerHTML += `<div class="tracker-num" data-num="${i}">${i}</div>`; } document.getElementById("gameMessage").textContent = ""; document.getElementById("guessInput").value = ""; }
-  window.checkGuess = () => { const input = document.getElementById("guessInput"); const message = document.getElementById("gameMessage"); const val = parseInt(input.value); if (!val || val < 1 || val > 10) { message.textContent = "กรุณากรอกเลข 1-10 เท่านั้นนะ!"; return; } const guessedNumEl = document.querySelector(`.tracker-num[data-num="${val}"]`); if (val === targetNumber) { message.textContent = "🎉 ถูกต้อง! ปลดล็อคหมวด The Best แล้ว!"; if(guessedNumEl) guessedNumEl.classList.add('correct'); unlockCategory("best"); } else { message.textContent = "ผิดนะ ลองใหม่อีกครั้ง!"; if(guessedNumEl) guessedNumEl.classList.add('guessed'); input.classList.add("shake"); message.classList.add("flashRed"); setTimeout(() => { input.classList.remove("shake"); message.classList.remove("flashRed"); }, 700); } }
+  window.checkGuess = () => { const input = document.getElementById("guessInput"); const message = document.getElementById("gameMessage"); const val = parseInt(input.value); if (!val || val < 1 || val > 10) { message.textContent = "กรุณากรอกเลข 1-10 เท่านั้นนะ!"; return; } const guessedNumEl = document.querySelector(`.tracker-num[data-num="${val}"]`); if (val === targetNumber) { message.textContent = `🎉 ถูกต้อง! ปลดล็อคหมวด${CATEGORY_NAMES['best']}แล้ว!`; if(guessedNumEl) guessedNumEl.classList.add('correct'); unlockCategory("best"); } else { message.textContent = "ผิดนะ ลองใหม่อีกครั้ง!"; if(guessedNumEl) guessedNumEl.classList.add('guessed'); input.classList.add("shake"); message.classList.add("flashRed"); setTimeout(() => { input.classList.remove("shake"); message.classList.remove("flashRed"); }, 700); } }
   function shuffle(array) { return array.sort(() => Math.random() - 0.5); } window.resetCardGame = () => { startCardGame(); }
   let heartIndex = null; let cardsPicked = false;
   function startCardGame() { const container = document.getElementById("cardContainer"); const message = document.getElementById("puzzleMessage"); const cards = container.querySelectorAll(".card"); const emojis = ["♥️", "🍀", "⭐"]; let shuffled = shuffle([...emojis]); shuffled.forEach((emoji, i) => { const card = cards[i]; card.textContent = emoji; card.setAttribute("data-emoji", emoji); card.style.background = "#fff2f7"; card.style.color = "#5e2b45"; card.style.pointerEvents = "none"; card.classList.remove("shake"); }); heartIndex = shuffled.findIndex(e => e === "♥️"); cardsPicked = true; message.textContent = "จ้องดีๆ นะว่าไพ่หัวใจอยู่ใบไหน~ 👀"; setTimeout(() => { animateSlowShuffle(cards, () => { cards.forEach(card => { card.textContent = "?"; card.style.pointerEvents = "auto"; }); cardsPicked = false; message.textContent = "เลือกใบที่คิดว่าคือหัวใจเลย~ 💘"; }); }, 2000); }
-  window.pickCard = (i) => { if (cardsPicked) return; const container = document.getElementById("cardContainer"); const message = document.getElementById("puzzleMessage"); const cards = container.querySelectorAll(".card"); const card = cards[i]; const val = card.getAttribute("data-emoji"); cardsPicked = true; if (val === "♥️") { card.textContent = val; card.style.background = "#d43f6f"; card.style.color = "white"; message.textContent = "🎉 เก่งมาก! เจอหัวใจแล้ว~ ปลดล็อคหมวดฮาเลย!"; unlockCategory("funny"); } else { card.textContent = val; card.style.background = "#ff8ab8"; card.classList.add("shake"); message.textContent = "ไม่ใช่น้า~ ลองใหม่นะ 💦"; message.classList.add("flashRed"); setTimeout(() => message.classList.remove("flashRed"), 600); } cards.forEach((c, idx) => { const trueVal = c.getAttribute("data-emoji"); if (trueVal === "♥️") { c.textContent = trueVal; c.style.background = "#d43f6f"; c.style.color = "white"; } c.style.pointerEvents = "none"; }); }
+  window.pickCard = (i) => { if (cardsPicked) return; const container = document.getElementById("cardContainer"); const message = document.getElementById("puzzleMessage"); const cards = container.querySelectorAll(".card"); const card = cards[i]; const val = card.getAttribute("data-emoji"); cardsPicked = true; if (val === "♥️") { card.textContent = val; card.style.background = "#d43f6f"; card.style.color = "white"; message.textContent = `🎉 เก่งมาก! เจอหัวใจแล้ว~ ปลดล็อคหมวด${CATEGORY_NAMES['funny']}แล้ว!`; unlockCategory("funny"); } else { card.textContent = val; card.style.background = "#ff8ab8"; card.classList.add("shake"); message.textContent = "ไม่ใช่น้า~ ลองใหม่นะ 💦"; message.classList.add("flashRed"); setTimeout(() => message.classList.remove("flashRed"), 600); } cards.forEach((c, idx) => { const trueVal = c.getAttribute("data-emoji"); if (trueVal === "♥️") { c.textContent = trueVal; c.style.background = "#d43f6f"; c.style.color = "white"; } c.style.pointerEvents = "none"; }); }
   function animateSlowShuffle(cards, callback) { const swaps = [[0, 1], [1, 2], [0, 2]]; const steps = shuffle([...swaps, ...swaps]); let stepIndex = 0; function doSwap() { if (stepIndex >= steps.length) { callback(); return; } const [a, b] = steps[stepIndex]; swapCards(cards[a], cards[b]); stepIndex++; setTimeout(doSwap, 700); } doSwap(); }
   function swapCards(cardA, cardB) { const rectA = cardA.getBoundingClientRect(); const rectB = cardB.getBoundingClientRect(); const dx = rectB.left - rectA.left; const dy = rectB.top - rectA.top; cardA.style.transition = "transform 0.5s ease"; cardB.style.transition = "transform 0.5s ease"; cardA.style.transform = `translate(${dx}px, ${dy}px)`; cardB.style.transform = `translate(${-dx}px, ${-dy}px)`; setTimeout(() => { cardA.style.transition = ""; cardB.style.transition = ""; cardA.style.transform = ""; cardB.style.transform = ""; const tempEmoji = cardA.getAttribute("data-emoji"); cardA.setAttribute("data-emoji", cardB.getAttribute("data-emoji")); cardB.setAttribute("data-emoji", tempEmoji); const tempText = cardA.textContent; cardA.textContent = cardB.textContent; cardB.textContent = tempText; }, 500); }
   const gachaPool = [ { emoji: '🌸', stars: 1 }, { emoji: '🍀', stars: 2 }, { emoji: '❤️', stars: 3 }, { emoji: '✨', stars: 4 }, { emoji: '🌟', stars: 5 } ];
-  window.startGacha = () => { const display = document.getElementById("gacha-display"); const resultDiv = document.getElementById("gachaResult"); resultDiv.textContent = ""; display.textContent = "🎰"; let spinCount = 0; const spinInterval = setInterval(() => { display.textContent = gachaPool[Math.floor(Math.random() * gachaPool.length)].emoji; spinCount++; if (spinCount >= 15) { clearInterval(spinInterval); const result = gachaPool[Math.floor(Math.random() * gachaPool.length)]; display.textContent = result.emoji; let starText = "⭐".repeat(result.stars); resultDiv.textContent = `คุณได้ '${result.emoji}' ระดับ ${result.stars} ดาว! ${starText}`; if (result.stars === 5) { resultDiv.textContent += " 💖 ปลดล็อคหมวดรูปแอบถ่ายแล้ว!"; unlockCategory("secret"); } } }, 120); }
+  
+  window.startGacha = () => {
+    state.gachaPullCount = (state.gachaPullCount || 0) + 1;
+    saveState();
+
+    const display = document.getElementById("gacha-display");
+    const resultDiv = document.getElementById("gachaResult");
+    resultDiv.textContent = `กำลังสุ่ม... (ครั้งที่ ${state.gachaPullCount})`;
+    display.textContent = "🎰";
+    let spinCount = 0;
+    const spinInterval = setInterval(() => {
+        display.textContent = gachaPool[Math.floor(Math.random() * gachaPool.length)].emoji;
+        spinCount++;
+        if (spinCount >= 15) {
+            clearInterval(spinInterval);
+            let result;
+            // ADJUSTMENT: Pity system for gacha
+            if (state.gachaPullCount >= 10) {
+                result = gachaPool.find(item => item.stars === 5); // Force 5-star
+                state.gachaPullCount = 0; // Reset counter
+                saveState();
+            } else {
+                result = gachaPool[Math.floor(Math.random() * gachaPool.length)];
+            }
+
+            display.textContent = result.emoji;
+            let starText = "⭐".repeat(result.stars);
+            resultDiv.textContent = `คุณได้ '${result.emoji}' ระดับ ${result.stars} ดาว! ${starText}`;
+            if (result.stars === 5) {
+                resultDiv.textContent += ` 💖 ปลดล็อคหมวด${CATEGORY_NAMES['secret']}แล้ว!`;
+                unlockCategory("secret");
+            }
+        }
+    }, 120);
+  }
+
   let hoopInterval = null; let shootGameScore = 0; let isShooting = false;
   function startShootHeartGame() { shootGameScore = 0; isShooting = false; const shootMessage = document.getElementById('shootMessage'); const heart = document.getElementById('heart'); heart.style.top = "220px"; shootMessage.textContent = `ยิงให้ลง 5 ครั้ง! (${shootGameScore}/5)`; let hoopDirection = 1; if (hoopInterval) clearInterval(hoopInterval); const hoop = document.getElementById("hoop"); hoop.style.left = "160px"; hoopInterval = setInterval(() => { let left = parseFloat(hoop.style.left); left += hoopDirection * 2; if (left > 220 || left < 100) hoopDirection *= -1; hoop.style.left = `${left}px`; }, 30); }
   function shootHeart(power) { if(isShooting) return; isShooting = true; let velocityY = -power; const heart = document.getElementById("heart"); const hoop = document.getElementById("hoop"); const shootMessage = document.getElementById("shootMessage"); let posY = parseFloat(heart.style.top); function animate() { posY += velocityY; velocityY += 0.3; heart.style.top = `${posY}px`; const heartBox = heart.getBoundingClientRect(); const hoopBox = hoop.getBoundingClientRect(); const heartCenterX = heartBox.left + heartBox.width / 2; const heartCenterY = heartBox.top + heartBox.height / 2; const isHorizontallyAligned = heartCenterX > hoopBox.left && heartCenterX < hoopBox.right; const isVerticallyAligned = heartCenterY > hoopBox.top && heartCenterY < hoopBox.bottom; if (isHorizontallyAligned && isVerticallyAligned && velocityY > 0) { shootGameScore++; shootMessage.textContent = `✅ ลงห่วงแล้ว! (${shootGameScore}/5)`; if (shootGameScore >= 5) { unlockCategory("love"); shootMessage.textContent += " ❤️ ปลดล็อคเรียบร้อย!"; } resetHeart(); return; } if (posY > 300) { shootMessage.textContent = "❌ พลาด! ลองใหม่นะ"; resetHeart(); return; } requestAnimationFrame(animate); } requestAnimationFrame(animate); }
@@ -456,9 +575,8 @@ function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringi
     setupSlideshow(); 
     elements.lightboxOverlay.onclick = () => elements.lightboxOverlay.style.display = "none"; 
     
-    // Start the real-time counter
     setInterval(updateAnniversaryCounter, 1000);
-    updateAnniversaryCounter(); // Initial call
+    updateAnniversaryCounter();
 
     let chargeStartTime = 0; 
     const shootBtn = document.getElementById('shootBtn'); 
@@ -472,5 +590,3 @@ function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringi
 </script>
 </body>
 </html>
-
-
