@@ -50,7 +50,6 @@
   .page { transition: opacity 0.4s ease-in-out; }
   .page.hidden { display: none; opacity: 0; }
 
-  /* --- ADJUSTMENT: Increased margin-bottom --- */
   h1, h2 { color: var(--primary-color); margin-bottom: 25px; }
   p { font-size: 1.2rem; margin-bottom: 30px; line-height: 1.4; }
 
@@ -63,7 +62,6 @@
     text-align: center;
     margin-bottom: 15px;
     letter-spacing: 0.2em;
-    /* Spacing for password dots */
   }
 
   button {
@@ -95,7 +93,6 @@
 
   #error { color: var(--primary-color); font-weight: bold; margin-top: 8px; }
 
-  /* --- ADJUSTMENT: Increased gap and removed specific rule --- */
   .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; justify-items: center; }
   
   .menu-card { 
@@ -146,6 +143,12 @@
   
   #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background-color: var(--primary-color); color: white; padding: 16px 24px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 2000; font-size: 1.1rem; font-weight: bold; transition: top 0.5s ease-in-out; }
   #toast.show { top: 20px; }
+  
+  /* --- NEW: Time Counter Style --- */
+  .time-display { background: var(--card-bg); border-radius: 20px; padding: 25px; margin: 20px auto; max-width: 400px; }
+  .time-segment { margin: 10px 0; }
+  .time-value { font-size: 2.5rem; font-weight: bold; color: var(--primary-color); }
+  .time-label { font-size: 1.1rem; color: var(--text-color); }
 
   @keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
   .shake { animation: shake 0.4s ease; }
@@ -175,6 +178,7 @@
     #nextBtn { right: 10px; }
     .numpad-btn { width: 50px; height: 50px; font-size: 1.2rem; }
     .tracker-num { width: 35px; height: 35px; }
+    .time-value { font-size: 2rem; }
   }
 </style>
 </head>
@@ -227,6 +231,7 @@
       <div class="menu-card" data-category="secret"><div class="title">รูปคู่ของเรา 👩‍❤️‍👨</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
       <div class="menu-card" data-category="love"><div class="title">มีมตลกๆ 😂</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
       <div class="menu-card" data-category="letter"><div class="title">จดหมายลับ</div><small>🔒 ปลดล็อคทั้งหมดก่อน</small></div>
+      <div class="menu-card" onclick="showPage('page9')"><div class="title">ระยะเวลา ⏱️</div><small>❤️ ที่เราคบกัน</small></div>
     </div>
     <div class="buttons">
       <button type="button" onclick="showPage('page1')">ย้อนกลับ</button>
@@ -248,6 +253,23 @@
         จาก... คนที่รักเธอที่สุดในโลก
       </p>
       <div class="buttons"><button onclick="showPage('page2')">กลับไปเมนู</button></div>
+  </div>
+
+  <div id="page9" class="page hidden">
+    <h2>ระยะเวลาที่เราคบกัน 🗓️</h2>
+    <div class="time-display">
+      <div class="time-segment">
+        <span class="time-value" id="years">0</span><span class="time-label"> ปี</span>
+        <span class="time-value" id="months">0</span><span class="time-label"> เดือน</span>
+        <span class="time-value" id="days">0</span><span class="time-label"> วัน</span>
+      </div>
+      <div class="time-segment">
+        <span class="time-value" id="hours">00</span><span class="time-label">:</span>
+        <span class="time-value" id="minutes">00</span><span class="time-label">:</span>
+        <span class="time-value" id="seconds">00</span>
+      </div>
+    </div>
+    <div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div>
   </div>
 
   <div id="page7" class="page hidden">
@@ -312,75 +334,90 @@ document.addEventListener('DOMContentLoaded', () => {
   
 const CONFIG = {
   password: "0000",
+  anniversaryDate: "2024-09-09T00:00:00", // NEW: Anniversary start date
 
-  // --- สไลด์โชว์ (รูปตามเดือน) ---
   slides: [
-    // แค่ก๊อปลิงก์มาใส่แทน URL ได้เลย
     { src: "https://i.postimg.cc/0N49WgJF/LINE-ALBUM-250819-8.jpg", alt: "มกราคม" },
     { src: "URL_กุมภาพันธ์", alt: "กุมภาพันธ์" },
     { src: "URL_มีนาคม", alt: "มีนาคม" },
     { src: "URL_เมษายน", alt: "เมษายน" },
-    // 👉 เพิ่มได้ไม่จำกัด เช่น:
-    // { src: "URL_พฤษภาคม", alt: "พฤษภาคม" },
   ],
 
-  // --- หมวดหมู่รูปภาพ ---
   photos: {
-    best: [
-      // The Best ของทุกเดือน
-      "https://i.postimg.cc/0N49WgJF/LINE-ALBUM-250819-8.jpg",
-      "URL_รูปที่2",
-      // 👉 ใส่เพิ่มได้เรื่อยๆ
-    ],
-    funny: [
-      // รูปตลก
-      "URL_รูปที่ฮา1",
-      "URL_รูปที่ฮา2",
-    ],
-    secret: [
-      // รูปแอบถ่าย
-      "URL_แอบถ่าย1",
-      "URL_แอบถ่าย2",
-    ],
-    love: [
-      // รูปที่ชอบกันทั้งคู่
-      "URL_คู่รัก1",
-      "URL_คู่รัก2",
-    ],
+    best: ["https://i.postimg.cc/0N49WgJF/LINE-ALBUM-250819-8.jpg", "URL_รูปที่2"],
+    funny: ["URL_รูปที่ฮา1", "URL_รูปที่ฮา2"],
+    secret: ["URL_แอบถ่าย1", "URL_แอบถ่าย2"],
+    love: ["URL_คู่รัก1", "URL_คู่รัก2"],
   },
 };
 let state = { currentSlideIndex: 0, unlocked: { best: false, funny: false, secret: false, love: false, letter: false }, };
-let cPressCount = 0; // ตัวแปรสำหรับนับการกด C
+let cPressCount = 0;
 
 function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringify(state.unlocked)); }
   function loadState() { const savedState = localStorage.getItem('anniversaryGameState'); if (savedState) { state.unlocked = JSON.parse(savedState); } }
-  const elements = { passwordInput: document.getElementById('password'), errorMsg: document.getElementById('error'), slideShowContainer: document.getElementById('slideShow'), slideCounter: document.getElementById('slideCounter'), progressBarInner: document.getElementById('progressBarInner'), lightboxOverlay: document.getElementById('lightboxOverlay'), lightboxImage: document.getElementById('lightboxImage'), toast: document.getElementById('toast'), };
+  const elements = { 
+    passwordInput: document.getElementById('password'), errorMsg: document.getElementById('error'), 
+    slideShowContainer: document.getElementById('slideShow'), slideCounter: document.getElementById('slideCounter'), 
+    progressBarInner: document.getElementById('progressBarInner'), lightboxOverlay: document.getElementById('lightboxOverlay'), 
+    lightboxImage: document.getElementById('lightboxImage'), toast: document.getElementById('toast'),
+    // NEW: Time counter elements
+    years: document.getElementById('years'), months: document.getElementById('months'), days: document.getElementById('days'),
+    hours: document.getElementById('hours'), minutes: document.getElementById('minutes'), seconds: document.getElementById('seconds')
+  };
   let currentPageId = null;
   window.showPage = (id) => { const newPage = document.getElementById(id); const oldPage = currentPageId ? document.getElementById(currentPageId) : null; if (oldPage && oldPage !== newPage) { oldPage.style.opacity = 0; setTimeout(() => { oldPage.classList.add('hidden'); if (newPage) { newPage.classList.remove('hidden'); setTimeout(() => newPage.style.opacity = 1, 50); } currentPageId = id; onPageLoad(id); }, 400); } else if (newPage) { document.querySelectorAll('.page').forEach(p => p.classList.add('hidden')); newPage.classList.remove('hidden'); setTimeout(() => newPage.style.opacity = 1, 50); currentPageId = id; onPageLoad(id); } };
   function onPageLoad(id) { if (id === 'page1') updateSlideShow(); if (id === 'page2') updateCategoryLocks(); const pageMap = { page3: { category: "best", gridId: "bestGrid" }, page4: { category: "funny", gridId: "funnyGrid" }, page5: { category: "secret", gridId: "secretGrid" }, page6: { category: "love", gridId: "loveGrid" }, }; if (pageMap[id]) { loadPhotos(pageMap[id].category, pageMap[id].gridId); } }
   function showToast(message) { elements.toast.textContent = message; elements.toast.classList.add('show'); setTimeout(() => { elements.toast.classList.remove('show'); }, 3000); }
   
   function resetAllProgress() {
-    Object.keys(state.unlocked).forEach(key => {
-      state.unlocked[key] = false;
-    });
+    Object.keys(state.unlocked).forEach(key => { state.unlocked[key] = false; });
     saveState();
+  }
+
+  // --- NEW: Real-time counter function ---
+  function updateAnniversaryCounter() {
+    const startDate = new Date(CONFIG.anniversaryDate);
+    const now = new Date();
+    
+    let years = now.getFullYear() - startDate.getFullYear();
+    let months = now.getMonth() - startDate.getMonth();
+    let days = now.getDate() - startDate.getDate();
+    let hours = now.getHours() - startDate.getHours();
+    let minutes = now.getMinutes() - startDate.getMinutes();
+    let seconds = now.getSeconds() - startDate.getSeconds();
+
+    if (seconds < 0) { seconds += 60; minutes--; }
+    if (minutes < 0) { minutes += 60; hours--; }
+    if (hours < 0) { hours += 24; days--; }
+    if (days < 0) {
+      months--;
+      const daysInLastMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+      days += daysInLastMonth;
+    }
+    if (months < 0) { months += 12; years--; }
+
+    elements.years.textContent = years;
+    elements.months.textContent = months;
+    elements.days.textContent = days;
+    elements.hours.textContent = String(hours).padStart(2, '0');
+    elements.minutes.textContent = String(minutes).padStart(2, '0');
+    elements.seconds.textContent = String(seconds).padStart(2, '0');
   }
 
   window.handleNumpad = (value) => {
     const pwInput = elements.passwordInput;
     if (value === 'C') {
-      pwInput.value = ''; // ทำหน้าที่เคลียร์ตามปกติ
-      cPressCount++; // เพิ่มจำนวนการกด C
+      pwInput.value = '';
+      cPressCount++;
       if (cPressCount >= 5) {
         resetAllProgress();
         showToast("รีเซ็ตข้อมูลทั้งหมดแล้ว!");
-        cPressCount = 0; // รีเซ็ตตัวนับหลังฟังก์ชันทำงาน
+        cPressCount = 0;
       }
     } else {
-      cPressCount = 0; // รีเซ็ตตัวนับถ้ากดปุ่มอื่น
+      cPressCount = 0;
       if (value === '←') {
-        pwInput.value = pwInput.value.slice(0, -1);
+        pwInput.value = pw.value.slice(0, -1);
       } else if (pwInput.value.length < 4) {
         pwInput.value += value;
       }
@@ -389,7 +426,7 @@ function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringi
 
   window.checkPassword = () => { if (elements.passwordInput.value === CONFIG.password) { showPage("page1"); elements.errorMsg.textContent = ""; elements.passwordInput.value = ""; } else { elements.errorMsg.textContent = "รหัสไม่ถูกต้อง ลองใหม่อีกครั้งนะ!"; } };
   function loadPhotos(category, containerId) { const container = document.getElementById(containerId); container.innerHTML = ""; if (!state.unlocked[category]) { container.innerHTML = "<p>🔒 หมวดนี้ยังล็อคอยู่ ลองเล่นเกมปลดล็อคก่อนนะ!</p>"; return; } CONFIG.photos[category].forEach((url, i) => { const img = document.createElement("img"); img.src = url; img.alt = `${category} photo ${i+1}`; Object.assign(img.style, { borderRadius: "18px", cursor: "pointer", width: "120px", height: "120px", objectFit: "cover", boxShadow: "0 0 15px var(--shadow-color-dark)"}); img.onclick = () => openLightbox(url); container.appendChild(img); }); }
-  function updateCategoryLocks() { const allUnlocked = state.unlocked.best && state.unlocked.funny && state.unlocked.secret && state.unlocked.love; if(allUnlocked && !state.unlocked.letter) { state.unlocked.letter = true; saveState(); } document.querySelectorAll("#categoryMenu .menu-card").forEach(card => { const cat = card.dataset.category; if (state.unlocked[cat]) { card.classList.remove("locked"); card.querySelector("small").textContent = "🔓 ปลดล็อคแล้ว"; card.style.opacity = "1"; card.onclick = () => { if (cat === "best") showPage("page3"); else if (cat === "funny") showPage("page4"); else if (cat === "secret") showPage("page5"); else if (cat === "love") showPage("page6"); else if (cat === "letter") showPage("page8"); }; } else { card.classList.add("locked"); card.style.opacity = "0.6"; card.onclick = null; } }); }
+  function updateCategoryLocks() { const allUnlocked = state.unlocked.best && state.unlocked.funny && state.unlocked.secret && state.unlocked.love; if(allUnlocked && !state.unlocked.letter) { state.unlocked.letter = true; saveState(); } document.querySelectorAll("#categoryMenu .menu-card").forEach(card => { const cat = card.dataset.category; if (cat && state.unlocked[cat]) { card.classList.remove("locked"); card.querySelector("small").textContent = "🔓 ปลดล็อคแล้ว"; card.style.opacity = "1"; card.onclick = () => { if (cat === "best") showPage("page3"); else if (cat === "funny") showPage("page4"); else if (cat === "secret") showPage("page5"); else if (cat === "love") showPage("page6"); else if (cat === "letter") showPage("page8"); }; } else if (cat) { card.classList.add("locked"); card.style.opacity = "0.6"; card.onclick = null; } }); }
   window.openLightbox = (src) => { elements.lightboxImage.src = src; elements.lightboxOverlay.style.display = "flex"; }
   function setupSlideshow() { elements.slideShowContainer.innerHTML = CONFIG.slides.map((slide, index) => `<img src="${slide.src}" alt="${slide.alt}" class="${index === 0 ? 'active' : ''}" />` ).join(''); elements.slideImages = elements.slideShowContainer.querySelectorAll('img'); }
   function updateSlideShow() { elements.slideImages.forEach((img, i) => { img.classList.toggle("active", i === state.currentSlideIndex); }); const totalSlides = elements.slideImages.length; elements.slideCounter.textContent = `รูปที่ ${state.currentSlideIndex + 1} / ${totalSlides}`; elements.progressBarInner.style.width = `${((state.currentSlideIndex + 1) / totalSlides) * 100}%`; }
@@ -413,7 +450,23 @@ function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringi
   function resetHeart() { setTimeout(() => { document.getElementById("heart").style.top = "220px"; isShooting = false; }, 500); }
   window.backToGameMenu = (currentGameId) => { if (currentGameId === "gameShootHearts" && hoopInterval) { clearInterval(hoopInterval); hoopInterval = null; } showPage("page7"); }
   document.querySelectorAll("#gameMenuGrid .menu-card").forEach(card => { card.onclick = () => { const game = card.dataset.game; if (game === "guessNumber") { showPage("gameGuessNumber"); startGuessNumberGame(); } else if (game === "cardShuffle") { showPage("gameCardShuffle"); resetCardGame(); } else if (game === "gachaPull") { showPage("gameGacha"); } else if (game === "shootHearts") { showPage("gameShootHearts"); startShootHeartGame(); } }; });
-  function init() { loadState(); setupSlideshow(); elements.lightboxOverlay.onclick = () => elements.lightboxOverlay.style.display = "none"; let chargeStartTime = 0; const shootBtn = document.getElementById('shootBtn'); shootBtn.onmousedown = shootBtn.ontouchstart = (e) => { e.preventDefault(); if(isShooting) return; chargeStartTime = Date.now(); shootBtn.style.transform = 'scale(1.1)'; }; shootBtn.onmouseup = shootBtn.ontouchend = (e) => { e.preventDefault(); if(chargeStartTime === 0) return; const holdTime = Date.now() - chargeStartTime; const power = Math.min(Math.max(holdTime / 80, 5), 12); shootHeart(power); chargeStartTime = 0; shootBtn.style.transform = 'scale(1)'; }; showPage('page0'); }
+  
+  function init() { 
+    loadState(); 
+    setupSlideshow(); 
+    elements.lightboxOverlay.onclick = () => elements.lightboxOverlay.style.display = "none"; 
+    
+    // Start the real-time counter
+    setInterval(updateAnniversaryCounter, 1000);
+    updateAnniversaryCounter(); // Initial call
+
+    let chargeStartTime = 0; 
+    const shootBtn = document.getElementById('shootBtn'); 
+    shootBtn.onmousedown = shootBtn.ontouchstart = (e) => { e.preventDefault(); if(isShooting) return; chargeStartTime = Date.now(); shootBtn.style.transform = 'scale(1.1)'; }; 
+    shootBtn.onmouseup = shootBtn.ontouchend = (e) => { e.preventDefault(); if(chargeStartTime === 0) return; const holdTime = Date.now() - chargeStartTime; const power = Math.min(Math.max(holdTime / 80, 5), 12); shootHeart(power); chargeStartTime = 0; shootBtn.style.transform = 'scale(1)'; }; 
+    showPage('page0'); 
+  }
+  
   init();
 });
 </script>
