@@ -99,7 +99,7 @@
   .menu-card { background: var(--card-bg); border-radius: 20px; box-shadow: 0 0 12px var(--shadow-color-dark); cursor: pointer; padding: 15px; width: 140px; transition: transform 0.3s ease, box-shadow 0.3s ease; user-select: none; }
   .menu-card.locked { cursor: default; opacity: 0.6; }
   .menu-card:hover:not(.locked) { transform: scale(1.07); box-shadow: 0 0 20px var(--primary-color); }
-  .menu-card img { width: 80px; height: 80px; border-radius: 15px; margin-bottom: 10px; object-fit: cover; user-select: none; }
+  .menu-card img { width: 80px; height: 80px; border-radius: 15px; margin-bottom: 10px; object-fit: cover; user-select: none; background-color: #eee; }
   .menu-card .title { font-weight: bold; color: var(--primary-color); }
 
   #gameMessage, #puzzleMessage { font-weight: bold; color: var(--primary-color); min-height: 28px; margin-top: 15px; transition: color 0.3s ease; }
@@ -202,11 +202,11 @@
   <div id="page2" class="page hidden">
     <h2>เลือกหมวดที่อยากดู 💌</h2>
     <div class="menu-grid" id="categoryMenu">
-      <div class="menu-card" data-category="best"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Item" alt="Best of Month" /><div class="title">ไอเทมแทนใจ 🎁</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-      <div class="menu-card" data-category="funny"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Eat" alt="Funny" /><div class="title">รูปตอนกิน 🍕</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-      <div class="menu-card" data-category="letter"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=📜" alt="Letter" /><div class="title">จดหมายลับ</div><small>🔒 ปลดล็อคทั้งหมดก่อน</small></div>
-      <div class="menu-card" data-category="secret"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Love" alt="Secret" /><div class="title">รูปคู่ของเรา 👩‍❤️‍👨</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-      <div class="menu-card" data-category="love"><img src="https://via.placeholder.com/80/f7b6cc/fff?text=Meme" alt="Love" /><div class="title">มีมตลกๆ 😂</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="best"><img src="" alt="Item" /><div class="title">ไอเทมแทนใจ 🎁</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="funny"><img src="" alt="Eat" /><div class="title">รูปตอนกิน 🍕</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="letter"><img src="" alt="Letter" /><div class="title">จดหมายลับ</div><small>🔒 ปลดล็อคทั้งหมดก่อน</small></div>
+      <div class="menu-card" data-category="secret"><img src="" alt="Love" /><div class="title">รูปคู่ของเรา 👩‍❤️‍👨</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="love"><img src="" alt="Meme" /><div class="title">มีมตลกๆ 😂</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
     </div>
     <div class="buttons">
       <button type="button" onclick="showPage('page1')">ย้อนกลับ</button>
@@ -214,10 +214,10 @@
     </div>
   </div>
 
-  <div id="page3" class="page hidden"><h2>The Best ของทุกเดือน 💖</h2><div class="menu-grid" id="bestGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
-  <div id="page4" class="page hidden"><h2>รูปที่ฮาที่สุดของเรา 😂</h2><div class="menu-grid" id="funnyGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
-  <div id="page5" class="page hidden"><h2>รูปแอบถ่าย 📸</h2><div class="menu-grid" id="secretGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
-  <div id="page6" class="page hidden"><h2>รูปที่ชอบกันทั้งคู่ 💞</h2><div class="menu-grid" id="loveGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
+  <div id="page3" class="page hidden"><h2>ไอเทมแทนใจ 🎁</h2><div class="menu-grid" id="bestGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
+  <div id="page4" class="page hidden"><h2>รูปตอนกิน 🍕</h2><div class="menu-grid" id="funnyGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
+  <div id="page5" class="page hidden"><h2>รูปคู่ของเรา 👩‍❤️‍👨</h2><div class="menu-grid" id="secretGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
+  <div id="page6" class="page hidden"><h2>มีมตลกๆ 😂</h2><div class="menu-grid" id="loveGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
   
   <div id="page8" class="page hidden">
       <h2>ถึงคนดีของเค้า 💌</h2>
