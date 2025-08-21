@@ -93,7 +93,21 @@
 
   #error { color: var(--primary-color); font-weight: bold; margin-top: 8px; }
 
-  .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; justify-items: center; }
+  /* ADJUSTMENT: Default grid is now 3 columns for categories */
+  #categoryMenu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px; /* Reduced gap slightly for 3 columns */
+    justify-items: center;
+  }
+
+  /* Grid for other menus remains 2 columns */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    justify-items: center;
+  }
   
   .menu-card { 
     background: var(--card-bg); 
@@ -118,6 +132,7 @@
     font-weight: bold; 
     color: var(--primary-color); 
     font-size: 1.25rem; 
+    text-align: center;
     margin-bottom: 8px;
   }
 
@@ -169,6 +184,13 @@
   @media (max-width: 480px) {
     .container { padding: 25px 15px 30px; }
     #slideShow, #slideShow img { height: 280px; }
+    
+    /* ADJUSTMENT: Category menu reverts to 2 columns on mobile */
+    #categoryMenu {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
     .menu-card { width: 120px; height: 100px; }
     .menu-card .title { font-size: 1.1rem; }
     input[type="password"], input[type="number"] { width: 120px; font-size: 18px; }
@@ -224,7 +246,7 @@
 
   <div id="page2" class="page hidden">
     <h2>เลือกหมวดที่อยากดู 💌</h2>
-    <div class="menu-grid" id="categoryMenu">
+    <div id="categoryMenu">
       <div class="menu-card" data-category="best"><div class="title">ไอเทมแทนใจ 🎁</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
       <div class="menu-card" data-category="funny"><div class="title">รูปตอนกิน 🍕</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
       <div class="menu-card" data-category="secret"><div class="title">รูปคู่ของเรา 👩‍❤️‍👨</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
@@ -366,9 +388,7 @@ function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringi
 function loadState() { 
   const savedState = JSON.parse(localStorage.getItem('anniversaryGameState')); 
   if (savedState) { 
-    // Merge saved state with default state to prevent errors if new properties are added
     state = { ...state, ...savedState }; 
-    // Ensure nested objects are also merged correctly
     state.unlocked = { ...state.unlocked, ...savedState.unlocked };
   } 
 }
@@ -453,7 +473,6 @@ function loadState() {
           const img = document.createElement("img"); 
           img.src = url; 
           img.alt = `${category} photo ${i+1}`; 
-          // ADJUSTMENT: Increased image size
           Object.assign(img.style, { 
               borderRadius: "18px", 
               cursor: "pointer", 
@@ -490,7 +509,6 @@ function loadState() {
               card.classList.add("locked"); 
               card.style.opacity = "0.6"; 
               card.onclick = null; 
-              // ADJUSTMENT: Reset text when locked
               if (cat === 'letter') {
                   card.querySelector("small").textContent = "🔒 ปลดล็อคทั้งหมดก่อน";
               } else {
@@ -510,7 +528,6 @@ function loadState() {
       if (!state.unlocked[cat]) { 
           state.unlocked[cat] = true; 
           saveState(); 
-          // ADJUSTMENT: Use display name for toast
           const displayName = CATEGORY_NAMES[cat] || cat;
           showToast(`🎉 หมวด '${displayName}' ถูกปลดล็อคแล้ว!`); 
           setTimeout(() => showPage("page2"), 500); 
@@ -543,10 +560,9 @@ function loadState() {
         if (spinCount >= 15) {
             clearInterval(spinInterval);
             let result;
-            // ADJUSTMENT: Pity system for gacha
             if (state.gachaPullCount >= 10) {
-                result = gachaPool.find(item => item.stars === 5); // Force 5-star
-                state.gachaPullCount = 0; // Reset counter
+                result = gachaPool.find(item => item.stars === 5); 
+                state.gachaPullCount = 0; 
                 saveState();
             } else {
                 result = gachaPool[Math.floor(Math.random() * gachaPool.length)];
@@ -590,3 +606,4 @@ function loadState() {
 </script>
 </body>
 </html>
+}
