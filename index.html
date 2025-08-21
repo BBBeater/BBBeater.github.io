@@ -93,20 +93,25 @@
 
   #error { color: var(--primary-color); font-weight: bold; margin-top: 8px; }
 
-  /* ADJUSTMENT: Default grid is now 3 columns for categories */
-  #categoryMenu {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px; /* Reduced gap slightly for 3 columns */
-    justify-items: center;
-  }
-
-  /* Grid for other menus remains 2 columns */
   .menu-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 25px;
     justify-items: center;
+  }
+
+  /* ADJUSTMENT: Make category menu 3 columns */
+  #categoryMenu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    justify-items: center;
+  }
+
+  /* ADJUSTMENT: Make photo grids 3 columns */
+  #bestGrid, #funnyGrid, #secretGrid, #loveGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
   }
   
   .menu-card { 
@@ -185,12 +190,16 @@
     .container { padding: 25px 15px 30px; }
     #slideShow, #slideShow img { height: 280px; }
     
-    /* ADJUSTMENT: Category menu reverts to 2 columns on mobile */
     #categoryMenu {
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
     }
     
+    /* Make photo grids 2 columns on mobile */
+    #bestGrid, #funnyGrid, #secretGrid, #loveGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .menu-card { width: 120px; height: 100px; }
     .menu-card .title { font-size: 1.1rem; }
     input[type="password"], input[type="number"] { width: 120px; font-size: 18px; }
@@ -606,4 +615,3 @@ function loadState() {
 </script>
 </body>
 </html>
-}
