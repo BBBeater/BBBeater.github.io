@@ -100,7 +100,6 @@
     justify-items: center;
   }
 
-  /* ADJUSTMENT: Make category menu 3 columns */
   #categoryMenu {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -146,7 +145,7 @@
   .back-game-menu-btn:hover { background: var(--primary-color); color: white; }
 
   #lightboxOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(95, 35, 70, 0.9); display: none; justify-content: center; align-items: center; z-index: 1000; }
-  #lightboxOverlay img { max-width: 90vw; max-height: 90vh; border-radius: 20px; box-shadow: 0 0 25px var(--shadow-color-dark); cursor: zoom-out; user-select: none; }
+  #lightboxOverlay img { max-width: 90vw; max-height: 90vh; border-radius: 20px; box-shadow: 0 0 25px var(--shadow-color-dark); cursor: pointer; user-select: none; }
 
   #slideShow { position: relative; width: 100%; max-width: 420px; height: 320px; margin: 0 auto 20px; border-radius: 25px; overflow: hidden; box-shadow: 0 0 15px var(--shadow-color-dark); }
   #slideShow img { width: 100%; height: 320px; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.6s ease; border-radius: 25px; user-select: none; }
@@ -156,6 +155,15 @@
   .slide-btn:hover { background: var(--primary-color); color: white; transform: translateY(-50%); }
   #prevBtn { left: 15px; }
   #nextBtn { right: 15px; }
+  
+  /* ADJUSTMENT: New styles for lightbox navigation */
+  #lightboxOverlay .slide-btn {
+    position: fixed;
+    z-index: 1001;
+  }
+  #lightboxPrevBtn { left: 15px; }
+  #lightboxNextBtn { right: 15px; }
+
 
   #slideCounter { margin: 0 auto 10px; font-weight: bold; color: var(--primary-color); }
   #progressBar { width: 100%; max-width: 420px; height: 6px; background: #ffe4ef; border-radius: 6px; margin: 0 auto 30px; overflow: hidden; }
@@ -195,7 +203,6 @@
         gap: 20px;
     }
     
-    /* Make photo grids 2 columns on mobile */
     #bestGrid, #funnyGrid, #secretGrid, #loveGrid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -353,7 +360,11 @@
     </div>
   </div>
 
-  <div id="lightboxOverlay"><img id="lightboxImage" src="" alt="ขยายรูป" /></div>
+  <div id="lightboxOverlay">
+    <button id="lightboxPrevBtn" class="slide-btn" type="button">&#10094;</button>
+    <img id="lightboxImage" src="" alt="ขยายรูป" />
+    <button id="lightboxNextBtn" class="slide-btn" type="button">&#10095;</button>
+  </div>
   <div id="toast"></div>
 
 </div>
@@ -392,6 +403,9 @@ let state = {
   gachaPullCount: 0 
 };
 let cPressCount = 0;
+// ADJUSTMENT: Variables for gallery lightbox
+let currentGallery = [];
+let currentGalleryIndex = 0;
 
 function saveState() { localStorage.setItem('anniversaryGameState', JSON.stringify(state)); }
 function loadState() { 
@@ -407,7 +421,9 @@ function loadState() {
     progressBarInner: document.getElementById('progressBarInner'), lightboxOverlay: document.getElementById('lightboxOverlay'), 
     lightboxImage: document.getElementById('lightboxImage'), toast: document.getElementById('toast'),
     years: document.getElementById('years'), months: document.getElementById('months'), days: document.getElementById('days'),
-    hours: document.getElementById('hours'), minutes: document.getElementById('minutes'), seconds: document.getElementById('seconds')
+    hours: document.getElementById('hours'), minutes: document.getElementById('minutes'), seconds: document.getElementById('seconds'),
+    lightboxPrevBtn: document.getElementById('lightboxPrevBtn'), // New element
+    lightboxNextBtn: document.getElementById('lightboxNextBtn')  // New element
   };
   let currentPageId = null;
   window.showPage = (id) => { const newPage = document.getElementById(id); const oldPage = currentPageId ? document.getElementById(currentPageId) : null; if (oldPage && oldPage !== newPage) { oldPage.style.opacity = 0; setTimeout(() => { oldPage.classList.add('hidden'); if (newPage) { newPage.classList.remove('hidden'); setTimeout(() => newPage.style.opacity = 1, 50); } currentPageId = id; onPageLoad(id); }, 400); } else if (newPage) { document.querySelectorAll('.page').forEach(p => p.classList.add('hidden')); newPage.classList.remove('hidden'); setTimeout(() => newPage.style.opacity = 1, 50); currentPageId = id; onPageLoad(id); } };
@@ -490,7 +506,8 @@ function loadState() {
               objectFit: "cover", 
               boxShadow: "0 0 15px var(--shadow-color-dark)"
           }); 
-          img.onclick = () => openLightbox(url); 
+          // ADJUSTMENT: Onclick now opens the gallery with context
+          img.onclick = () => openLightbox(category, i); 
           container.appendChild(img); 
       }); 
   }
@@ -527,7 +544,18 @@ function loadState() {
       }); 
   }
 
-  window.openLightbox = (src) => { elements.lightboxImage.src = src; elements.lightboxOverlay.style.display = "flex"; }
+  // ADJUSTMENT: New lightbox gallery functions
+  function updateGalleryImage() {
+    elements.lightboxImage.src = currentGallery[currentGalleryIndex];
+  }
+
+  function openLightbox(category, index) {
+      currentGallery = CONFIG.photos[category];
+      currentGalleryIndex = index;
+      updateGalleryImage();
+      elements.lightboxOverlay.style.display = "flex";
+  }
+
   function setupSlideshow() { elements.slideShowContainer.innerHTML = CONFIG.slides.map((slide, index) => `<img src="${slide.src}" alt="${slide.alt}" class="${index === 0 ? 'active' : ''}" />` ).join(''); elements.slideImages = elements.slideShowContainer.querySelectorAll('img'); }
   function updateSlideShow() { elements.slideImages.forEach((img, i) => { img.classList.toggle("active", i === state.currentSlideIndex); }); const totalSlides = elements.slideImages.length; elements.slideCounter.textContent = `รูปที่ ${state.currentSlideIndex + 1} / ${totalSlides}`; elements.progressBarInner.style.width = `${((state.currentSlideIndex + 1) / totalSlides) * 100}%`; }
   document.getElementById("prevBtn").onclick = () => { state.currentSlideIndex = (state.currentSlideIndex - 1 + elements.slideImages.length) % elements.slideImages.length; updateSlideShow(); };
@@ -598,8 +626,25 @@ function loadState() {
   function init() { 
     loadState(); 
     setupSlideshow(); 
-    elements.lightboxOverlay.onclick = () => elements.lightboxOverlay.style.display = "none"; 
     
+    // ADJUSTMENT: Event listeners for lightbox
+    elements.lightboxOverlay.onclick = (event) => {
+        // Close only if the overlay background is clicked, not the buttons or image
+        if (event.target === elements.lightboxOverlay) {
+            elements.lightboxOverlay.style.display = "none";
+        }
+    };
+    elements.lightboxPrevBtn.onclick = (event) => {
+        event.stopPropagation(); // Prevent closing
+        currentGalleryIndex = (currentGalleryIndex - 1 + currentGallery.length) % currentGallery.length;
+        updateGalleryImage();
+    };
+    elements.lightboxNextBtn.onclick = (event) => {
+        event.stopPropagation(); // Prevent closing
+        currentGalleryIndex = (currentGalleryIndex + 1) % currentGallery.length;
+        updateGalleryImage();
+    };
+
     setInterval(updateAnniversaryCounter, 1000);
     updateAnniversaryCounter();
 
@@ -613,117 +658,5 @@ function loadState() {
   init();
 });
 </script>
-
-<!-- Modal Viewer -->
-<div id="lightboxModal" class="lightbox-modal" style="display:none;">
-  <span class="close">&times;</span>
-  <img class="lightbox-content" id="lightboxImage">
-</div>
-
-<style>
-.lightbox-modal {
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.lightbox-modal img {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(255,255,255,0.3);
-}
-.lightbox-modal .close {
-  position: absolute;
-  top: 20px;
-  right: 35px;
-  color: #fff;
-  font-size: 40px;
-  font-weight: bold;
-  cursor: pointer;
-}
-</style>
-
-
-<script>
-let currentAlbum = [];
-let currentIndex = 0;
-
-function openLightbox(album, index) {
-  currentAlbum = album;
-  currentIndex = index;
-  document.getElementById("lightboxModal").style.display = "flex";
-  document.getElementById("lightboxImage").src = currentAlbum[currentIndex];
-}
-
-function closeLightbox() {
-  document.getElementById("lightboxModal").style.display = "none";
-}
-
-function showNext() {
-  currentIndex = (currentIndex + 1) % currentAlbum.length;
-  document.getElementById("lightboxImage").src = currentAlbum[currentIndex];
-}
-
-function showPrev() {
-  currentIndex = (currentIndex - 1 + currentAlbum.length) % currentAlbum.length;
-  document.getElementById("lightboxImage").src = currentAlbum[currentIndex];
-}
-
-// Close modal on click X
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelector("#lightboxModal .close").onclick = closeLightbox;
-
-  // Keyboard navigation
-  document.addEventListener("keydown", (e) => {
-    if (document.getElementById("lightboxModal").style.display === "flex") {
-      if (e.key === "ArrowRight") showNext();
-      if (e.key === "ArrowLeft") showPrev();
-      if (e.key === "Escape") closeLightbox();
-    }
-  });
-
-  // Swipe gesture
-  let startX = 0;
-  let endX = 0;
-  const modal = document.getElementById("lightboxModal");
-  modal.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-  });
-  modal.addEventListener("touchend", (e) => {
-    endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) {
-      showNext();
-    } else if (endX - startX > 50) {
-      showPrev();
-    }
-  });
-});
-</script>
-
-
-<script>
-function renderCategoryPhotos(category) {
-  const container = document.getElementById(category + "Container");
-  if (!container) return;
-  container.innerHTML = "";
-  CONFIG.photos[category].forEach((src, idx) => {
-    if (src.trim() === "") return;
-    const img = document.createElement("img");
-    img.src = src.trim();
-    img.alt = category + " photo " + (idx + 1);
-    img.className = "thumbnail";
-    img.onclick = () => openLightbox(CONFIG.photos[category], idx);
-    container.appendChild(img);
-  });
-}
-</script>
-
 </body>
 </html>
