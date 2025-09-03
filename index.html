@@ -707,5 +707,23 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+
+<script>
+function renderCategoryPhotos(category) {
+  const container = document.getElementById(category + "Container");
+  if (!container) return;
+  container.innerHTML = "";
+  CONFIG.photos[category].forEach((src, idx) => {
+    if (src.trim() === "") return;
+    const img = document.createElement("img");
+    img.src = src.trim();
+    img.alt = category + " photo " + (idx + 1);
+    img.className = "thumbnail";
+    img.onclick = () => openLightbox(CONFIG.photos[category], idx);
+    container.appendChild(img);
+  });
+}
+</script>
+
 </body>
 </html>
