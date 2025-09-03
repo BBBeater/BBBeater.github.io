@@ -107,7 +107,6 @@
     justify-items: center;
   }
 
-  /* ADJUSTMENT: Make photo grids 3 columns */
   #bestGrid, #funnyGrid, #secretGrid, #loveGrid {
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
@@ -156,7 +155,6 @@
   #prevBtn { left: 15px; }
   #nextBtn { right: 15px; }
   
-  /* ADJUSTMENT: New styles for lightbox navigation */
   #lightboxOverlay .slide-btn {
     position: fixed;
     z-index: 1001;
@@ -341,7 +339,7 @@
 
   <div id="gameGacha" class="page hidden">
     <h2>กาชาดาว 5 ⭐</h2><p>กดปุ่มเพื่อสุ่มดาว รับรางวัลพิเศษ!</p>
-    <div id="gacha-display">🎰</div>
+    <div id="gacha-display">❓</div>
     <div id="gachaResult" style="margin-top: 10px; font-weight: bold; color: var(--primary-color); min-height: 28px;"></div>
     <div class="buttons"><button type="button" onclick="startGacha()">กดสุ่ม</button><button type="button" class="back-game-menu-btn" onclick="backToGameMenu('gameGacha')">กลับไปเมนูเกม</button></div>
   </div>
@@ -403,7 +401,6 @@ let state = {
   gachaPullCount: 0 
 };
 let cPressCount = 0;
-// ADJUSTMENT: Variables for gallery lightbox
 let currentGallery = [];
 let currentGalleryIndex = 0;
 
@@ -422,8 +419,8 @@ function loadState() {
     lightboxImage: document.getElementById('lightboxImage'), toast: document.getElementById('toast'),
     years: document.getElementById('years'), months: document.getElementById('months'), days: document.getElementById('days'),
     hours: document.getElementById('hours'), minutes: document.getElementById('minutes'), seconds: document.getElementById('seconds'),
-    lightboxPrevBtn: document.getElementById('lightboxPrevBtn'), // New element
-    lightboxNextBtn: document.getElementById('lightboxNextBtn')  // New element
+    lightboxPrevBtn: document.getElementById('lightboxPrevBtn'),
+    lightboxNextBtn: document.getElementById('lightboxNextBtn')
   };
   let currentPageId = null;
   window.showPage = (id) => { const newPage = document.getElementById(id); const oldPage = currentPageId ? document.getElementById(currentPageId) : null; if (oldPage && oldPage !== newPage) { oldPage.style.opacity = 0; setTimeout(() => { oldPage.classList.add('hidden'); if (newPage) { newPage.classList.remove('hidden'); setTimeout(() => newPage.style.opacity = 1, 50); } currentPageId = id; onPageLoad(id); }, 400); } else if (newPage) { document.querySelectorAll('.page').forEach(p => p.classList.add('hidden')); newPage.classList.remove('hidden'); setTimeout(() => newPage.style.opacity = 1, 50); currentPageId = id; onPageLoad(id); } };
@@ -506,7 +503,6 @@ function loadState() {
               objectFit: "cover", 
               boxShadow: "0 0 15px var(--shadow-color-dark)"
           }); 
-          // ADJUSTMENT: Onclick now opens the gallery with context
           img.onclick = () => openLightbox(category, i); 
           container.appendChild(img); 
       }); 
@@ -544,7 +540,6 @@ function loadState() {
       }); 
   }
 
-  // ADJUSTMENT: New lightbox gallery functions
   function updateGalleryImage() {
     elements.lightboxImage.src = currentGallery[currentGalleryIndex];
   }
@@ -580,7 +575,15 @@ function loadState() {
   window.pickCard = (i) => { if (cardsPicked) return; const container = document.getElementById("cardContainer"); const message = document.getElementById("puzzleMessage"); const cards = container.querySelectorAll(".card"); const card = cards[i]; const val = card.getAttribute("data-emoji"); cardsPicked = true; if (val === "♥️") { card.textContent = val; card.style.background = "#d43f6f"; card.style.color = "white"; message.textContent = `🎉 เก่งมาก! เจอหัวใจแล้ว~ ปลดล็อคหมวด${CATEGORY_NAMES['funny']}แล้ว!`; unlockCategory("funny"); } else { card.textContent = val; card.style.background = "#ff8ab8"; card.classList.add("shake"); message.textContent = "ไม่ใช่น้า~ ลองใหม่นะ 💦"; message.classList.add("flashRed"); setTimeout(() => message.classList.remove("flashRed"), 600); } cards.forEach((c, idx) => { const trueVal = c.getAttribute("data-emoji"); if (trueVal === "♥️") { c.textContent = trueVal; c.style.background = "#d43f6f"; c.style.color = "white"; } c.style.pointerEvents = "none"; }); }
   function animateSlowShuffle(cards, callback) { const swaps = [[0, 1], [1, 2], [0, 2]]; const steps = shuffle([...swaps, ...swaps]); let stepIndex = 0; function doSwap() { if (stepIndex >= steps.length) { callback(); return; } const [a, b] = steps[stepIndex]; swapCards(cards[a], cards[b]); stepIndex++; setTimeout(doSwap, 700); } doSwap(); }
   function swapCards(cardA, cardB) { const rectA = cardA.getBoundingClientRect(); const rectB = cardB.getBoundingClientRect(); const dx = rectB.left - rectA.left; const dy = rectB.top - rectA.top; cardA.style.transition = "transform 0.5s ease"; cardB.style.transition = "transform 0.5s ease"; cardA.style.transform = `translate(${dx}px, ${dy}px)`; cardB.style.transform = `translate(${-dx}px, ${-dy}px)`; setTimeout(() => { cardA.style.transition = ""; cardB.style.transition = ""; cardA.style.transform = ""; cardB.style.transform = ""; const tempEmoji = cardA.getAttribute("data-emoji"); cardA.setAttribute("data-emoji", cardB.getAttribute("data-emoji")); cardB.setAttribute("data-emoji", tempEmoji); const tempText = cardA.textContent; cardA.textContent = cardB.textContent; cardB.textContent = tempText; }, 500); }
-  const gachaPool = [ { emoji: '🌸', stars: 1 }, { emoji: '🍀', stars: 2 }, { emoji: '❤️', stars: 3 }, { emoji: '✨', stars: 4 }, { emoji: '🌟', stars: 5 } ];
+  
+  // ADJUSTMENT: New gacha pool
+  const gachaPool = [ 
+    { emoji: '🍤', stars: 1 }, 
+    { emoji: '🐰', stars: 2 }, 
+    { emoji: '🐹', stars: 3 }, 
+    { emoji: '✨', stars: 4 }, 
+    { emoji: '🩵', stars: 5 } 
+  ];
   
   window.startGacha = () => {
     state.gachaPullCount = (state.gachaPullCount || 0) + 1;
@@ -589,7 +592,7 @@ function loadState() {
     const display = document.getElementById("gacha-display");
     const resultDiv = document.getElementById("gachaResult");
     resultDiv.textContent = `กำลังสุ่ม... (ครั้งที่ ${state.gachaPullCount})`;
-    display.textContent = "🎰";
+    display.textContent = "❓"; // ADJUSTMENT: Start spin with question mark
     let spinCount = 0;
     const spinInterval = setInterval(() => {
         display.textContent = gachaPool[Math.floor(Math.random() * gachaPool.length)].emoji;
@@ -627,20 +630,18 @@ function loadState() {
     loadState(); 
     setupSlideshow(); 
     
-    // ADJUSTMENT: Event listeners for lightbox
     elements.lightboxOverlay.onclick = (event) => {
-        // Close only if the overlay background is clicked, not the buttons or image
         if (event.target === elements.lightboxOverlay) {
             elements.lightboxOverlay.style.display = "none";
         }
     };
     elements.lightboxPrevBtn.onclick = (event) => {
-        event.stopPropagation(); // Prevent closing
+        event.stopPropagation();
         currentGalleryIndex = (currentGalleryIndex - 1 + currentGallery.length) % currentGallery.length;
         updateGalleryImage();
     };
     elements.lightboxNextBtn.onclick = (event) => {
-        event.stopPropagation(); // Prevent closing
+        event.stopPropagation();
         currentGalleryIndex = (currentGalleryIndex + 1) % currentGallery.length;
         updateGalleryImage();
     };
@@ -660,4 +661,4 @@ function loadState() {
 </script>
 </body>
 </html>
-
+}
