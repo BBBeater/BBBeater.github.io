@@ -613,5 +613,99 @@ function loadState() {
   init();
 });
 </script>
+
+<!-- Modal Viewer -->
+<div id="lightboxModal" class="lightbox-modal" style="display:none;">
+  <span class="close">&times;</span>
+  <img class="lightbox-content" id="lightboxImage">
+</div>
+
+<style>
+.lightbox-modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.lightbox-modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+}
+.lightbox-modal .close {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>
+
+
+<script>
+let currentAlbum = [];
+let currentIndex = 0;
+
+function openLightbox(album, index) {
+  currentAlbum = album;
+  currentIndex = index;
+  document.getElementById("lightboxModal").style.display = "flex";
+  document.getElementById("lightboxImage").src = currentAlbum[currentIndex];
+}
+
+function closeLightbox() {
+  document.getElementById("lightboxModal").style.display = "none";
+}
+
+function showNext() {
+  currentIndex = (currentIndex + 1) % currentAlbum.length;
+  document.getElementById("lightboxImage").src = currentAlbum[currentIndex];
+}
+
+function showPrev() {
+  currentIndex = (currentIndex - 1 + currentAlbum.length) % currentAlbum.length;
+  document.getElementById("lightboxImage").src = currentAlbum[currentIndex];
+}
+
+// Close modal on click X
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelector("#lightboxModal .close").onclick = closeLightbox;
+
+  // Keyboard navigation
+  document.addEventListener("keydown", (e) => {
+    if (document.getElementById("lightboxModal").style.display === "flex") {
+      if (e.key === "ArrowRight") showNext();
+      if (e.key === "ArrowLeft") showPrev();
+      if (e.key === "Escape") closeLightbox();
+    }
+  });
+
+  // Swipe gesture
+  let startX = 0;
+  let endX = 0;
+  const modal = document.getElementById("lightboxModal");
+  modal.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+  });
+  modal.addEventListener("touchend", (e) => {
+    endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) {
+      showNext();
+    } else if (endX - startX > 50) {
+      showPrev();
+    }
+  });
+});
+</script>
+
 </body>
 </html>
