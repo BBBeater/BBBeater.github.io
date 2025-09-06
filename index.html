@@ -1,336 +1,185 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Happy Anniversary - Pixel Version</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <style>
-      /* --- การตั้งค่าสีหลัก (CSS Variables) สำหรับ Pixel Style --- */
-      :root {
-        --primary-color: #008080; /* Teal */
-        --secondary-color: #00a0a0; /* Lighter Teal */
-        --accent-color: #ff00ff; /* Magenta */
-        --background-color-light: #c0c0c0; /* Light Gray */
-        --background-color-dark: #808080; /* Gray */
-        --border-color-pixel: #000000; /* Black */
-        --text-color-pixel: #000000; /* Black */
-        --card-bg-pixel: #e0e0e0; /* Off-white */
-        --error-color: #ff0000; /* Red */
-        --success-color: #00ff00; /* Green */
-      }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Happy Anniversary Bright&Jeans - Pixel Edition</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lazywasabi/thai-web-fonts@7/fonts/Fixel/Fixel.css">
+<style>
+  /* --- การตั้งค่าสีหลัก (คงเดิมตามที่คุณต้องการ) --- */
+  :root {
+    --primary-color: #d43f6f;
+    --secondary-color: #f48fb1;
+    --light-pink-bg: #fff0f5;
+    --gradient-start: #ffd6e8;
+    --gradient-end: #fff0f5;
+    --border-color: #ffb6c1;
+    --shadow-color-light: rgba(244,143,177,0.5);
+    --shadow-color-dark: #ffb6c1;
+    --text-color: #5e2b45;
+    --card-bg: #fff0f8;
+    /* เพิ่มสีสำหรับ Pixel Style */
+    --pixel-border: #2c1b24;
+    --pixel-bg: #fff0f5;
+  }
 
-      /* --- สไตล์ทั่วไป (General Styles) --- */
-      body {
-        font-family: 'Press Start 2P', cursive; /* ใช้ฟอนต์ Pixel */
-        background: linear-gradient(135deg, var(--background-color-light), var(--background-color-dark));
-        color: var(--text-color-pixel);
-        margin: 0; padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        image-rendering: pixelated; /* สำคัญสำหรับ Pixel Art */
-      }
+  /* --- สไตล์ทั่วไป (General Pixel Styles) --- */
+  body {
+    font-family: 'Fixel', 'Itim', cursive; /* 2. ใช้ฟอนต์ Pixel ภาษาไทย */
+    background: var(--light-pink-bg);
+    color: var(--text-color);
+    margin: 0; padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    image-rendering: pixelated; /* ทำให้ภาพคมชัดแบบ Pixel */
+  }
 
-      button, input, select, textarea {
-        font-family: 'Press Start 2P', cursive; /* ใช้ฟอนต์ Pixel */
-        border: 2px solid var(--border-color-pixel); /* กรอบดำแบบ Pixel */
-      }
+  button, input, select, textarea {
+    font-family: inherit;
+  }
 
-      .container {
-        width: 95vw;
-        max-width: 600px;
-        background: var(--card-bg-pixel);
-        border: 4px solid var(--border-color-pixel); /* กรอบหนาแบบ Pixel */
-        border-radius: 0; /* ไม่มีโค้งมน */
-        box-shadow: 8px 8px 0px var(--border-color-pixel); /* เงาแบบ Pixel */
-        padding: 30px 20px 35px;
-        text-align: center;
-        box-sizing: border-box;
-        position: relative;
-        overflow: hidden;
-      }
-      
-      h1, h2 { 
-        color: var(--primary-color); 
-        margin-bottom: 15px; 
-        text-shadow: 2px 2px 0 var(--border-color-pixel); /* เงาข้อความ */
-        line-height: 1.2;
-      }
-      p { 
-        font-size: 0.9rem; /* ปรับขนาดฟอนต์ให้เข้ากับ Pixel Art */
-        margin-bottom: 25px; 
-        line-height: 1.4; 
-      }
+  .container {
+    width: 95vw;
+    max-width: 600px;
+    background: var(--pixel-bg);
+    border: 3px solid var(--pixel-border);
+    border-radius: 0; /* 3. ไม่มีโค้งมน */
+    box-shadow: 6px 6px 0px var(--pixel-border); /* 4. เงาแบบ Hard Shadow */
+    padding: 35px 25px 40px;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  h1, h2 { color: var(--primary-color); margin-bottom: 25px; line-height: 1.2; }
+  p { font-size: 1rem; margin-bottom: 30px; line-height: 1.5; }
 
-      /* --- สไตล์หน้าเว็บและการเปลี่ยนหน้า (Page Styles & Transitions) --- */
-      .page {
-        display: none;
-      }
-      .page.active {
-        display: block;
-        animation: fadeInPixel 0.5s step-end; /* ใช้ step-end เพื่อให้ดูเป็น Pixel */
-      }
-      @keyframes fadeInPixel {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
+  /* --- สไตล์หน้าเว็บและการเปลี่ยนหน้า (Page Styles & Transitions) --- */
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn 0.3s forwards; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-      /* --- สไตล์ฟอร์มและปุ่ม (Forms & Buttons) --- */
-      input[type="password"], input[type="number"] {
-        font-size: 1.2rem;
-        padding: 8px 10px;
-        width: 120px;
-        background-color: #ffffff;
-        border: 2px solid var(--border-color-pixel);
-        border-radius: 0; /* ไม่มีโค้งมน */
-        text-align: center;
-        margin-bottom: 15px;
-        letter-spacing: 0.1em;
-      }
+  /* --- สไตล์ฟอร์มและปุ่ม (Forms & Buttons) --- */
+  input[type="password"], input[type="number"] {
+    font-size: 1.5rem;
+    padding: 10px 14px;
+    width: 150px;
+    border: 2px solid var(--pixel-border);
+    border-radius: 0;
+    text-align: center;
+    margin-bottom: 15px;
+    letter-spacing: 0.2em;
+    background: white;
+  }
 
-      button {
-        background-color: var(--primary-color);
-        border: 2px solid var(--border-color-pixel);
-        color: white;
-        font-size: 1rem;
-        padding: 10px 20px;
-        border-radius: 0; /* ไม่มีโค้งมน */
-        cursor: pointer;
-        margin: 0 8px;
-        transition: background-color 0.1s linear, transform 0.05s linear; /* เปลี่ยน transition */
-        box-shadow: 4px 4px 0px var(--border-color-pixel); /* เงาแบบ Pixel */
-      }
-      button:hover {
-        background-color: var(--secondary-color);
-        transform: translate(2px, 2px); /* เอฟเฟกต์ปุ่มกดลง */
-        box-shadow: 2px 2px 0px var(--border-color-pixel);
-      }
-      button:active {
-          transform: translate(4px, 4px);
-          box-shadow: 0px 0px 0px var(--border-color-pixel);
-      }
+  button {
+    background-color: var(--secondary-color);
+    border: 2px solid var(--pixel-border);
+    color: white;
+    font-size: 1rem;
+    padding: 12px 24px;
+    border-radius: 0;
+    cursor: pointer;
+    margin: 0 10px;
+    box-shadow: 4px 4px 0px var(--pixel-border);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  button:hover {
+    background-color: var(--primary-color);
+    transform: none; /* เอา hover effect เดิมออก */
+  }
+  button:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+  }
 
-      .buttons { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 20px; gap: 12px; }
-      .back-game-menu-btn { 
-        background: var(--background-color-dark); 
-        color: white; 
-        border: 2px solid var(--border-color-pixel);
-        border-radius: 0;
-        padding: 8px 18px; 
-        margin: 0; 
-        box-shadow: 3px 3px 0px var(--border-color-pixel); 
-        transition: background-color 0.1s linear, transform 0.05s linear;
-      }
-      .back-game-menu-btn:hover { 
-        background: var(--background-color-light); 
-        color: var(--text-color-pixel); 
-        transform: translate(1px, 1px);
-        box-shadow: 2px 2px 0px var(--border-color-pixel);
-      }
-      .back-game-menu-btn:active {
-          transform: translate(2px, 2px);
-          box-shadow: 0px 0px 0px var(--border-color-pixel);
-      }
-      
-      /* --- สไตล์การ์ดเมนู (Menu Card Styles) --- */
-      .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; justify-items: center; }
-      #categoryMenu .menu-card:nth-child(3) { grid-column: 1 / -1; }
-      #gameMenuGrid { grid-template-columns: repeat(2, 1fr); }
-      .menu-card { 
-        background: var(--card-bg-pixel); 
-        border: 2px solid var(--border-color-pixel); 
-        border-radius: 0; 
-        box-shadow: 4px 4px 0px var(--border-color-pixel); 
-        cursor: pointer; 
-        padding: 12px; 
-        width: 130px; /* ปรับขนาดให้เล็กลงหน่อย */
-        transition: transform 0.1s linear, box-shadow 0.1s linear; 
-        user-select: none; 
-      }
-      .menu-card.locked { cursor: default; opacity: 0.5; }
-      .menu-card:hover:not(.locked) { 
-        transform: translate(2px, 2px); 
-        box-shadow: 2px 2px 0px var(--accent-color); /* เงาเป็นสี Magenta */
-      }
-      .menu-card img { 
-        width: 70px; /* ปรับขนาด */
-        height: 70px; /* ปรับขนาด */
-        border-radius: 0; 
-        border: 1px solid var(--border-color-pixel);
-        margin-bottom: 8px; 
-        object-fit: cover; 
-        user-select: none; 
-      }
-      .menu-card .title { font-weight: bold; color: var(--primary-color); font-size: 0.8rem; }
-      .menu-card small { font-size: 0.6rem; }
-      
-      /* --- สไตล์ UI อื่นๆ (Other UI Styles) --- */
-      #error { color: var(--error-color); font-weight: bold; margin-top: 8px; font-size: 0.8rem; }
-      #toast { 
-        position: fixed; top: -100px; left: 50%; transform: translateX(-50%); 
-        background-color: var(--primary-color); 
-        color: white; 
-        padding: 12px 18px; 
-        border: 2px solid var(--border-color-pixel);
-        border-radius: 0; 
-        box-shadow: 4px 4px 0px var(--border-color-pixel); 
-        z-index: 2000; 
-        font-size: 0.9rem; 
-        font-weight: bold; 
-        transition: top 0.3s linear; 
-      }
-      #toast.show { top: 20px; }
-      #lightboxOverlay { 
-        position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
-        background: rgba(0, 0, 0, 0.7); /* พื้นหลังดำโปร่งแสง */
-        display: none; justify-content: center; align-items: center; 
-        z-index: 1000; 
-      }
-      #lightboxOverlay img { 
-        max-width: 85vw; max-height: 85vh; 
-        border: 4px solid var(--border-color-pixel); 
-        border-radius: 0; 
-        box-shadow: 8px 8px 0px var(--border-color-pixel); 
-        cursor: pointer; 
-        user-select: none; 
-      }
-      
-      /* --- สไลด์โชว์ (Slideshow) --- */
-      #slideShow { 
-        position: relative; width: 100%; max-width: 420px; height: 280px; /* ปรับความสูง */
-        margin: 0 auto 15px; 
-        border: 2px solid var(--border-color-pixel); 
-        border-radius: 0; 
-        overflow: hidden; 
-        box-shadow: 6px 6px 0px var(--border-color-pixel); 
-      }
-      #slideShow img { 
-        width: 100%; height: 280px; /* ปรับความสูง */
-        object-fit: cover; 
-        position: absolute; top: 0; left: 0; 
-        opacity: 0; 
-        transition: opacity 0.3s step-end; /* ใช้ step-end */
-        border-radius: 0; 
-        user-select: none; 
-      }
-      #slideShow img.active { opacity: 1; }
-      .slide-btn { 
-        position: absolute; top: 50%; transform: translateY(-50%); 
-        background: var(--background-color-light); 
-        border: 2px solid var(--border-color-pixel); 
-        color: var(--text-color-pixel); 
-        font-size: 1.2rem; 
-        width: 40px; height: 40px; /* ปรับขนาด */
-        padding: 0; display: flex; justify-content: center; align-items: center; 
-        border-radius: 0; /* ไม่มีโค้งมน */
-        cursor: pointer; z-index: 10; 
-        box-shadow: 2px 2px 0px var(--border-color-pixel);
-      }
-      .slide-btn:hover { 
-        background: var(--primary-color); 
-        color: white; 
-        box-shadow: 2px 2px 0px var(--accent-color); 
-      }
-      #prevBtn { left: 10px; }
-      #nextBtn { right: 10px; }
-      #slideCounter { margin: 0 auto 8px; font-weight: bold; color: var(--primary-color); font-size: 0.7rem; }
-      #progressBar { 
-        width: 100%; max-width: 420px; height: 4px; /* ปรับความสูง */
-        background: var(--background-color-dark); 
-        border-radius: 0; 
-        margin: 0 auto 25px; 
-        overflow: hidden; 
-        border: 1px solid var(--border-color-pixel);
-      }
-      #progressBarInner { 
-        height: 100%; width: 0%; 
-        background: var(--primary-color); 
-        border-radius: 0; 
-        transition: width 0.3s linear; 
-      }
-      
-      /* --- ปุ่มกดรหัสผ่านและตัวช่วยเกม (Numpad & Game Helpers) --- */
-      .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 200px; margin: 15px auto 0; }
-      .numpad-btn { 
-        padding: 0; width: 50px; height: 50px; /* ปรับขนาด */
-        border-radius: 0; /* ไม่มีโค้งมน */
-        font-size: 1.2rem; 
-        margin: 0; 
-        background-color: var(--background-color-light);
-        color: var(--text-color-pixel);
-        box-shadow: 3px 3px 0px var(--border-color-pixel);
-      }
-      .numpad-btn.special { 
-        background-color: var(--background-color-dark); 
-        color: white; 
-      }
-      .numpad-btn:hover { 
-        background-color: var(--primary-color); 
-        color: white; 
-      }
+  .buttons { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 25px; gap: 15px; }
+  .back-game-menu-btn { background: var(--border-color); color: var(--text-color); }
+  .back-game-menu-btn:hover { background: var(--secondary-color); color: white; }
 
-      #number-tracker { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; max-width: 280px; margin: 15px auto; }
-      .tracker-num { 
-        width: 35px; height: 35px; /* ปรับขนาด */
-        background: #ffffff; 
-        border: 2px solid var(--border-color-pixel); 
-        border-radius: 0; 
-        display: flex; justify-content: center; align-items: center; 
-        font-weight: bold; font-size: 0.9rem;
-        transition: background-color 0.1s linear, opacity 0.1s linear; 
-      }
-      .tracker-num.guessed { background-color: #808080; color: white; border-color: #404040; }
-      .tracker-num.correct { background-color: var(--success-color); color: var(--border-color-pixel); border-color: #008000; }
+  /* --- สไตล์การ์ดเมนู (Menu Card Styles) --- */
+  .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; justify-items: center; }
+  #categoryMenu { grid-template-columns: repeat(3, 1fr); gap: 15px; }
+  #bestGrid, #funnyGrid, #secretGrid, #loveGrid { grid-template-columns: repeat(3, 1fr); gap: 15px; }
+  .menu-card { 
+    background: var(--card-bg); 
+    border: 2px solid var(--pixel-border);
+    border-radius: 0; 
+    box-shadow: 4px 4px 0px var(--pixel-border); 
+    cursor: pointer; 
+    padding: 15px; 
+    width: 140px; 
+    height: 120px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; 
+    transition: transform 0.1s, box-shadow 0.1s; 
+    user-select: none; 
+  }
+  .menu-card.locked { cursor: default; opacity: 0.6; }
+  .menu-card:hover:not(.locked) { 
+      transform: translate(2px, 2px); 
+      box-shadow: 2px 2px 0px var(--pixel-border);
+  }
+  .menu-card:active:not(.locked) {
+      transform: translate(4px, 4px);
+      box-shadow: none;
+  }
+  .menu-card .title { font-weight: bold; color: var(--primary-color); font-size: 1.1rem; text-align: center; margin-bottom: 8px; }
 
-      /* Game Specific Styles */
-      #gameMessage, #puzzleMessage, #gachaResult, #shootMessage { 
-          font-weight: bold; color: var(--primary-color); min-height: 20px; 
-          margin-top: 10px; font-size: 0.9rem;
-          text-shadow: 1px 1px 0 var(--border-color-pixel);
-      }
-      #cardContainer .card {
-          border: 2px solid var(--border-color-pixel) !important;
-          border-radius: 0 !important;
-          box-shadow: 4px 4px 0px var(--border-color-pixel) !important;
-          font-size: 1.5rem !important;
-          color: var(--text-color-pixel);
-          background: var(--card-bg-pixel) !important;
-      }
-      #cardContainer .card:hover {
-          transform: translate(2px, 2px);
-          box-shadow: 2px 2px 0px var(--accent-color) !important;
-      }
-      #gacha-display {
-          font-size: 3rem;
-          margin: 20px auto;
-          text-shadow: 4px 4px 0 var(--border-color-pixel);
-      }
+  /* --- สไลด์โชว์ (Slideshow) --- */
+  #slideShow { 
+    position: relative; width: 100%; max-width: 420px; height: 320px; margin: 0 auto 20px; 
+    border: 3px solid var(--pixel-border);
+    border-radius: 0; 
+    overflow: hidden; 
+    box-shadow: 6px 6px 0px var(--pixel-border);
+  }
+  #slideShow img { width: 100%; height: 320px; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.3s; border-radius: 0; user-select: none; }
+  #slideShow img.active { opacity: 1; }
+  .slide-btn { position: absolute; top: 50%; transform: translateY(-50%); background: white; border: 2px solid var(--pixel-border); color: var(--pixel-border); font-size: 24px; width: 48px; height: 48px; padding: 0; display: flex; justify-content: center; align-items: center; border-radius: 0; cursor: pointer; z-index: 10; }
+  .slide-btn:hover { background: var(--secondary-color); color: white; }
+  .slide-btn:active { transform: translateY(-50%) scale(0.9); }
+  #prevBtn { left: 15px; }
+  #nextBtn { right: 15px; }
+  
+  #lightboxOverlay .slide-btn { position: fixed; z-index: 1001; }
+  #lightboxPrevBtn { left: 15px; }
+  #lightboxNextBtn { right: 15px; }
 
-      #hoop {
-          background: var(--accent-color) !important;
-          border: 2px solid var(--border-color-pixel);
-          border-radius: 0 !important;
-          box-shadow: 2px 2px 0px var(--border-color-pixel);
-      }
-      #heart {
-          background: #ff0000 !important; /* Red heart */
-          border: 2px solid var(--border-color-pixel);
-          border-radius: 0 !important; /* Make it a square for pixel style */
-          box-shadow: 2px 2px 0px var(--border-color-pixel);
-          width: 30px !important;
-          height: 30px !important;
-          top: 230px !important; /* Adjust position */
-      }
-      #gameShootHearts > div {
-          background: #a0a0a0 !important; /* Darker gray background for game area */
-          border: 2px solid var(--border-color-pixel) !important;
-          border-radius: 0 !important;
-          box-shadow: 4px 4px 0px var(--border-color-pixel) !important;
-      }
+  #progressBar { width: 100%; max-width: 420px; height: 8px; background: var(--border-color); border: 2px solid var(--pixel-border); border-radius: 0; margin: 0 auto 30px; overflow: hidden; }
+  #progressBarInner { height: 100%; width: 0%; background: var(--primary-color); border-radius: 0; transition: width 0.4s linear; }
 
-    </style>
+  /* --- ปุ่มกดรหัสผ่านและตัวช่วยเกม (Numpad & Game Helpers) --- */
+  .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 240px; margin: 20px auto 0; }
+  .numpad-btn { padding: 0; width: 60px; height: 60px; border-radius: 0; font-size: 1.5rem; margin: 0; }
+  .numpad-btn.special { background-color: var(--border-color); color: var(--text-color); }
+  #number-tracker { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 320px; margin: 20px auto; }
+  .tracker-num { width: 40px; height: 40px; background: #fff2f7; border: 2px solid var(--pixel-border); border-radius: 0; display: flex; justify-content: center; align-items: center; font-weight: bold; }
+  .tracker-num.guessed { background-color: #aaa; color: #666; }
+  .tracker-num.correct { background-color: #a5d6a7; }
+
+  #heart {
+    background-color: red !important;
+    border: 2px solid var(--pixel-border);
+    border-radius: 0;
+    box-shadow: 2px 2px 0 var(--pixel-border);
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 0 !important; /* ซ่อน emoji ❤️ */
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 480px) {
+    .container { padding: 25px 15px 30px; }
+    #slideShow, #slideShow img { height: 280px; }
+    #categoryMenu { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    #bestGrid, #funnyGrid, #secretGrid, #loveGrid { grid-template-columns: repeat(2, 1fr); }
+    .menu-card { width: 120px; height: 100px; }
+    .menu-card .title { font-size: 1rem; }
+  }
+</style>
 </head>
 <body>
 
@@ -338,139 +187,174 @@
   const WEBSITE_DATA = {
     // ใช้ภาพ placeholder ที่มีสไตล์ Pixel Art
     slides: [
-      { src: "https://placekitten.com/g/640/480?image=1&pixel", alt: "Pixel Kitty 1" },
-      { src: "https://placekitten.com/g/640/480?image=2&pixel", alt: "Pixel Kitty 2" },
-      { src: "https://placekitten.com/g/640/480?image=3&pixel", alt: "Pixel Kitty 3" }
+      { src: "https://i.ibb.co/Jq61tY5/IMG-6969.jpg", alt: "ตัวอย่าง 1" },
+      { src: "https://i.ibb.co/Jq61tY5/IMG-6969.jpg", alt: "ตัวอย่าง 2" }
     ],
     photos: {
-      best: [ "https://placekitten.com/g/300/300?image=4&pixel" ],
-      funny: [ "https://placekitten.com/g/300/300?image=5&pixel" ],
-      secret: [ "https://placekitten.com/g/300/300?image=6&pixel" ],
-      love: [ "https://placekitten.com/g/300/300?image=7&pixel" ]
+      best: ["https://i.ibb.co/Jq61tY5/IMG-6969.jpg"],
+      funny: ["https://i.ibb.co/Jq61tY5/IMG-6969.jpg"],
+      secret: ["https://i.ibb.co/Jq61tY5/IMG-6969.jpg"],
+      love: ["https://i.ibb.co/Jq61tY5/IMG-6969.jpg"]
     }
   };
 </script>
 <div class="container">
-    <div id="page0" class="page active">
-        <h1>🌸 ยินดีต้อนรับ 🌸</h1><p>กรุณากดรหัสผ่าน 💖</p>
-        <input type="password" id="password" readonly placeholder="****" />
-        <div class="numpad">
-            <button type="button" class="numpad-btn" onclick="handleNumpad('1')">1</button><button type="button" class="numpad-btn" onclick="handleNumpad('2')">2</button><button type="button" class="numpad-btn" onclick="handleNumpad('3')">3</button>
-            <button type="button" class="numpad-btn" onclick="handleNumpad('4')">4</button><button type="button" class="numpad-btn" onclick="handleNumpad('5')">5</button><button type="button" class="numpad-btn" onclick="handleNumpad('6')">6</button>
-            <button type="button" class="numpad-btn" onclick="handleNumpad('7')">7</button><button type="button" class="numpad-btn" onclick="handleNumpad('8')">8</button><button type="button" class="numpad-btn" onclick="handleNumpad('9')">9</button>
-            <button type="button" class="numpad-btn special" onclick="handleNumpad('C')">C</button><button type="button" class="numpad-btn" onclick="handleNumpad('0')">0</button><button type="button" class="numpad-btn special" onclick="handleNumpad('←')">←</button>
-        </div>
-        <div class="buttons"><button type="button" onclick="checkPassword()">เข้าสู่เว็บไซต์</button></div><p id="error"></p>
+  <div id="page0" class="page active">
+    <h1>🌸 ยินดีต้อนรับ 🌸</h1><p>กรุณากดรหัสผ่าน 💖</p>
+    <input type="password" id="password" readonly placeholder="****" />
+    <div class="numpad">
+        <button type="button" class="numpad-btn" onclick="handleNumpad('1')">1</button><button type="button" class="numpad-btn" onclick="handleNumpad('2')">2</button><button type="button" class="numpad-btn" onclick="handleNumpad('3')">3</button>
+        <button type="button" class="numpad-btn" onclick="handleNumpad('4')">4</button><button type="button" class="numpad-btn" onclick="handleNumpad('5')">5</button><button type="button" class="numpad-btn" onclick="handleNumpad('6')">6</button>
+        <button type="button" class="numpad-btn" onclick="handleNumpad('7')">7</button><button type="button" class="numpad-btn" onclick="handleNumpad('8')">8</button><button type="button" class="numpad-btn" onclick="handleNumpad('9')">9</button>
+        <button type="button" class="numpad-btn special" onclick="handleNumpad('C')">C</button><button type="button" class="numpad-btn" onclick="handleNumpad('0')">0</button><button type="button" class="numpad-btn special" onclick="handleNumpad('←')">←</button>
     </div>
+    <div class="buttons"><button type="button" onclick="checkPassword()">เข้าสู่เว็บไซต์</button></div><p id="error"></p>
+  </div>
 
-    <div id="page1" class="page">
-        <h1>วันนี้วันครบรอบของเรานะะ 💕</h1><div id="slideShow"></div><div id="slideCounter"></div>
-        <div id="progressBar"><div id="progressBarInner"></div></div>
-        <button id="prevBtn" class="slide-btn" type="button" onclick="changeSlide(-1)">&#10094;</button>
-        <button id="nextBtn" class="slide-btn" type="button" onclick="changeSlide(1)">&#10095;</button>
-        <div class="buttons"><button type="button" onclick="showPage('page0')">ย้อนกลับ</button><button type="button" onclick="showPage('page2')">ถัดไป</button></div>
-    </div>
+  <div id="page1" class="page">
+    <h1>สุขสันต์วันครบรอบนะครับคนดี 💕</h1><div id="slideShow"></div><div id="slideCounter"></div>
+    <div id="progressBar"><div id="progressBarInner"></div></div>
+    <button id="prevBtn" class="slide-btn" type="button">&#10094;</button>
+    <button id="nextBtn" class="slide-btn" type="button">&#10095;</button>
+    <div class="buttons"><button type="button" onclick="showPage('page0')">ย้อนกลับ</button><button type="button" onclick="showPage('page2')">ถัดไป</button></div>
+  </div>
 
-    <div id="page2" class="page">
-        <h2>เลือกหมวดที่อยากดู 💌</h2>
-        <div class="menu-grid" id="categoryMenu">
-          <div class="menu-card" data-category="best"><img src="https://placekitten.com/g/80/80?image=1&pixel" alt="Best of Month" /><div class="title">The Best ของทุกเดือน</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-          <div class="menu-card" data-category="funny"><img src="https://placekitten.com/g/80/80?image=2&pixel" alt="Funny" /><div class="title">รูปที่ฮาที่สุดของเรา</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-          <div class="menu-card" data-category="letter"><img src="https://placekitten.com/g/80/80?image=3&pixel" alt="Letter" /><div class="title">จดหมายลับ</div><small>🔒 ปลดล็อคทั้งหมดก่อน</small></div>
-          <div class="menu-card" data-category="secret"><img src="https://placekitten.com/g/80/80?image=4&pixel" alt="Secret" /><div class="title">รูปแอบถ่าย</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-          <div class="menu-card" data-category="love"><img src="https://placekitten.com/g/80/80?image=5&pixel" alt="Love" /><div class="title">รูปที่ชอบกันทั้งคู่</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
-        </div>
-        <div class="buttons"><button type="button" onclick="showPage('page1')">ย้อนกลับ</button><button type="button" onclick="showPage('page7')">ไปเล่นเกมปลดล็อค 🔓</button></div>
+  <div id="page2" class="page">
+    <h2>เลือกหมวดที่อยากดู 💌</h2>
+    <div id="categoryMenu" class="menu-grid">
+      <div class="menu-card" data-category="best"><div class="title">ไอเทมแทนใจ 🎁</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="funny"><div class="title">รูปตอนกิน 🍕</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="secret"><div class="title">รูปคู่ของเรา 👩‍❤️‍👨</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="love"><div class="title">มีมตลกๆ 😂</div><small>🔒 ต้องปลดล็อคก่อน</small></div>
+      <div class="menu-card" data-category="letter"><div class="title">จดหมายลับ</div><small>🔒 ปลดล็อคทั้งหมดก่อน</small></div>
+      <div class="menu-card" onclick="showPage('page9')"><div class="title">ระยะเวลา ⏱️</div><small>❤️ ที่เราคบกัน</small></div>
     </div>
+    <div class="buttons"><button type="button" onclick="showPage('page1')">ย้อนกลับ</button><button type="button" onclick="showPage('page7')">ไปเล่นเกมปลดล็อค 🔓</button></div>
+  </div>
 
-    <div id="page3" class="page"><h2>The Best ของทุกเดือน 💖</h2><div class="menu-grid" id="bestGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
-    <div id="page4" class="page"><h2>รูปที่ฮาที่สุดของเรา 😂</h2><div class="menu-grid" id="funnyGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
-    <div id="page5" class="page"><h2>รูปแอบถ่าย 📸</h2><div class="menu-grid" id="secretGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
-    <div id="page6" class="page"><h2>รูปที่ชอบกันทั้งคู่ 💞</h2><div class="menu-grid" id="loveGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
-    
-    <div id="page8" class="page">
-        <h2>ถึงคนดีของเค้า 💌</h2>
-        <p style="text-align: left; background: #ffffff; padding: 20px; border: 2px solid var(--border-color-pixel); border-radius: 0; box-shadow: 4px 4px 0px var(--border-color-pixel);">
-            สุขสันต์วันครบรอบนะ! ไม่น่าเชื่อเลยว่าเราจะผ่านอะไรด้วยกันมาเยอะขนาดนี้...<br><br>
-            ทุกวันที่มีเธออยู่ข้างๆ คือวันที่ดีที่สุดเลย ขอบคุณสำหรับทุกอย่างนะ รักมากๆเลยค้าบ 💖<br><br>
-            จาก... คนที่รักเธอที่สุดในโลก
-        </p>
-        <div class="buttons"><button onclick="showPage('page2')">กลับไปเมนู</button></div>
-    </div>
+  <div id="page3" class="page"><h2>ไอเทมแทนใจ 🎁</h2><div class="menu-grid" id="bestGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
+  <div id="page4" class="page"><h2>รูปตอนกิน 🍕</h2><div class="menu-grid" id="funnyGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
+  <div id="page5" class="page"><h2>รูปคู่ของเรา 👩‍❤️‍👨</h2><div class="menu-grid" id="secretGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
+  <div id="page6" class="page"><h2>มีมตลกๆ 😂</h2><div class="menu-grid" id="loveGrid"></div><div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div></div>
+  
+  <div id="page8" class="page">
+      <h2>ถึงคนดีของเค้า 💌</h2>
+      <p style="text-align: left; background: #fff9fb; padding: 20px; border: 2px solid var(--pixel-border); box-shadow: 4px 4px 0 var(--pixel-border);">
+        สุขสันต์วันครบรอบนะคะที่รัก อยู่ด้วยกันมาครบ1ปีแล้วเค้าดีใจมากๆเลยที่หนูเข้ามาเป็นส่วนนึงในชีวิตนะคะ ต่อจากนี้ก็ขอให้เราอยู่ด้วยกันไปอีกเรื่อยๆเลยน้าา<br><br>
+        ขอบคุณสำหรับทุกอย่างนะคะ ไม่ว่าจะเป็นเล่นเกมด้วยกัน ดูหนังด้วยกัน ทำตัวตลกๆใส่กัน มันน่ารักมากๆเลยจริงๆ เธอช่วยซัพพอตทุกอย่างเลย ขอบคุณนะคะ
+        <br><br>
+        รักยีนส์ที่สุดในโลกจักรวาลไพศาล 💖
+      </p>
+      <div class="buttons"><button onclick="showPage('page2')">กลับไปเมนู</button></div>
+  </div>
 
-    <div id="page7" class="page">
-        <h2>🎮 เลือกเกมเล่นเพื่อปลดล็อค! 🎮</h2>
-        <div class="menu-grid" id="gameMenuGrid">
-          <div class="menu-card" onclick="showGame('gameGuessNumber')"><div class="title">เกมทายเลข 🎲</div></div>
-          <div class="menu-card" onclick="showGame('gameCardShuffle')"><div class="title">เกมหาไพ่หัวใจ 🃏</div></div>
-          <div class="menu-card" onclick="showGame('gameGacha')"><div class="title">กาชาดาว 5 ⭐</div></div>
-          <div class="menu-card" onclick="showGame('gameShootHearts')"><div class="title">ยิงหัวใจลงห่วง 💘</div></div>
-        </div>
-        <div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div>
+  <div id="page9" class="page">
+    <h2>ระยะเวลาที่เราคบกัน 🗓️</h2>
+    <div class="time-display" style="border: 2px solid var(--pixel-border); border-radius: 0; box-shadow: 4px 4px 0 var(--pixel-border);">
+      <div class="time-segment">
+        <span class="time-value" id="years">0</span><span class="time-label"> ปี</span>
+        <span class="time-value" id="months">0</span><span class="time-label"> เดือน</span>
+        <span class="time-value" id="days">0</span><span class="time-label"> วัน</span>
+      </div>
+      <div class="time-segment">
+        <span class="time-value" id="hours">00</span><span class="time-label">:</span>
+        <span class="time-value" id="minutes">00</span><span class="time-label">:</span>
+        <span class="time-value" id="seconds">00</span>
+      </div>
     </div>
+    <div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div>
+  </div>
 
-    <div id="gameGuessNumber" class="page">
-        <h2>เกมทายเลข (1-10)</h2><p>ลองทายเลขที่ฉันคิดอยู่สิ! 🎲</p><div id="number-tracker"></div>
-        <input type="number" id="guessInput" min="1" max="10" /><div id="gameMessage"></div>
-        <div class="buttons"><button type="button" onclick="checkGuess()">ทาย!</button><button type="button" class="back-game-menu-btn" onclick="showPage('page7')">กลับ</button></div>
+  <div id="page7" class="page">
+    <h2>🎮 เลือกเกมเล่นเพื่อปลดล็อค! 🎮</h2>
+    <div class="menu-grid" id="gameMenuGrid">
+      <div class="menu-card" onclick="showGame('gameGuessNumber')"><div class="title">เกมทายเลข 🎲</div></div>
+      <div class="menu-card" onclick="showGame('gameCardShuffle')"><div class="title">เกมหาไพ่หัวใจ 🃏</div></div>
+      <div class="menu-card" onclick="showGame('gameGacha')"><div class="title">กาชาดาว 5 ⭐</div></div>
+      <div class="menu-card" onclick="showGame('gameShootHearts')"><div class="title">ยิงหัวใจลงห่วง 💘</div></div>
     </div>
+    <div class="buttons"><button onclick="showPage('page2')">ย้อนกลับ</button></div>
+  </div>
 
-    <div id="gameCardShuffle" class="page">
-        <h2>เกมหาไพ่หัวใจ 🃏</h2><p>คลิกไพ่หาหัวใจใน 3 ใบนี้ให้เจอ! ♥️</p>
-        <div id="cardContainer" style="display:flex; justify-content:center; gap:15px; margin: 25px 0;"></div>
-        <div id="puzzleMessage"></div>
-        <div class="buttons"><button type="button" onclick="startCardShuffleGame()">ลองใหม่</button><button type="button" class="back-game-menu-btn" onclick="showPage('page7')">กลับ</button></div>
-    </div>
+  <div id="gameGuessNumber" class="page">
+    <h2>เกมทายเลข (1-10)</h2><p>ลองทายเลขที่ฉันคิดอยู่สิ! 🎲</p><div id="number-tracker"></div>
+    <input type="number" id="guessInput" min="1" max="10" /><div id="gameMessage"></div>
+    <div class="buttons"><button type="button" onclick="checkGuess()">ทาย!</button><button type="button" class="back-game-menu-btn" onclick="showPage('page7')">กลับ</button></div>
+  </div>
 
-    <div id="gameGacha" class="page">
-        <h2>กาชาดาว 5 ⭐</h2><p>กดปุ่มเพื่อสุ่มดาว รับรางวัลพิเศษ!</p><div id="gacha-display">🎰</div>
-        <div id="gachaResult" style="margin-top: 10px; font-weight: bold; color: var(--primary-color); min-height: 28px;"></div>
-        <div class="buttons"><button type="button" onclick="startGacha()">กดสุ่ม</button><button type="button" class="back-game-menu-btn" onclick="showPage('page7')">กลับ</button></div>
-    </div>
-    
-    <div id="gameShootHearts" class="page">
-        <h2>ยิงหัวใจลงห่วง 💘</h2><p>กดปุ่ม 'ยิง' ค้างเพื่อชาร์จพลังแล้วปล่อย!</p>
-        <div style="position: relative; margin: 20px auto; width: 320px; height: 280px; background: #ffe4ef; border-radius: 25px; box-shadow: 0 0 15px #ffb6c1;">
-          <div id="hoop" style="position: absolute; width: 100px; height: 20px; background: #ff69b4; border-radius: 10px; top: 80px; left: 50%; transform: translateX(-50%);"></div>
-          <div id="heart" style="position: absolute; width: 40px; height: 40px; background: red; top: 220px; left: 50%; transform: translateX(-50%); border-radius: 50%; box-shadow: 0 0 10px #ff8ab8;"></div>
-        </div>
-        <p id="shootMessage" style="margin-top: 18px; font-weight: bold; color: var(--primary-color); min-height: 28px;"></p>
-        <div class="buttons"><button type="button" id="shootBtn">❤️ ยิง!</button><button type="button" class="back-game-menu-btn" onclick="showPage('page7')">กลับ</button></div>
-    </div>
+  <div id="gameCardShuffle" class="page">
+    <h2>เกมหาไพ่หัวใจ 🃏</h2><p>คลิกไพ่หาหัวใจใน 3 ใบนี้ให้เจอ! ♥️</p>
+    <div id="cardContainer" style="display:flex; justify-content:center; gap:20px; margin: 25px 0;"></div>
+    <div id="puzzleMessage"></div>
+    <div class="buttons"><button type="button" onclick="startCardShuffleGame()">ลองใหม่</button><button type="button" class="back-game-menu-btn" onclick="showPage('page7')">กลับ</button></div>
+  </div>
 
-    <div id="lightboxOverlay"><img id="lightboxImage" src="" alt="ขยายรูป" /></div><div id="toast"></div>
+  <div id="gameGacha" class="page">
+    <h2>กาชาดาว 5 ⭐</h2><p>กดปุ่มเพื่อสุ่มดาว รับรางวัลพิเศษ!</p><div id="gacha-display">❓</div>
+    <div id="gachaResult"></div>
+    <div class="buttons"><button type="button" onclick="startGacha()">กดสุ่ม</button><button type="button" class="back-game-menu-btn" onclick="showPage('page7')">กลับ</button></div>
+  </div>
+  
+  <div id="gameShootHearts" class="page">
+    <h2>ยิงหัวใจลงห่วง 💘</h2><p>กดปุ่ม 'ยิง' ค้างเพื่อชาร์จพลังแล้วปล่อย!</p>
+    <div style="position: relative; margin: 20px auto; width: 320px; height: 280px;">
+      <div id="hoop"></div>
+      <div id="heart"></div>
+    </div>
+    <p id="shootMessage"></p>
+    <div class="buttons"><button type="button" id="shootBtn">❤️ ยิง!</button><button type="button" class="back-game-menu-btn" onclick="showPage('page7')">กลับ</button></div>
+  </div>
+
+  <div id="lightboxOverlay">
+    <button id="lightboxPrevBtn" class="slide-btn" type="button">&#10094;</button>
+    <img id="lightboxImage" src="" alt="ขยายรูป" />
+    <button id="lightboxNextBtn" class="slide-btn" type="button">&#10095;</button>
+  </div>
+  <div id="toast"></div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-
+    
     // ==========================================================
     // ส่วนกำหนดค่าและข้อมูล (CONFIG & STATE)
     // ==========================================================
     const CONFIG = {
-        password: "0000",
+        password: "0909",
+        anniversaryDate: "2024-09-09T00:00:00",
+    };
+
+    const CATEGORY_NAMES = {
+        best: "ไอเทมแทนใจ",
+        funny: "รูปตอนกิน",
+        secret: "รูปคู่ของเรา",
+        love: "มีมตลกๆ"
     };
 
     let state = {
         currentPageId: 'page0',
         currentSlideIndex: 0,
         unlocked: { best: false, funny: false, secret: false, love: false, letter: false },
+        gachaPullCount: 0
     };
 
-    let game_state = {}; // ตัวแปรสำหรับเก็บข้อมูลของเกมที่กำลังเล่น
+    let game_state = {};
 
+    let currentGallery = [];
+    let currentGalleryIndex = 0;
+    
     // ==========================================================
     // ส่วน DOM Elements
     // ==========================================================
     const elements = {
-        passwordInput: document.getElementById('password'),
-        errorMsg: document.getElementById('error'),
-        slideShowContainer: document.getElementById('slideShow'),
-        slideCounter: document.getElementById('slideCounter'),
-        progressBarInner: document.getElementById('progressBarInner'),
-        lightboxOverlay: document.getElementById('lightboxOverlay'),
-        lightboxImage: document.getElementById('lightboxImage'),
-        toast: document.getElementById('toast'),
+        passwordInput: document.getElementById('password'), errorMsg: document.getElementById('error'), 
+        slideShowContainer: document.getElementById('slideShow'), slideCounter: document.getElementById('slideCounter'), 
+        progressBarInner: document.getElementById('progressBarInner'), lightboxOverlay: document.getElementById('lightboxOverlay'), 
+        lightboxImage: document.getElementById('lightboxImage'), toast: document.getElementById('toast'),
+        years: document.getElementById('years'), months: document.getElementById('months'), days: document.getElementById('days'),
+        hours: document.getElementById('hours'), minutes: document.getElementById('minutes'), seconds: document.getElementById('seconds'),
+        lightboxPrevBtn: document.getElementById('lightboxPrevBtn'),
+        lightboxNextBtn: document.getElementById('lightboxNextBtn'),
         shootBtn: document.getElementById('shootBtn'),
         heart: document.getElementById('heart'),
         hoop: document.getElementById('hoop'),
@@ -481,14 +365,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // ฟังก์ชันหลักของแอป (CORE APP FUNCTIONS)
     // ==========================================================
     function loadState() {
-        const savedState = localStorage.getItem('anniversaryAppState');
-        if (savedState) {
-            state.unlocked = JSON.parse(savedState);
-        }
+        const savedState = JSON.parse(localStorage.getItem('anniversaryGameState')); 
+        if (savedState) { 
+            state = { ...state, ...savedState };
+            state.unlocked = { ...state.unlocked, ...savedState.unlocked };
+        } 
     }
     
     function saveState() {
-        localStorage.setItem('anniversaryAppState', JSON.stringify(state.unlocked));
+        localStorage.setItem('anniversaryGameState', JSON.stringify(state));
     }
 
     window.showPage = (id) => {
@@ -501,8 +386,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function onPageLoad(id) {
         if (id === 'page1') updateSlideShow();
         if (id === 'page2') updateCategoryLocks();
-        const photoPageMap = { page3: 'bestGrid', page4: 'funnyGrid', page5: 'secretGrid', page6: 'loveGrid' };
-        if (photoPageMap[id]) loadPhotos(id);
+        const photoPageMap = { page3: 'best', page4: 'funny', page5: 'secret', page6: 'love' };
+        if (photoPageMap[id]) loadPhotos(photoPageMap[id]);
     }
     
     window.showGame = (gameId) => {
@@ -516,10 +401,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if(gameMap[gameId]) gameMap[gameId]();
     }
 
+    let cPressCount = 0;
     window.handleNumpad = (value) => {
-        if (value === 'C') { elements.passwordInput.value = ''; }
-        else if (value === '←') { elements.passwordInput.value = elements.passwordInput.value.slice(0, -1); }
-        else if (elements.passwordInput.value.length < 4) { elements.passwordInput.value += value; }
+        if (value === 'C') {
+            elements.passwordInput.value = '';
+            cPressCount++;
+            if (cPressCount >= 5) {
+                Object.keys(state.unlocked).forEach(key => { state.unlocked[key] = false; });
+                state.gachaPullCount = 0;
+                saveState();
+                showToast("รีเซ็ตข้อมูลทั้งหมดแล้ว!");
+                cPressCount = 0;
+            }
+        } else {
+            cPressCount = 0;
+            if (value === '←') {
+                elements.passwordInput.value = elements.passwordInput.value.slice(0, -1);
+            } else if (elements.passwordInput.value.length < 4) {
+                elements.passwordInput.value += value;
+            }
+        }
     }
 
     window.checkPassword = () => {
@@ -532,12 +433,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    function unlockCategory(cat, name) {
+    function unlockCategory(cat) {
         if (!state.unlocked[cat]) {
             state.unlocked[cat] = true;
             saveState();
-            showToast(`🎉 ปลดล็อค '${name}' แล้ว!`);
-            setTimeout(() => showPage('page7'), 800);
+            const displayName = CATEGORY_NAMES[cat] || cat;
+            showToast(`🎉 ปลดล็อค '${displayName}' แล้ว!`);
+            setTimeout(() => showPage("page2"), 500);
         }
     }
 
@@ -581,34 +483,72 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll("#categoryMenu .menu-card[data-category]").forEach(card => {
             const cat = card.dataset.category;
             const pageMap = { best: 'page3', funny: 'page4', secret: 'page5', love: 'page6', letter: 'page8' };
-            if (state.unlocked[cat]) {
+            if (cat && state.unlocked[cat]) {
                 card.classList.remove("locked");
                 card.querySelector("small").textContent = "🔓 ปลดล็อคแล้ว";
                 card.onclick = () => showPage(pageMap[cat]);
-            } else {
+            } else if (cat) {
                 card.classList.add("locked");
+                if (cat === 'letter') {
+                  card.querySelector("small").textContent = "🔒 ปลดล็อคทั้งหมดก่อน";
+                } else {
+                  card.querySelector("small").textContent = "🔒 ต้องปลดล็อคก่อน";
+                }
                 card.onclick = null;
             }
         });
     }
     
-    function loadPhotos(pageId) {
-        const pageMap = { page3: "best", page4: "funny", page5: "secret", page6: "love" };
-        const category = pageMap[pageId];
-        if (!category) return;
-        const container = document.getElementById(`${category}Grid`);
+    function loadPhotos(category) {
+        const containerId = `${category}Grid`;
+        const container = document.getElementById(containerId);
         container.innerHTML = "";
         if (!state.unlocked[category]) {
-            container.innerHTML = "<p>🔒 หมวดนี้ยังล็อคอยู่ ลองเล่นเกมปลดล็อคก่อนนะ!</p>";
+            container.innerHTML = "<p>🔒 หมวดนี้ยังล็อคอยู่!</p>";
             return;
         }
-        WEBSITE_DATA.photos[category].forEach((url) => {
+        WEBSITE_DATA.photos[category].forEach((url, i) => {
             const photoCard = document.createElement('div');
             photoCard.className = 'menu-card';
+            photoCard.style.width = "120px";
+            photoCard.style.height = "120px";
             photoCard.innerHTML = `<img src="${url}" style="width:100%; height:100%; object-fit: cover; margin-bottom: 0;">`;
-            photoCard.onclick = () => { elements.lightboxImage.src = url; elements.lightboxOverlay.style.display = "flex"; };
+            photoCard.onclick = () => openLightbox(category, i);
             container.appendChild(photoCard);
         });
+    }
+    
+    function updateGalleryImage() {
+        elements.lightboxImage.src = currentGallery[currentGalleryIndex];
+    }
+
+    function openLightbox(category, index) {
+        currentGallery = WEBSITE_DATA.photos[category];
+        currentGalleryIndex = index;
+        updateGalleryImage();
+        elements.lightboxOverlay.style.display = "flex";
+    }
+
+    function updateAnniversaryCounter() {
+        const startDate = new Date(CONFIG.anniversaryDate);
+        const now = new Date();
+        let years = now.getFullYear() - startDate.getFullYear();
+        let months = now.getMonth() - startDate.getMonth();
+        let days = now.getDate() - startDate.getDate();
+        let hours = now.getHours() - startDate.getHours();
+        let minutes = now.getMinutes() - startDate.getMinutes();
+        let seconds = now.getSeconds() - startDate.getSeconds();
+        if (seconds < 0) { seconds += 60; minutes--; }
+        if (minutes < 0) { minutes += 60; hours--; }
+        if (hours < 0) { hours += 24; days--; }
+        if (days < 0) { months--; const daysInLastMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate(); days += daysInLastMonth; }
+        if (months < 0) { months += 12; years--; }
+        elements.years.textContent = years;
+        elements.months.textContent = months;
+        elements.days.textContent = days;
+        elements.hours.textContent = String(hours).padStart(2, '0');
+        elements.minutes.textContent = String(minutes).padStart(2, '0');
+        elements.seconds.textContent = String(seconds).padStart(2, '0');
     }
 
     // ==========================================================
@@ -631,9 +571,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!val || val < 1 || val > 10) { message.textContent = "กรุณากรอกเลข 1-10 นะ!"; return; }
         const guessedNumEl = document.querySelector(`.tracker-num[data-num="${val}"]`);
         if (val === game_state.targetNumber) {
-            message.textContent = "🎉 ถูกต้อง!";
+            message.textContent = `🎉 ถูกต้อง! ปลดล็อคหมวด ${CATEGORY_NAMES['best']} แล้ว!`;
             if(guessedNumEl) guessedNumEl.classList.add('correct');
-            unlockCategory("best", "The Best");
+            unlockCategory("best");
         } else {
             message.textContent = "ผิดนะ ลองใหม่อีกครั้ง!";
             if(guessedNumEl) guessedNumEl.classList.add('guessed');
@@ -659,32 +599,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const cards = document.getElementById("cardContainer").querySelectorAll(".card");
         cards.forEach(card => { card.textContent = card.getAttribute("data-emoji"); card.style.pointerEvents = "none"; });
         if (i === game_state.heartIndex) {
-            message.textContent = "🎉 เก่งมาก!";
-            unlockCategory("funny", "รูปฮา");
+            message.textContent = `🎉 เก่งมาก! ปลดล็อคหมวด ${CATEGORY_NAMES['funny']} แล้ว!`;
+            unlockCategory("funny");
         } else {
             message.textContent = "ไม่ใช่น้า~ ลองใหม่นะ 💦";
         }
     };
     
     function startGacha() {
-        const gachaPool = [ { emoji: '🌸', stars: 1 }, { emoji: '🍀', stars: 2 }, { emoji: '❤️', stars: 3 }, { emoji: '✨', stars: 4 }, { emoji: '🌟', stars: 5 } ];
+        const gachaPool = [ { emoji: '🍤', stars: 1 }, { emoji: '🐰', stars: 2 }, { emoji: '🐹', stars: 3 }, { emoji: '✨', stars: 4 }, { emoji: '🩵', stars: 5 } ];
         const display = document.getElementById("gacha-display");
         const resultDiv = document.getElementById("gachaResult");
-        resultDiv.textContent = "";
-        display.textContent = "🎰";
+        state.gachaPullCount = (state.gachaPullCount || 0) + 1;
+        saveState();
+        resultDiv.textContent = `กำลังสุ่ม... (ครั้งที่ ${state.gachaPullCount})`;
+        display.textContent = "❓";
         let spinCount = 0;
         const spinInterval = setInterval(() => {
             display.textContent = gachaPool[Math.floor(Math.random() * gachaPool.length)].emoji;
             spinCount++;
             if (spinCount >= 15) {
                 clearInterval(spinInterval);
-                const result = gachaPool[Math.floor(Math.random() * gachaPool.length)];
+                let result;
+                if (state.gachaPullCount >= 10) {
+                    result = gachaPool.find(item => item.stars === 5); 
+                    state.gachaPullCount = 0; 
+                    saveState();
+                } else {
+                    result = gachaPool[Math.floor(Math.random() * gachaPool.length)];
+                }
                 display.textContent = result.emoji;
                 let starText = "⭐".repeat(result.stars);
                 resultDiv.textContent = `คุณได้ '${result.emoji}' ระดับ ${result.stars} ดาว! ${starText}`;
                 if (result.stars === 5) {
-                    resultDiv.textContent += " 💖 ปลดล็อคแล้ว!";
-                    unlockCategory("secret", "รูปแอบถ่าย");
+                    resultDiv.textContent += ` 💖 ปลดล็อคหมวด ${CATEGORY_NAMES['secret']} แล้ว!`;
+                    unlockCategory("secret");
                 }
             }
         }, 120);
@@ -723,7 +672,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 game_state.shootGameScore++;
                 elements.shootMessage.textContent = `✅ ลงห่วงแล้ว! (${game_state.shootGameScore}/5)`;
                 if (game_state.shootGameScore >= 5) {
-                    unlockCategory("love", "รูปคู่");
+                    unlockCategory("love");
                     elements.shootMessage.textContent += " ❤️ ปลดล็อคเรียบร้อย!";
                 }
                 resetHeart();
@@ -765,7 +714,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================
     loadState();
     setupSlideshow();
-    elements.lightboxOverlay.onclick = () => { elements.lightboxOverlay.style.display = "none"; };
+    elements.lightboxOverlay.onclick = (event) => {
+        if (event.target === elements.lightboxOverlay) {
+            elements.lightboxOverlay.style.display = "none";
+        }
+    };
+    elements.lightboxPrevBtn.onclick = (event) => {
+        event.stopPropagation();
+        currentGalleryIndex = (currentGalleryIndex - 1 + currentGallery.length) % currentGallery.length;
+        updateGalleryImage();
+    };
+    elements.lightboxNextBtn.onclick = (event) => {
+        event.stopPropagation();
+        currentGalleryIndex = (currentGalleryIndex + 1) % currentGallery.length;
+        updateGalleryImage();
+    };
+    setInterval(updateAnniversaryCounter, 1000);
+    updateAnniversaryCounter();
+    
+    showPage('page0');
 });
 </script>
 </body>
