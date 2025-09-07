@@ -138,6 +138,13 @@
     text-align: center;
     margin-bottom: 8px;
   }
+  .menu-card .title, 
+  .menu-card small {
+    background-color: rgba(0, 0, 0, 0.5); /* พื้นหลังสีดำโปร่งแสง 50% */
+    padding: 2px 8px;
+    border-radius: 5px;
+    color: white; /* ทำให้ตัวอักษรเป็นสีขาวเพื่อให้ตัดกับพื้นหลัง */
+  }
 
   #gameMessage, #puzzleMessage { font-weight: bold; color: var(--primary-color); min-height: 28px; margin-top: 15px; transition: color 0.3s ease; }
   .back-game-menu-btn { background: #f8bbd0; color: #a6265a; border-radius: 25px; border: none; padding: 8px 22px; cursor: pointer; font-weight: bold; margin: 0; box-shadow: 0 3px 8px rgba(248,187,208,0.6); transition: background-color 0.3s ease, color 0.3s ease; }
@@ -686,6 +693,7 @@ function loadState() {
 </script>
 </body>
 </html>
+
 
 
 
