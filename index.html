@@ -131,20 +131,38 @@
   .menu-card.locked { cursor: default; opacity: 0.6; }
   .menu-card:hover:not(.locked) { transform: scale(1.07); box-shadow: 0 0 20px var(--primary-color); }
 
-  .menu-card .title { 
-    font-weight: bold; 
-    color: var(--primary-color); 
-    font-size: 1.25rem; 
+/* --- ใส่โค้ดส่วนนี้เข้าไปแทนที่ของเดิม --- */
+  .menu-card {
+    position: relative;
+    color: white;
+  }
+
+  .menu-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 75%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+    border-radius: 20px;
+    z-index: 1;
+  }
+
+  .menu-card .title,
+  .menu-card small {
+    position: relative;
+    z-index: 2;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  }
+
+  .menu-card .title {
+    font-weight: bold;
+    font-size: 1.25rem;
     text-align: center;
     margin-bottom: 8px;
   }
-  .menu-card .title, 
-  .menu-card small {
-    background-color: rgba(0, 0, 0, 0.5); /* พื้นหลังสีดำโปร่งแสง 50% */
-    padding: 2px 8px;
-    border-radius: 5px;
-    color: white; /* ทำให้ตัวอักษรเป็นสีขาวเพื่อให้ตัดกับพื้นหลัง */
-  }
+/* ------------------------------------ */
 
   #gameMessage, #puzzleMessage { font-weight: bold; color: var(--primary-color); min-height: 28px; margin-top: 15px; transition: color 0.3s ease; }
   .back-game-menu-btn { background: #f8bbd0; color: #a6265a; border-radius: 25px; border: none; padding: 8px 22px; cursor: pointer; font-weight: bold; margin: 0; box-shadow: 0 3px 8px rgba(248,187,208,0.6); transition: background-color 0.3s ease, color 0.3s ease; }
@@ -693,6 +711,7 @@ function loadState() {
 </script>
 </body>
 </html>
+
 
 
 
